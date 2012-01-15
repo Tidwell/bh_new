@@ -1,0 +1,13 @@
+.entity {
+  position: absolute;
+}
+.entity.fox {
+  width: 46px;
+  height: 63px;
+  background: url('../images/ff.png');
+}
+.entity.bx {
+  width: 43px;
+  height: 64px;
+  background: url('../images/bx.png');
+}
