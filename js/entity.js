@@ -137,6 +137,10 @@ entity.prototype.behaviors = function() {
     }
   }
 }
+entity.prototype.initMove = function(newX, newY) {
+  this.disableAutopilot = true;
+  this.setTarget(newX, newY);
+}
 
 entity.prototype.move = function(t) {
   //if we reached the target, we're done
@@ -250,8 +254,7 @@ entity.prototype.bindDom = function() {
     var s = self.stage;
     var newX = e.pageX-s.offset().left;
     var newY = e.pageY-s.offset().top;
-    self.disableAutopilot = true;
-    self.setTarget(newX, newY);
+    self.initMove(newX,newY);
   });
   $(self.stage).on('click', '.entity', function(e) {
     var el = $(this);
