@@ -36,6 +36,9 @@
 .chars li {
   background-color: white;
 }
+.chars li.dead {
+  background: red;
+}
 .chars li.selected {
  border: 2px solid green; 
 }

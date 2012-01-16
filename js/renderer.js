@@ -66,6 +66,13 @@ renderer.prototype.bindEvents = function() {
   var self = this;
   this.com.bind('newSelect',function(opt){self.selectEntity(opt.entity);});
   this.com.bind('unselected',function(opt){self.unselectEntity(opt.entity);});
+  this.com.bind('removeEntity', function(opt) {
+    //unbind the select key
+    KeyboardJS.unbind.key(opt.entity.selectKey);
+    opt.entity.actionbarEl.hide();
+    opt.entity.infoEl.addClass('dead');
+    opt.entity.infoEl.removeClass('selected');
+  });
 }
 
 renderer.prototype.bindDom = function(entity) {

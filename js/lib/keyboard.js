@@ -3,7 +3,7 @@
  * 
  * Copyright 2011, Robert William Hurst
  * Licenced under the BSD License.
- * See license.txt
+ * See https://raw.github.com/RobertWHurst/KeyboardJS/master/license.txt
  */
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
@@ -16,7 +16,7 @@
 }(this, function() {
 
 	//polyfills for ms's peice o' shit browsers
-	function bind(target, type, handler) { if (target.addEventListener) { target.addEventListener(type, handler, false); } else { target.attachEvent("on" + type, function(event) { return handler.call(target, event); }); } }
+	function bind(target, type, handler) { if (target.addEventListener) { target.addEventListener(type, handler, false); } else { target.attachEvent("on" + type, function(event) { return handler.call(target, event); }); } }
 	[].indexOf||(Array.prototype.indexOf=function(a,b,c){for(c=this.length,b=(c+~~b)%c;b<c&&(!(b in this)||this[b]!==a);b++);return b^c?b:-1;});
 
 	//locals
@@ -275,7 +275,7 @@
 
 				if(keyBindingGroup.indexOf(keyBinding) > -1) {
 					var index = keyBindingGroups[keys.length].indexOf(keyBinding);
-					keyBindingGroups[keys.length].remove(index);
+					keyBindingGroups[keys.length].splice(index, 1);
 				}
 			}
 		}
@@ -407,12 +407,12 @@
 		//loop through the key binding groups.
 		for(var iKCL = keyBindingGroups.length; iKCL > -1; iKCL -= 1) {
 			if(keyBindingGroups[iKCL]) {
-				var KeyBindingGroup = keyBindingGroups[iKCL],
-					remove = true;
+				var KeyBindingGroup = keyBindingGroups[iKCL];
 
 				//loop through the key bindings.
 				for(var iB = 0; iB < KeyBindingGroup.length; iB += 1) {
-					var keyBinding = KeyBindingGroup[iB];
+					var keyBinding = KeyBindingGroup[iB],
+						remove = false;
 
 					//loop through the current key binding keys.
 					for(var iKB = 0; iKB < keyBinding.keys.length;  iKB += 1) {
@@ -428,10 +428,12 @@
 						}
 						if(remove) { break; }
 					}
-					if(remove) { break; }
-				}
-				if(remove) {
-					delete keyBindingGroups[iKCL];
+					if(remove) {
+						keyBindingGroups[iKCL].splice(iB, 1); iB -= 1;
+						if(keyBindingGroups[iKCL].length < 1) {
+							delete keyBindingGroups[iKCL];
+						}
+					}
 				}
 			}
 		}

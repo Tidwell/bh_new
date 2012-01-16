@@ -63,7 +63,7 @@ entity.prototype.update = function(t) {
 
 entity.prototype.destroy = function() {
   this.dead = true;
-  this.com.trigger('removeEntity',{id: this.id});
+  this.com.trigger('removeEntity',{id: this.id, entity: this});
   this.el.remove();
 };
 
