@@ -154,7 +154,7 @@ entity.prototype.behaviors = function(t) {
         self.turnOnAutopilot();
       }
       if (self.autopilot) {
-        if (self.sinceLastAutoTarget > 2000 ) {
+        if (self.sinceLastAutoTarget > 200 ) {
           self.updateTargetPos();
           self.sinceLastAutoTarget = 0;
           self.lastAutoTarget = t;

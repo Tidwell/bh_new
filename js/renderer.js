@@ -68,10 +68,16 @@ renderer.prototype.bindEvents = function() {
   this.com.bind('unselected',function(opt){self.unselectEntity(opt.entity);});
   this.com.bind('removeEntity', function(opt) {
     //unbind the select key
-    KeyboardJS.unbind.key(opt.entity.selectKey);
-    opt.entity.actionbarEl.hide();
-    opt.entity.infoEl.addClass('dead');
-    opt.entity.infoEl.removeClass('selected');
+    if (opt.entity.selectKey) {
+      KeyboardJS.unbind.key(opt.entity.selectKey);
+    }
+    if (opt.entity.actionbarEl) {
+      opt.entity.actionbarEl.hide();
+    }
+    if (opt.entity.infoEl) {
+      opt.entity.infoEl.addClass('dead');
+      opt.entity.infoEl.removeClass('selected');
+    }
   });
 }
 
