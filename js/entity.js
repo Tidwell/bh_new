@@ -12,8 +12,10 @@ var entity = function(opt) {
   //movement tracking
   this.startX = opt.startX || 0;
   this.startY = opt.startY || 0;
-  this.targetX = opt.startX || 0;;
-  this.targetY = opt.startY || 0;;
+  this.targetX = opt.startX || 0; //coerced to fit in border
+  this.targetY = opt.startY || 0; //coerced to fit in border
+  this.rawTargetX = opt.startX || 0; //uncoerced to fit in border
+  this.rawTargetY = opt.startY || 0; //uncoerced to fit in border
   this.targetDistance = 0;
   this.timeToTarget = 0;
   this.startTime = 0;
@@ -71,6 +73,8 @@ entity.prototype.distance = function(x1,y1,x2,y2) {
 }
 entity.prototype.setMoveTarget = function(x2,y2) {
   var self = this;
+  self.rawTargetX = x2-self.width/2;
+  self.rawTargetY = y2-self.height/2;
   //check border collisions and fix coordinates
   var s = this.stage;
   if (x2+self.width/2 > s.width()) {
@@ -182,6 +186,8 @@ entity.prototype.turnOffAutopilot = function() {
   self.autopilot = false;
   self.targetX = self.x;
   self.targetY = self.y;
+  self.rawTargetX = self.x;
+  self.rawTargetY = self.y;
 };
 
 entity.prototype.fireWeapon = function() {
@@ -279,9 +285,30 @@ entity.prototype.populateAbilityTarget = function(opt) {
 
 entity.prototype.render = function() {
   this.el.css('left',this.x).css('top',this.y);
+  
   if (this.controllable) {
     this.infoEl.find('.health').html(this.health+' / '+this.maxHealth);
   }
+  //rotate to face target
+  if (!this.rawTargetX || !this.rawTargetY) { return; }
+  var slope = ((this.y-this.height/2)-(this.rawTargetY-this.height/2))/((this.x-this.width/2)-(this.rawTargetX-this.width/2));
+  var angle = Math.atan(slope); //radians
+  var angleDeg = -angle*(180/Math.PI);
+  
+  if (!slope || !angle || !angleDeg) { return; }
+  //because our sprites are facing "up" we have to base the rotation on this assumption  
+  //if up right or down right
+  if ((this.x < this.rawTargetX && (this.y > this.rawTargetY)) ||
+     (this.x < this.rawTargetX && (this.y < this.rawTargetY))) {
+    angleDeg = 90-angleDeg
+  }
+  //if up left or down left
+  if ((this.x > this.rawTargetX && this.y > this.rawTargetY) ||
+      (this.x > this.rawTargetX && (this.y < this.rawTargetY))
+      ) {
+    angleDeg= -90-angleDeg;
+  }
+  this.el.css('-webkit-transform', 'rotate('+(angleDeg)+'deg)');
 };
 entity.prototype.select = function() {
   var self = this;

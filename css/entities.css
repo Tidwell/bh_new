@@ -1,20 +1,17 @@
 .entity {
   position: absolute;
 }
-.entity.fox,.entity.fox2 {
-  width: 46px;
-  height: 63px;
-  background: url('../images/ff.png');
+.entity.ship1 {
+  width: 43px;
+  height: 33px;
+  background: url('../images/green_ship.png');
 }
 .entity.bx {
-  width: 43px;
-  height: 64px;
-  background: url('../images/bx.png');
+  width: 34px;
+  height: 35px;
+  background: url('../images/red_ship.png');
 }
 
-.actionbars .fox .attack {
+.actionbars .ship1 .attack {
   background: red;
-}
-.actionbars .fox2 .attack {
-  background: blue;
 }

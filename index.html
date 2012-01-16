@@ -22,12 +22,12 @@
       $(function() {
         var bh = new game({stage: $('.stage')});
         var char = new entity({
-            id: 'fox1',
+            id: 'ship1',
             controllable: true,
             startX: 20,
             startY: 250,
-            height: 63, //px
-            width: 46, //px
+            height: 33, //px
+            width: 43, //px
             rate: 200, //px/s
             health: 100,
             weapon: {
@@ -35,51 +35,30 @@
               range: 120, //px
               cooldown: 2000 //ms
             },
-            domEl: $('.entity.fox'),
-            infoEl: $('.chars .fox'),
-            actionbarEl: $('.actionbars .fox'),
+            domEl: $('.entity.ship1'),
+            infoEl: $('.chars .ship1'),
+            actionbarEl: $('.actionbars .ship1'),
             selectKey: '1',
-            attackKey: 'a'
-        });
-        var char2 = new entity({
-            id: 'fox2',
-            controllable: true,
-            startX: 400,
-            startY: 400,
-            height: 63, //px
-            width: 46, //px
-            rate: 200, //px/s
-            health: 100,
-            weapon: {
-              damage: 5,
-              range: 200, //px
-              cooldown: 2000 //ms
-            },
-            domEl: $('.entity.fox2'),
-            infoEl: $('.chars .fox2'),
-            actionbarEl: $('.actionbars .fox2'),
-            selectKey: '2',
             attackKey: 'a'
         });
         var enemy = new entity({
             controllable: false,
             startX: 400,
             startY: 300,
-            height: 64, //px
-            width: 43, //px
+            height: 35, //px
+            width: 34, //px
             rate: 20, //px/s
             health: 100,
             controllable: false,
             weapon: {
               damage: 10,
-              range: 100, //px
+              range: 50, //px
               cooldown: 1500 //ms
             },
             domEl: $('.entity.bx'),
-            validTargets: ['fox1','fox2']
+            validTargets: ['ship1']
         });        
         bh.addEntity(char);
-        bh.addEntity(char2);
         bh.addEntity(enemy);
         bh.init();
       });
@@ -87,32 +66,22 @@
   </head>
   <body>
       <ul class="chars">
-        <li class="fox">
-          <img src="images/ff.png" />
-          <p class="health"></p>
-        </li>
-        <li class="fox2">
-          <img src="images/ff.png" />
+        <li class="ship1">
+          <img src="images/green_ship.png" />
           <p class="health"></p>
         </li>
       </ul>
       </div>
       <div class="stage">
         <ul class="actionbars">
-          <li class="fox">
-            <ul>
-              <li class="attack">Attack</li>
-            </ul>
-          </li>
-          <li class="fox2">
+          <li class="ship1">
             <ul>
               <li class="attack">Attack</li>
             </ul>
           </li>
         </ul>
 
-        <div class="entity fox"></div>
-        <div class="entity fox2"></div>
+        <div class="entity ship1"></div>
         <div class="entity bx enemy"></div>
       </div>
       <!--
