@@ -287,8 +287,3 @@ entity.prototype.init = function() {
     this.bindDom();
   }
 }
-
-var communicator = function() {
-  
-}
-MicroEvent.mixin(communicator);

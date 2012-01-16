@@ -1,5 +1,5 @@
 var game = function(opt) {
-  this.com = opt.communicator;
+  this.com = new communicator();
   this.entities = [];
   this.stage = opt.stage;
 }
@@ -32,5 +32,6 @@ game.prototype.init = function() {
   })
 }
 game.prototype.addEntity = function(entity) {
+  entity.com = this.com;
   this.entities.push(entity);
 }
