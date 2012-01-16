@@ -9,15 +9,16 @@ game.prototype.addEntity = function(entity) {
 };
 
 game.prototype.removeEntity = function(opt){
-  var i = 0;
-  var toRemove;
-  self.entities.forEach(function(entity){
+  var self = this;
+  var toRemove = undefined;
+  this.entities.forEach(function(entity, i){
     if (entity.id==opt.id) {
       toRemove = i;
     }
-    i++;
   })
-  self.entities.remove(i);
+  if (toRemove != undefined) {
+    self.entities.remove(toRemove);
+  }
 };
 
 //main game loop
@@ -40,7 +41,7 @@ game.prototype.init = function() {
   });
   //when we get a destruction notice from an entity, we need to
   //remove it from our array
-  this.com.bind('removeEntity', self.removeEntity);
+  this.com.bind('removeEntity', function(opt) {self.removeEntity(opt)});
   
   /***Inititalize the Main Game Loop***/
   setTimeout(function() {self.loop()}, 20);

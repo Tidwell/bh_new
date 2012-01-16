@@ -2,6 +2,7 @@ var entity = function(opt) {
   this._id = opt.id || Math.floor(Math.random()*100000),
   this.id = opt.id || this._id,
   this.com = opt.communicator;
+  this.dead = false;
   //position
   this.x = opt.startX || 0;;
   this.y = opt.startY || 0;;
@@ -42,10 +43,12 @@ var entity = function(opt) {
   //game controls
   this.selectKey = opt.selectKey || false;
   this.attackKey = opt.attackKey || false;
+  //AI
+  this.validTargets = opt.validTargets || false;
 };
 
 entity.prototype.update = function(t) {
-  if (this.health <= 0) {
+  if (this.health <= 0 && !this.dead) {
     this.destroy();
   }
   else {
@@ -56,6 +59,7 @@ entity.prototype.update = function(t) {
 };
 
 entity.prototype.destroy = function() {
+  this.dead = true;
   this.com.trigger('removeEntity',{id: this.id});
   this.el.remove();
 };
@@ -125,29 +129,7 @@ entity.prototype.move = function(t) {
 
 entity.prototype.behaviors = function() {
   var self = this;
-  
-  //set the target move-to coordinates to the same as the ability target
-  var enableAutopilot = function() {
-    self.autopilot = true;
-    self.setMoveTarget(self.abilityTarget.x,self.abilityTarget.y);
-  };
-  //set the target move-to coordinates to current coordinates
-  var disableAutopilot = function() {
-    self.autopilot = false;
-    self.targetX = self.x;
-    self.targetY = self.y;
-  };
-  
-  var fireWeapon = function() {
-    if (!self.weaponOnCooldown) {
-      self.weaponOnCooldown = true;
-      self.com.trigger('dmgDealt',{id: self.abilityTarget.id, dmg: self.weapon.damage});
-      setTimeout(function(){
-        self.weaponOnCooldown = false;
-      },self.weapon.cooldown);
-    }
-  }
-  
+  if (!self.controllable) { self.AITarget(); }
   //we have a target
   if (this.attacking && typeof this.abilityTarget == 'object') {
     //see if the target is in range
@@ -156,20 +138,54 @@ entity.prototype.behaviors = function() {
     if (distance < this.weapon.range) {
       //if the autopilot is turned on and not forcibly disabled
       if (self.autopilot && !self.disableAutopilot) {
-        disableAutopilot();
+        self.turnOffAutopilot();
       }
-      fireWeapon();
+      self.fireWeapon();
     }
     //out of range 
     else {
       //if the autopilot is off, and not forcibly disabled
       if (!self.autopilot && !self.disableAutopilot) {
-        enableAutopilot();
+        self.turnOnAutopilot();
       }
     }
   }
 }
 
+//set the target move-to coordinates to the same as the ability target
+entity.prototype.turnOnAutopilot = function() {
+  var self = this;
+  self.autopilot = true;
+  self.setMoveTarget(self.abilityTarget.x,self.abilityTarget.y);
+};
+
+//set the target move-to coordinates to current coordinates
+entity.prototype.turnOffAutopilot = function() {
+  var self = this;
+  self.autopilot = false;
+  self.targetX = self.x;
+  self.targetY = self.y;
+};
+
+entity.prototype.fireWeapon = function() {
+  var self = this;
+  if (!self.weaponOnCooldown) {
+    self.weaponOnCooldown = true;
+    self.com.trigger('dmgDealt',{id: self.abilityTarget.id, dmg: self.weapon.damage});
+    setTimeout(function(){
+      self.weaponOnCooldown = false;
+    },self.weapon.cooldown);
+  }
+}
+
+entity.prototype.AITarget = function() {
+  if (!this.abilityTarget && this.validTargets.length) {
+    this.attack();
+    var t = this.validTargets;
+    var id = t[Math.floor(Math.random()*t.length)];
+    this.setAbilityTarget(id);
+  }
+};
 
 entity.prototype.bindEvents = function() {
   var self = this;
@@ -192,9 +208,19 @@ entity.prototype.bindEvents = function() {
       console.log('ouch, '+self._id+' took '+opt.dmg+'@'+self.health)
     }
   });
-  this.com.bind('removeEntity', function(opt){
+  this.com.bind('removeEntity', function(opt) {
     if (self.abilityTarget && self.abilityTarget.id == opt.id) {
       self.abilityTarget = undefined;
+    }
+    if (!self.validTargets){return;}
+    var toRemove;
+    self.validTargets.forEach(function(target,i){
+      if (target == opt.id) {
+        toRemove = i;
+      }
+    });
+    if (toRemove != undefined){
+      self.validTargets.remove(toRemove);
     }
   });
 }
@@ -204,14 +230,14 @@ entity.prototype.makeSelected = function() {
   this.select();
 };
 entity.prototype.attack = function() {
-  if (!this.selected){ return; }
+  if (this.controllable && !this.selected){ return; }
   this.attacking = true;
 }
 //recieving a entity Id, make a reuest to the entity
 //for its' information to populate the ability target
 entity.prototype.setAbilityTarget = function(entityId) {
   var self = this;
-  if (!this.selected || !this.attacking) {return;}
+  if (this.controllable && (!this.selected || !this.attacking)) {return;}
   this.abilityTarget = entityId;
   this.com.trigger('requestPosition',{id: entityId, fromId: self.id});
   this.disableAutopilot = false;
