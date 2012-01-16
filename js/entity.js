@@ -20,6 +20,8 @@ var entity = function(opt) {
   this.rate = opt.rate; //px per second
   this.autopilot = false;
   this.disableAutopilot = false;
+  this.sinceLastAutoTarget = 0;
+  this.lastAutoTarget = 0;
   //domm els
   this.el = opt.domEl || undefined;;
   this.infoEl = opt.infoEl || undefined;;
@@ -52,7 +54,7 @@ entity.prototype.update = function(t) {
     this.destroy();
   }
   else {
-    this.behaviors();
+    this.behaviors(t);
     this.move(t);
     this.render();
   }
@@ -127,7 +129,7 @@ entity.prototype.move = function(t) {
   this.y = newY;
 };
 
-entity.prototype.behaviors = function() {
+entity.prototype.behaviors = function(t) {
   var self = this;
   if (!self.controllable) { self.AITarget(); }
   //we have a target
@@ -148,10 +150,25 @@ entity.prototype.behaviors = function() {
       if (!self.autopilot && !self.disableAutopilot) {
         self.turnOnAutopilot();
       }
+      if (self.autopilot) {
+        if (self.sinceLastAutoTarget > 2000 ) {
+          self.updateTargetPos();
+          self.sinceLastAutoTarget = 0;
+          self.lastAutoTarget = t;
+        }
+        else {
+          self.sinceLastAutoTarget += t-self.lastAutoTarget;
+        }
+      }
     }
   }
 }
 
+entity.prototype.updateTargetPos = function() {
+  var self = this;
+  self.setAbilityTarget(self.abilityTarget.id);
+  self.turnOnAutopilot();
+}
 //set the target move-to coordinates to the same as the ability target
 entity.prototype.turnOnAutopilot = function() {
   var self = this;
@@ -170,6 +187,10 @@ entity.prototype.turnOffAutopilot = function() {
 entity.prototype.fireWeapon = function() {
   var self = this;
   if (!self.weaponOnCooldown) {
+    self.updateTargetPos();
+    var distance = this.distance(this.x,this.y,this.abilityTarget.x,this.abilityTarget.y);
+    if (distance > this.weapon.range) { return; }
+    
     self.weaponOnCooldown = true;
     self.com.trigger('dmgDealt',{id: self.abilityTarget.id, dmg: self.weapon.damage});
     setTimeout(function(){
@@ -246,7 +267,8 @@ entity.prototype.setAbilityTarget = function(entityId) {
 //ability target
 entity.prototype.populateAbilityTarget = function(opt) {
   var self = this;
-  if (opt.fromId==self.abilityTarget && opt.id == self.id) {
+  var targetId = typeof self.abilityTarget == 'object' ? self.abilityTarget.id : self.abilityTarget;
+  if ((opt.fromId==targetId) && opt.id == self.id) {
     opt.id = opt.fromId;
     delete opt.fromId;
     self.abilityTarget = opt;
