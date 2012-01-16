@@ -43,10 +43,27 @@ var entity = function(opt) {
   this.selectKey = opt.selectKey || false;
   this.attackKey = opt.attackKey || false;
 };
+
+entity.prototype.update = function(t) {
+  if (this.health <= 0) {
+    this.destroy();
+  }
+  else {
+    this.behaviors();
+    this.move(t);
+    this.render();
+  }
+};
+
+entity.prototype.destroy = function() {
+  this.com.trigger('removeEntity',{id: this.id});
+  this.el.remove();
+};
+
 entity.prototype.distance = function(x1,y1,x2,y2) {
   return Math.sqrt((Math.pow((x2-x1),2)+Math.pow((y2-y1),2)));
 }
-entity.prototype.setTarget = function(x2,y2) {
+entity.prototype.setMoveTarget = function(x2,y2) {
   var self = this;
   //check border collisions and fix coordinates
   var s = this.stage;
@@ -76,28 +93,43 @@ entity.prototype.setTarget = function(x2,y2) {
   this.startTime = d.getTime();
 };
 
-entity.prototype.update = function(t) {
-  if (this.health <= 0) {
-    this.destroy();
+entity.prototype.initMove = function(newX, newY) {
+  this.disableAutopilot = true;
+  this.setMoveTarget(newX, newY);
+}
+
+entity.prototype.move = function(t) {
+  //if we reached the target, we're done
+  if (this.x == this.targetX && this.y == this.targetY) return;
+  var elapsedTime = t-this.startTime;
+  var percentTotal = ((elapsedTime/this.timeToTarget));
+  var t = percentTotal;
+  if (t>1){
+    //if we are longer than it should have taken, jump us where we should be
+    this.x = this.targetX;
+    this.y = this.targetY;
+    return;
   }
-  else {
-    this.behaviors();
-    this.move(t);
-    this.render();
-  }
+  //otherwise set up some vars
+  var x1 = this.startX;
+  var y1 = this.startY;
+  var x2 = this.targetX;
+  var y2 = this.targetY
+  //calculate new x & y based on the % of time elapsed to go from (x1,y1) to
+  //(x2,y2) using parametric equations (http://stackoverflow.com/questions/8018929/simulating-movement-in-2d)
+  var newX = x1 + (t*(x2 - x1));
+  var newY = y1 + (t*(y2 - y1));
+  this.x = newX;
+  this.y = newY;
 };
 
-entity.prototype.destroy = function() {
-  this.com.trigger('removeEntity',{id: this.id});
-  this.el.remove();
-};
 entity.prototype.behaviors = function() {
   var self = this;
   
   //set the target move-to coordinates to the same as the ability target
   var enableAutopilot = function() {
     self.autopilot = true;
-    self.setTarget(self.abilityTarget.x,self.abilityTarget.y);
+    self.setMoveTarget(self.abilityTarget.x,self.abilityTarget.y);
   };
   //set the target move-to coordinates to current coordinates
   var disableAutopilot = function() {
@@ -137,35 +169,8 @@ entity.prototype.behaviors = function() {
     }
   }
 }
-entity.prototype.initMove = function(newX, newY) {
-  this.disableAutopilot = true;
-  this.setTarget(newX, newY);
-}
 
-entity.prototype.move = function(t) {
-  //if we reached the target, we're done
-  if (this.x == this.targetX && this.y == this.targetY) return;
-  var elapsedTime = t-this.startTime;
-  var percentTotal = ((elapsedTime/this.timeToTarget));
-  var t = percentTotal;
-  if (t>1){
-    //if we are longer than it should have taken, jump us where we should be
-    this.x = this.targetX;
-    this.y = this.targetY;
-    return;
-  }
-  //otherwise set up some vars
-  var x1 = this.startX;
-  var y1 = this.startY;
-  var x2 = this.targetX;
-  var y2 = this.targetY
-  //calculate new x & y based on the % of time elapsed to go from (x1,y1) to
-  //(x2,y2) using parametric equations (http://stackoverflow.com/questions/8018929/simulating-movement-in-2d)
-  var newX = x1 + (t*(x2 - x1));
-  var newY = y1 + (t*(y2 - y1));
-  this.x = newX;
-  this.y = newY;
-};
+
 entity.prototype.bindEvents = function() {
   var self = this;
   this.com.bind('newSelect', function() {
@@ -179,11 +184,7 @@ entity.prototype.bindEvents = function() {
     }
   });
   this.com.bind('tellPosition', function(opt){
-    if (opt.fromId==self.abilityTarget && opt.id == self.id) {
-      opt.id = opt.fromId;
-      delete opt.fromId;
-      self.abilityTarget = opt;
-    }
+    self.populateAbilityTarget(opt);
   });
   this.com.bind('dmgDealt',function(opt){
     if (opt.id == self.id) {
@@ -206,14 +207,24 @@ entity.prototype.attack = function() {
   if (!this.selected){ return; }
   this.attacking = true;
 }
-entity.prototype.setTargetEntity = function(entityId) {
+//recieving a entity Id, make a reuest to the entity
+//for its' information to populate the ability target
+entity.prototype.setAbilityTarget = function(entityId) {
   var self = this;
   if (!this.selected || !this.attacking) {return;}
   this.abilityTarget = entityId;
   this.com.trigger('requestPosition',{id: entityId, fromId: self.id});
-  console.log('autopilot go due to attack')
   this.disableAutopilot = false;
-
+}
+//take a response from another entity and populate the
+//ability target
+entity.prototype.populateAbilityTarget = function(opt) {
+  var self = this;
+  if (opt.fromId==self.abilityTarget && opt.id == self.id) {
+    opt.id = opt.fromId;
+    delete opt.fromId;
+    self.abilityTarget = opt;
+  }
 }
 
 /*UI stuff, needs to be split off*/
@@ -246,6 +257,10 @@ entity.prototype.unselect = function() {
 
 entity.prototype.bindDom = function() {
   var self = this;
+  //bind the keyboard event to select this entity
+  KeyboardJS.bind.key(self.selectKey, function(){}, function(){self.makeSelected()});
+
+  //bind the click event to move
   $(self.stage).click(function(e) {
     if (!self.selected) { return; }
     //we dont want to move, we want to target if they are an enemy
@@ -256,14 +271,16 @@ entity.prototype.bindDom = function() {
     var newY = e.pageY-s.offset().top;
     self.initMove(newX,newY);
   });
+  
+  //bind the click event to target
   $(self.stage).on('click', '.entity', function(e) {
     var el = $(this);
-    self.setTargetEntity(el.attr('rel'));
+    self.setAbilityTarget(el.attr('rel'));
   });
-  KeyboardJS.bind.key(self.selectKey, function(){}, function(){self.makeSelected()});
 }
 
 entity.prototype.init = function() {
+  //message passing events
   this.bindEvents();
   this.el.attr('rel',this.id);
   if (this.controllable) {
