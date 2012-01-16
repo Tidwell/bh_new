@@ -1,7 +1,7 @@
 .entity {
   position: absolute;
 }
-.entity.fox {
+.entity.fox,.entity.fox2 {
   width: 46px;
   height: 63px;
   background: url('../images/ff.png');
@@ -10,4 +10,11 @@
   width: 43px;
   height: 64px;
   background: url('../images/bx.png');
+}
+
+.actionbars .fox .attack {
+  background: red;
+}
+.actionbars .fox2 .attack {
+  background: blue;
 }

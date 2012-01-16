@@ -275,7 +275,7 @@
 
 				if(keyBindingGroup.indexOf(keyBinding) > -1) {
 					var index = keyBindingGroups[keys.length].indexOf(keyBinding);
-					delete keyBindingGroups[keys.length][index];
+					keyBindingGroups[keys.length].remove(index);
 				}
 			}
 		}
@@ -479,3 +479,10 @@
 		}
 	}
 }));
+
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};

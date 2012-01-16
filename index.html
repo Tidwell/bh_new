@@ -5,13 +5,17 @@
     <link href="css/entities.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/lib/keyboard.js"></script>
+    <script type="text/javascript" src="js/lib/microevent.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/entity.js"></script>
     
     <script type="text/javascript">
       $(function() {
-        var bh = new game({stage: $('.stage')});
+        var com = new communicator();
+        var bh = new game({stage: $('.stage'), communicator: com});
         var char = new entity({
+            id: 'fox1',
+            communicator: com,
             controllable: true,
             startX: 20,
             startY: 250,
@@ -21,14 +25,38 @@
             health: 100,
             weapon: {
               damage: 5,
-              range: 200, //px
+              range: 120, //px
               cooldown: 2000 //ms
             },
             domEl: $('.entity.fox'),
             infoEl: $('.chars .fox'),
-            selectKey: '1'
+            actionbarEl: $('.actionbars .fox'),
+            selectKey: '1',
+            attackKey: 'a'
+        });
+        var char2 = new entity({
+            id: 'fox2',
+            communicator: com,
+            controllable: true,
+            startX: 400,
+            startY: 400,
+            height: 63, //px
+            width: 46, //px
+            rate: 200, //px/s
+            health: 100,
+            weapon: {
+              damage: 5,
+              range: 200, //px
+              cooldown: 2000 //ms
+            },
+            domEl: $('.entity.fox2'),
+            infoEl: $('.chars .fox2'),
+            actionbarEl: $('.actionbars .fox2'),
+            selectKey: '2',
+            attackKey: 'a'
         });
         var enemy = new entity({
+            communicator: com,
             controllable: false,
             startX: 400,
             startY: 300,
@@ -43,11 +71,11 @@
               cooldown: 2500 //ms
             },
             domEl: $('.entity.bx')
-        });
+        });        
         bh.addEntity(char);
+        bh.addEntity(char2);
         bh.addEntity(enemy);
         bh.init();
-        console.log('done')
       });
     </script>
   </head>
@@ -57,11 +85,29 @@
           <img src="images/ff.png" />
           <p class="health"></p>
         </li>
+        <li class="fox2">
+          <img src="images/ff.png" />
+          <p class="health"></p>
+        </li>
       </ul>
       </div>
       <div class="stage">
+        <ul class="actionbars">
+          <li class="fox">
+            <ul>
+              <li class="attack">Attack</li>
+            </ul>
+          </li>
+          <li class="fox2">
+            <ul>
+              <li class="attack">Attack</li>
+            </ul>
+          </li>
+        </ul>
+
         <div class="entity fox"></div>
-        <div class="entity bx"></div>
+        <div class="entity fox2"></div>
+        <div class="entity bx enemy"></div>
       </div>
   </body>
 </html>

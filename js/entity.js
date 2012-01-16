@@ -1,8 +1,14 @@
 var entity = function(opt) {
+  this._id = opt.id || Math.floor(Math.random()*100000),
+  this.id = opt.id || this._id,
+  this.com = opt.communicator;
+  //position
   this.x = opt.startX || 0;;
   this.y = opt.startY || 0;;
+  //dimensions
   this.height = opt.height;
   this.width = opt.width;
+  //movement tracking
   this.startX = opt.startX || 0;
   this.startY = opt.startY || 0;
   this.targetX = opt.startX || 0;;
@@ -10,22 +16,36 @@ var entity = function(opt) {
   this.targetDistance = 0;
   this.timeToTarget = 0;
   this.startTime = 0;
-  this.rate = opt.rate; //px per second 
-  this.el = opt.domEl;
-  this.infoEl = opt.infoEl;
+  this.rate = opt.rate; //px per second
+  this.autopilot = false;
+  this.disableAutopilot = false;
+  //domm els
+  this.el = opt.domEl || undefined;;
+  this.infoEl = opt.infoEl || undefined;;
+  this.actionbarEl = opt.actionbarEl || undefined;
   this.stage;
+  //game stats
   this.health = opt.health;
   this.maxHealth = opt.health;
-  this.selected = false;
-  this.controllable = opt.controllable || false;
-  this.selectKey = opt.selectKey || false;
   this.weapon = opt.weapon || {
     damage: 0,
     range: 0,
     cooldown: 0
   }
+  //combat state
+  this.weaponOnCooldown = false;
+  this.abilityTarget = 0;
+  //game state
+  this.selected = false;
+  this.attacking = false;
+  this.controllable = opt.controllable || false;
+  //game controls
+  this.selectKey = opt.selectKey || false;
+  this.attackKey = opt.attackKey || false;
 };
-
+entity.prototype.distance = function(x1,y1,x2,y2) {
+  return Math.sqrt((Math.pow((x2-x1),2)+Math.pow((y2-y1),2)));
+}
 entity.prototype.setTarget = function(x2,y2) {
   var self = this;
   //check border collisions and fix coordinates
@@ -50,11 +70,73 @@ entity.prototype.setTarget = function(x2,y2) {
   var x1 = this.x;
   var y1 = this.y;
   //determine distance and the length of time it will take to get there
-  this.targetDistance = Math.sqrt((Math.pow((x2-x1),2)+Math.pow((y2-y1),2)));
+  this.targetDistance = this.distance(x1,y1,x2,y2);
   this.timeToTarget = (this.targetDistance/(this.rate/1000)); //convert to ms
   var d = new Date();
   this.startTime = d.getTime();
 };
+
+entity.prototype.update = function(t) {
+  if (this.health <= 0) {
+    this.destroy();
+  }
+  else {
+    this.behaviors();
+    this.move(t);
+    this.render();
+  }
+};
+
+entity.prototype.destroy = function() {
+  this.com.trigger('removeEntity',{id: this.id});
+  this.el.remove();
+};
+entity.prototype.behaviors = function() {
+  var self = this;
+  
+  //set the target move-to coordinates to the same as the ability target
+  var enableAutopilot = function() {
+    self.autopilot = true;
+    self.setTarget(self.abilityTarget.x,self.abilityTarget.y);
+  };
+  //set the target move-to coordinates to current coordinates
+  var disableAutopilot = function() {
+    self.autopilot = false;
+    self.targetX = self.x;
+    self.targetY = self.y;
+  };
+  
+  var fireWeapon = function() {
+    if (!self.weaponOnCooldown) {
+      self.weaponOnCooldown = true;
+      self.com.trigger('dmgDealt',{id: self.abilityTarget.id, dmg: self.weapon.damage});
+      setTimeout(function(){
+        self.weaponOnCooldown = false;
+      },self.weapon.cooldown);
+    }
+  }
+  
+  //we have a target
+  if (this.attacking && typeof this.abilityTarget == 'object') {
+    //see if the target is in range
+    var distance = this.distance(this.x,this.y,this.abilityTarget.x,this.abilityTarget.y);
+    //in range
+    if (distance < this.weapon.range) {
+      //if the autopilot is turned on and not forcibly disabled
+      if (self.autopilot && !self.disableAutopilot) {
+        disableAutopilot();
+      }
+      fireWeapon();
+    }
+    //out of range 
+    else {
+      //if the autopilot is off, and not forcibly disabled
+      if (!self.autopilot && !self.disableAutopilot) {
+        enableAutopilot();
+      }
+    }
+  }
+}
 
 entity.prototype.move = function(t) {
   //if we reached the target, we're done
@@ -80,6 +162,55 @@ entity.prototype.move = function(t) {
   this.x = newX;
   this.y = newY;
 };
+entity.prototype.bindEvents = function() {
+  var self = this;
+  this.com.bind('newSelect', function() {
+    self.selected = false;
+    self.unselect();
+  });
+  this.com.bind('requestPosition', function(opt){
+    if (opt.id == self.id) {
+      var obj = {x: self.x, y: self.y, fromId: self.id, id: opt.fromId};
+      self.com.trigger('tellPosition', obj)
+    }
+  });
+  this.com.bind('tellPosition', function(opt){
+    if (opt.fromId==self.abilityTarget && opt.id == self.id) {
+      opt.id = opt.fromId;
+      delete opt.fromId;
+      self.abilityTarget = opt;
+    }
+  });
+  this.com.bind('dmgDealt',function(opt){
+    if (opt.id == self.id) {
+      self.health = self.health - opt.dmg;
+      console.log('ouch, '+self._id+' took '+opt.dmg+'@'+self.health)
+    }
+  });
+  this.com.bind('removeEntity', function(opt){
+    if (self.abilityTarget && self.abilityTarget.id == opt.id) {
+      self.abilityTarget = undefined;
+    }
+  });
+}
+entity.prototype.makeSelected = function() {
+  this.com.trigger('newSelect',{});
+  this.selected = true;
+  this.select();
+};
+entity.prototype.attack = function() {
+  if (!this.selected){ return; }
+  this.attacking = true;
+}
+entity.prototype.setTargetEntity = function(entityId) {
+  var self = this;
+  if (!this.selected || !this.attacking) {return;}
+  this.abilityTarget = entityId;
+  this.com.trigger('requestPosition',{id: entityId, fromId: self.id});
+  console.log('autopilot go due to attack')
+  this.disableAutopilot = false;
+
+}
 
 /*UI stuff, needs to be split off*/
 
@@ -89,27 +220,55 @@ entity.prototype.render = function() {
     this.infoEl.find('.health').html(this.health+' / '+this.maxHealth);
   }
 };
-
-entity.prototype.makeSelected = function() {
-  this.selected = false;
-  $('.chars li').removeClass('selected');
+entity.prototype.select = function() {
+  var self = this;
+  if (!this.controllable){ return;}
   this.infoEl.addClass('selected');
-};
+  this.actionbarEl.addClass('selected');
+  if (self.attackKey) {
+    self.kb = KeyboardJS.bind.key(self.attackKey, function(){}, function(){ self.attack();});
+  }
+}
+entity.prototype.unselect = function() {
+  var self = this;
+  if (!this.controllable){ return;}
+  this.infoEl.removeClass('selected');
+  this.actionbarEl.removeClass('selected');
+  if (self.kb) {
+    self.kb.clear();
+    self.kb = undefined;
+  }
+}
 
-entity.prototype.bind = function() {
+entity.prototype.bindDom = function() {
   var self = this;
   $(self.stage).click(function(e) {
     if (!self.selected) { return; }
+    //we dont want to move, we want to target if they are an enemy
+    if ($(e.srcElement).hasClass('enemy') && self.attacking){ return; }
+    //otherwise we are moving
     var s = self.stage;
     var newX = e.pageX-s.offset().left;
     var newY = e.pageY-s.offset().top;
+    self.disableAutopilot = true;
     self.setTarget(newX, newY);
+  });
+  $(self.stage).on('click', '.entity', function(e) {
+    var el = $(this);
+    self.setTargetEntity(el.attr('rel'));
   });
   KeyboardJS.bind.key(self.selectKey, function(){}, function(){self.makeSelected()});
 }
 
 entity.prototype.init = function() {
+  this.bindEvents();
+  this.el.attr('rel',this.id);
   if (this.controllable) {
-    this.bind();
+    this.bindDom();
   }
 }
+
+var communicator = function() {
+  
+}
+MicroEvent.mixin(communicator);

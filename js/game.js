@@ -1,4 +1,5 @@
 var game = function(opt) {
+  this.com = opt.communicator;
   this.entities = [];
   this.stage = opt.stage;
 }
@@ -7,8 +8,7 @@ game.prototype.loop = function() {
   var d = new Date();
   var t = d.getTime();
   this.entities.forEach(function(entity) {
-    entity.move(t);
-    entity.render();
+    entity.update(t);
   });
   setTimeout(function() {self.loop()}, 20);
 }
@@ -19,6 +19,17 @@ game.prototype.init = function() {
     entity.init();
   });
   setTimeout(function() {self.loop()}, 20);
+  this.com.bind('removeEntity', function(opt){
+    var i = 0;
+    var toRemove;
+    self.entities.forEach(function(entity){
+      if (entity.id==opt.id) {
+        toRemove = i;
+      }
+      i++;
+    })
+    self.entities.remove(i);
+  })
 }
 game.prototype.addEntity = function(entity) {
   this.entities.push(entity);
