@@ -87,6 +87,7 @@ renderer.prototype.bindDom = function(entity) {
   
   //bind the click event to target
   $(self.stage).on('click', '.entity', function(e) {
+    if (!self.selected) {return;}
     var el = $(this);
     self.setAbilityTarget(el.attr('rel'));
   });

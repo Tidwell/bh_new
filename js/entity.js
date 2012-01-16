@@ -169,12 +169,15 @@ entity.prototype.behaviors = function(t) {
 
 entity.prototype.updateTargetPos = function() {
   var self = this;
+  //dont update the target if we havent gotten anything back from them yet
+  if (typeof self.abilityTarget != 'object');
   self.setAbilityTarget(self.abilityTarget.id);
   self.turnOnAutopilot();
 }
 //set the target move-to coordinates to the same as the ability target
 entity.prototype.turnOnAutopilot = function() {
   var self = this;
+  if (!self.abilityTarget) {return;}
   self.autopilot = true;
   self.setMoveTarget(self.abilityTarget.x,self.abilityTarget.y);
 };
@@ -191,8 +194,9 @@ entity.prototype.turnOffAutopilot = function() {
 
 entity.prototype.fireWeapon = function() {
   var self = this;
-  if (!self.weaponOnCooldown) {
+  if (!self.weaponOnCooldown && self.abilityTarget) {
     self.updateTargetPos();
+    if (!self.abilityTarget) { return; }
     var distance = this.distance(this.x,this.y,this.abilityTarget.x,this.abilityTarget.y);
     if (distance > this.weapon.range) { return; }
     
@@ -219,23 +223,28 @@ entity.prototype.bindEvents = function() {
     self.selected = false;
     self.com.trigger('unselected', {entity: self})
   });
-  this.com.bind('requestPosition', function(opt){
+  self.com.bind('requestPosition', function(opt){
     if (opt.id == self.id) {
-      var obj = {x: self.x, y: self.y, fromId: self.id, id: opt.fromId};
-      self.com.trigger('tellPosition', obj)
+      self.com.trigger('tellPosition', {
+        x: self.x,
+        y: self.y,
+        messageFromId: self.id,
+        messageToId: opt.fromId
+      })
     }
   });
-  this.com.bind('tellPosition', function(opt){
+  self.com.bind('tellPosition', function(opt){
     self.populateAbilityTarget(opt);
   });
-  this.com.bind('dmgDealt',function(opt){
+  self.com.bind('dmgDealt',function(opt){
     if (opt.id == self.id) {
       self.health = self.health - opt.dmg;
       console.log('ouch, '+self._id+' took '+opt.dmg+'@'+self.health)
     }
   });
-  this.com.bind('removeEntity', function(opt) {
-    if (self.abilityTarget && self.abilityTarget.id == opt.id) {
+  self.com.bind('removeEntity', function(opt) {
+    if (self.abilityTarget && self.abilityTarget.id == opt.id ||
+        self.abilityTarget) {
       self.abilityTarget = undefined;
     }
     if (!self.validTargets){return;}
@@ -261,8 +270,9 @@ entity.prototype.attack = function() {
 //recieving a entity Id, make a reuest to the entity
 //for its' information to populate the ability target
 entity.prototype.setAbilityTarget = function(entityId) {
+
+  if (!entityId) {return;}
   var self = this;
-  if (this.controllable && (!this.selected || !this.attacking)) {return;}
   this.abilityTarget = entityId;
   this.com.trigger('requestPosition',{id: entityId, fromId: self.id});
   this.disableAutopilot = false;
@@ -271,10 +281,10 @@ entity.prototype.setAbilityTarget = function(entityId) {
 //ability target
 entity.prototype.populateAbilityTarget = function(opt) {
   var self = this;
-  var targetId = typeof self.abilityTarget == 'object' ? self.abilityTarget.id : self.abilityTarget;
-  if ((opt.fromId==targetId) && opt.id == self.id) {
-    opt.id = opt.fromId;
-    delete opt.fromId;
+  var targetId = (typeof self.abilityTarget == 'object') ? self.abilityTarget.id : self.abilityTarget;
+  if ((opt.messageFromId==targetId) && opt.messageToId == self.id) {
+    opt.id = opt.messageFromId;
+    delete opt.messageFromId;
     self.abilityTarget = opt;
   }
 }
