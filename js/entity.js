@@ -58,7 +58,6 @@ entity.prototype.update = function(t) {
   else {
     this.behaviors(t);
     this.move(t);
-    this.render();
   }
 };
 
@@ -218,7 +217,7 @@ entity.prototype.bindEvents = function() {
   var self = this;
   this.com.bind('newSelect', function() {
     self.selected = false;
-    self.unselect();
+    self.com.trigger('unselected', {entity: self})
   });
   this.com.bind('requestPosition', function(opt){
     if (opt.id == self.id) {
@@ -252,9 +251,8 @@ entity.prototype.bindEvents = function() {
   });
 }
 entity.prototype.makeSelected = function() {
-  this.com.trigger('newSelect',{});
+  this.com.trigger('newSelect',{entity:this});
   this.selected = true;
-  this.select();
 };
 entity.prototype.attack = function() {
   if (this.controllable && !this.selected){ return; }
@@ -281,84 +279,7 @@ entity.prototype.populateAbilityTarget = function(opt) {
   }
 }
 
-/*UI stuff, needs to be split off*/
-
-entity.prototype.render = function() {
-  this.el.css('left',this.x).css('top',this.y);
-  
-  if (this.controllable) {
-    this.infoEl.find('.health').html(this.health+' / '+this.maxHealth);
-  }
-  //rotate to face target
-  if (!this.rawTargetX || !this.rawTargetY) { return; }
-  var slope = ((this.y-this.height/2)-(this.rawTargetY-this.height/2))/((this.x-this.width/2)-(this.rawTargetX-this.width/2));
-  var angle = Math.atan(slope); //radians
-  var angleDeg = -angle*(180/Math.PI);
-  
-  if (!slope || !angle || !angleDeg) { return; }
-  //because our sprites are facing "up" we have to base the rotation on this assumption  
-  //if up right or down right
-  if ((this.x < this.rawTargetX && (this.y > this.rawTargetY)) ||
-     (this.x < this.rawTargetX && (this.y < this.rawTargetY))) {
-    angleDeg = 90-angleDeg
-  }
-  //if up left or down left
-  if ((this.x > this.rawTargetX && this.y > this.rawTargetY) ||
-      (this.x > this.rawTargetX && (this.y < this.rawTargetY))
-      ) {
-    angleDeg= -90-angleDeg;
-  }
-  this.el.css('-webkit-transform', 'rotate('+(angleDeg)+'deg)');
-};
-entity.prototype.select = function() {
-  var self = this;
-  if (!this.controllable){ return;}
-  this.infoEl.addClass('selected');
-  this.actionbarEl.addClass('selected');
-  if (self.attackKey) {
-    self.kb = KeyboardJS.bind.key(self.attackKey, function(){}, function(){ self.attack();});
-  }
-}
-entity.prototype.unselect = function() {
-  var self = this;
-  if (!this.controllable){ return;}
-  this.infoEl.removeClass('selected');
-  this.actionbarEl.removeClass('selected');
-  if (self.kb) {
-    self.kb.clear();
-    self.kb = undefined;
-  }
-}
-
-entity.prototype.bindDom = function() {
-  var self = this;
-  //bind the keyboard event to select this entity
-  KeyboardJS.bind.key(self.selectKey, function(){}, function(){self.makeSelected()});
-
-  //bind the click event to move
-  $(self.stage).click(function(e) {
-    if (!self.selected) { return; }
-    //we dont want to move, we want to target if they are an enemy
-    if ($(e.srcElement).hasClass('enemy') && self.attacking){ return; }
-    //otherwise we are moving
-    var s = self.stage;
-    var newX = e.pageX-s.offset().left;
-    var newY = e.pageY-s.offset().top;
-    self.initMove(newX,newY);
-  });
-  
-  //bind the click event to target
-  $(self.stage).on('click', '.entity', function(e) {
-    var el = $(this);
-    self.setAbilityTarget(el.attr('rel'));
-  });
-}
-
 entity.prototype.init = function() {
   //message passing events
   this.bindEvents();
-  this.el.attr('rel',this.id);
-  if (this.controllable) {
-    this.bindDom();
-  }
 }

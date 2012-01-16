@@ -17,6 +17,7 @@
     <script type="text/javascript" src="js/communicator.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/entity.js"></script>
+    <script type="text/javascript" src="js/renderer.js"></script>
     
     <script type="text/javascript">
       $(function() {
@@ -41,6 +42,26 @@
             selectKey: '1',
             attackKey: 'a'
         });
+        var char2 = new entity({
+            id: 'ship2',
+            controllable: true,
+            startX: 220,
+            startY: 350,
+            height: 33, //px
+            width: 43, //px
+            rate: 200, //px/s
+            health: 100,
+            weapon: {
+              damage: 5,
+              range: 120, //px
+              cooldown: 2000 //ms
+            },
+            domEl: $('.entity.ship2'),
+            infoEl: $('.chars .ship2'),
+            actionbarEl: $('.actionbars .ship2'),
+            selectKey: '2',
+            attackKey: 'a'
+        });
         var enemy = new entity({
             controllable: false,
             startX: 400,
@@ -59,14 +80,22 @@
             validTargets: ['ship1']
         });        
         bh.addEntity(char);
+        bh.addEntity(char2);
         bh.addEntity(enemy);
+        
+        var rend = new renderer({game: bh});
         bh.init();
+        rend.init();
       });
     </script>
   </head>
   <body>
       <ul class="chars">
         <li class="ship1">
+          <img src="images/green_ship.png" />
+          <p class="health"></p>
+        </li>
+        <li class="ship2">
           <img src="images/green_ship.png" />
           <p class="health"></p>
         </li>
@@ -79,9 +108,15 @@
               <li class="attack">Attack</li>
             </ul>
           </li>
+          <li class="ship2">
+            <ul>
+              <li class="attack">Attack</li>
+            </ul>
+          </li>
         </ul>
 
         <div class="entity ship1"></div>
+        <div class="entity ship2"></div>
         <div class="entity bx enemy"></div>
       </div>
       <!--

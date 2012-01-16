@@ -1,7 +1,7 @@
 .entity {
   position: absolute;
 }
-.entity.ship1 {
+.entity.ship1, .entity.ship2 {
   width: 43px;
   height: 33px;
   background: url('../images/green_ship.png');
@@ -14,4 +14,7 @@
 
 .actionbars .ship1 .attack {
   background: red;
+}
+.actionbars .ship2 .attack {
+  background: green;
 }
