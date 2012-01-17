@@ -4,15 +4,18 @@ body {
 .stage {
   width: 800px;
   height: 500px;
-  margin: 0 auto;
+  margin: 20px auto;
   border: 6px solid black;
   background: url(../images/bg.png);
   position: relative;
 }
-.actionbars {
+.stage .buttons {
   position: absolute;
   top: 0;
   left: 0;
+}
+.stage .buttons ul {
+  
 }
 .actionbars>li {
   display: none;
@@ -29,19 +32,8 @@ body {
   bottom: 2px;
   right: 2px;
 }
-.chars li .bind {
-  top: 2px;
-  left: 2px;
-  color: black;
-}
 .chars, .actionbars {
-  width: 800px;
   overflow: hidden;
-}
-.chars {
-  background: black;
-  margin: 10px auto 0 auto;
-  border: 6px solid black;
 }
 .chars li, .actionbars li ul li {
   position: relative;
@@ -52,7 +44,11 @@ body {
   margin: 5px;
 }
 .chars li {
-  background-color: white;
+  color: white;
+}
+.chars li .bind {
+  top: 2px;
+  left: 2px;
 }
 .chars li.dead {
   background: red;
@@ -69,7 +65,7 @@ body {
   left: 0;
   height: 40px;
   width: 40px;
-  opacity: .3;
+  opacity: .6;
 }
 .chars p.health {
   position: absolute;

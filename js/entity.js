@@ -242,7 +242,7 @@ entity.prototype.bindEvents = function() {
   self.com.bind('dmgDealt',function(opt){
     if (opt.id == self.id) {
       self.health = self.health - opt.dmg;
-      console.log('ouch, '+self._id+' took '+opt.dmg+'@'+self.health)
+      if (self.health > self.maxHealth) {self.health = self.maxHealth;}
     }
   });
   self.com.bind('removeEntity', function(opt) {
