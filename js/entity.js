@@ -3,6 +3,7 @@ var entity = function(opt) {
   this.id = opt.id || this._id,
   this.com = opt.communicator;
   this.dead = false;
+  this.type = opt.type || undefined;
   //position
   this.x = opt.startX || 0;;
   this.y = opt.startY || 0;;
@@ -35,7 +36,8 @@ var entity = function(opt) {
   this.weapon = opt.weapon || {
     damage: 0,
     range: 0,
-    cooldown: 0
+    cooldown: 0,
+    type: ''
   }
   //combat state
   this.weaponOnCooldown = false;
@@ -194,7 +196,8 @@ entity.prototype.turnOffAutopilot = function() {
 
 entity.prototype.fireWeapon = function() {
   var self = this;
-  if (!self.weaponOnCooldown && self.abilityTarget) {
+  if (!self.weaponOnCooldown && self.abilityTarget && self.abilityTarget.pctype == self.weapon.target) {
+    console.log(self);
     self.updateTargetPos();
     if (!self.abilityTarget) { return; }
     var distance = this.distance(this.x,this.y,this.abilityTarget.x,this.abilityTarget.y);
@@ -229,7 +232,8 @@ entity.prototype.bindEvents = function() {
         x: self.x,
         y: self.y,
         messageFromId: self.id,
-        messageToId: opt.fromId
+        messageToId: opt.fromId,
+        pctype: self.type
       })
     }
   });
@@ -270,7 +274,6 @@ entity.prototype.attack = function() {
 //recieving a entity Id, make a reuest to the entity
 //for its' information to populate the ability target
 entity.prototype.setAbilityTarget = function(entityId) {
-
   if (!entityId) {return;}
   var self = this;
   this.abilityTarget = entityId;

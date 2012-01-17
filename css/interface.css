@@ -2,7 +2,7 @@
   width: 800px;
   height: 500px;
   margin: 20px auto;
-  border: 4px solid black;
+  border: 6px solid black;
   background: url(../images/bg.png);
   position: relative;
 }

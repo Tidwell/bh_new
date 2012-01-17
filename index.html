@@ -34,13 +34,37 @@
             weapon: {
               damage: 5,
               range: 120, //px
-              cooldown: 2000 //ms
+              cooldown: 2000, //ms
+              target: 'npc'
             },
             domEl: $('.entity.ship1'),
             infoEl: $('.chars .ship1'),
             actionbarEl: $('.actionbars .ship1'),
             selectKey: '1',
-            attackKey: 'a'
+            attackKey: 'a',
+            type: 'pc'
+        });
+        var char3 = new entity({
+            id: 'healer',
+            controllable: true,
+            startX: 50,
+            startY: 300,
+            height: 36, //px
+            width: 43, //px
+            rate: 200, //px/s
+            health: 100,
+            weapon: {
+              damage: -5,
+              range: 120, //px
+              cooldown: 2500, //ms
+              target: 'pc'
+            },
+            domEl: $('.entity.ship3'),
+            infoEl: $('.chars .ship3'),
+            actionbarEl: $('.actionbars .ship3'),
+            selectKey: '3',
+            attackKey: 'a',
+            type: 'pc'
         });
         var char2 = new entity({
             id: 'ship2',
@@ -54,13 +78,15 @@
             weapon: {
               damage: 5,
               range: 120, //px
-              cooldown: 2000 //ms
+              cooldown: 2000, //ms
+              target: 'npc'
             },
             domEl: $('.entity.ship2'),
             infoEl: $('.chars .ship2'),
             actionbarEl: $('.actionbars .ship2'),
             selectKey: '2',
-            attackKey: 'a'
+            attackKey: 'a',
+            type: 'pc'
         });
         var enemy = new entity({
             controllable: false,
@@ -74,14 +100,78 @@
             weapon: {
               damage: 10,
               range: 50, //px
-              cooldown: 1500 //ms
+              cooldown: 1500, //ms
+              target: 'pc'
             },
-            domEl: $('.entity.bx'),
-            validTargets: ['ship1','ship2']
+            domEl: $('.entity.bx1'),
+            validTargets: ['ship1','ship2'],
+            type: 'npc'
+        });
+        
+        var enemy2 = new entity({
+            controllable: false,
+            startX: 450,
+            startY: 350,
+            height: 35, //px
+            width: 34, //px
+            rate: 20, //px/s
+            health: 100,
+            controllable: false,
+            weapon: {
+              damage: 10,
+              range: 50, //px
+              cooldown: 1500, //ms
+              target: 'pc'
+            },
+            domEl: $('.entity.bx2'),
+            validTargets: ['ship1','ship2'],
+            type: 'npc'
+        });
+        var enemy3 = new entity({
+            controllable: false,
+            startX: 150,
+            startY: 150,
+            height: 35, //px
+            width: 34, //px
+            rate: 20, //px/s
+            health: 100,
+            controllable: false,
+            weapon: {
+              damage: 10,
+              range: 50, //px
+              cooldown: 1500, //ms
+              target: 'pc'
+            },
+            domEl: $('.entity.bx3'),
+            validTargets: ['ship1','ship2'],
+            type: 'npc'
+        });
+        var enemy4 = new entity({
+            controllable: false,
+            startX: 50,
+            startY: 450,
+            height: 35, //px
+            width: 34, //px
+            rate: 20, //px/s
+            health: 100,
+            controllable: false,
+            weapon: {
+              damage: 10,
+              range: 50, //px
+              cooldown: 1500, //ms
+              target: 'pc'
+            },
+            domEl: $('.entity.bx4'),
+            validTargets: ['ship1','ship2'],
+            type: 'npc'
         });        
         bh.addEntity(char);
         bh.addEntity(char2);
+        bh.addEntity(char3);
         bh.addEntity(enemy);
+        bh.addEntity(enemy2);
+        bh.addEntity(enemy3);
+        bh.addEntity(enemy4);
         
         var rend = new renderer({game: bh});
         bh.init();
@@ -99,6 +189,10 @@
           <img src="images/green_ship.png" />
           <p class="health"></p>
         </li>
+        <li class="ship3">
+          <img src="images/green_healer.png" />
+          <p class="health"></p>
+        </li>
       </ul>
       </div>
       <div class="stage">
@@ -113,11 +207,21 @@
               <li class="attack">Attack</li>
             </ul>
           </li>
+          <li class="ship3">
+            <ul>
+              <li class="attack">Attack</li>
+            </ul>
+          </li>
+
         </ul>
 
         <div class="entity ship1"></div>
         <div class="entity ship2"></div>
-        <div class="entity bx enemy"></div>
+        <div class="entity ship3"></div>
+        <div class="entity bx bx1 enemy"></div>
+        <div class="entity bx bx2 enemy"></div>
+        <div class="entity bx bx3 enemy"></div>
+        <div class="entity bx bx4 enemy"></div>
       </div>
       <!--
       Next:

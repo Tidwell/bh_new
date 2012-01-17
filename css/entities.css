@@ -6,6 +6,12 @@
   height: 33px;
   background: url('../images/green_ship.png');
 }
+.entity.ship3 {
+  width: 43px;
+  height: 36px;
+  background: url('../images/green_healer.png');
+}
+
 .entity.bx {
   width: 34px;
   height: 35px;
@@ -16,5 +22,9 @@
   background: red;
 }
 .actionbars .ship2 .attack {
+  background: blue;
+}
+.actionbars .ship3 .attack {
   background: green;
 }
+
