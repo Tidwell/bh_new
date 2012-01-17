@@ -79,3 +79,36 @@ body {
   font-size: 10px;
   bottom: 0;
 }
+
+.stage .bb {
+  position: absolute;
+}
+.entity {
+  border: 3px solid rgba(0,0,0,0);
+  border-radius: 100px;
+  position: absolute;
+}
+.entity.selected {
+  border: 3px solid rgba(0,125,0,.6);
+  border-radius: 100px;
+}
+.entity.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.bb .health, .bb .bar {
+  position: absolute;
+  width: 80%;
+  height: 5px;
+  display: block;
+  border-radius: 2px;
+}
+.bb .health {
+  background-color: red;
+  bottom: -20px;
+  left: 10%;
+}
+.bb .health .bar {
+background-color: green;
+}

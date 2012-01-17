@@ -2,7 +2,7 @@ var template = function() {
   
 }
 template.prototype.ship = function(classes) {
-  return '<div class="entity '+classes+'"><div class="img"></div></div>';
+  return '<div class="bb"><div class="entity '+classes+'"><div class="img"></div></div><div class="health"><span class="bar"></span></div></div>';
 }
 template.prototype.actionbar = function(classes) {
   return '<li class="'+classes+'"><ul><li class="attack"><p class="bind"></p></li></ul></li>';

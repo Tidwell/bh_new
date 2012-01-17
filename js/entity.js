@@ -197,7 +197,6 @@ entity.prototype.turnOffAutopilot = function() {
 entity.prototype.fireWeapon = function() {
   var self = this;
   if (!self.weaponOnCooldown && self.abilityTarget && self.abilityTarget.pctype == self.weapon.target) {
-    console.log(self);
     self.updateTargetPos();
     if (!self.abilityTarget) { return; }
     var distance = this.distance(this.x,this.y,this.abilityTarget.x,this.abilityTarget.y);

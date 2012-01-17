@@ -15,8 +15,10 @@ renderer.prototype.loop = function() {
 }
 
 renderer.prototype.renderEntity = function(entity) {
-  entity.el.css('left',entity.x).css('top',entity.y);
-  
+  //console.log(entity.el.parent())
+  entity.el.parent().css('left',entity.x).css('top',entity.y);
+  this.renderEntityHealthBars(entity);
+
   if (entity.controllable) {
     entity.infoEl.find('.health').html(entity.health+' / '+entity.maxHealth);
   }
@@ -42,6 +44,22 @@ renderer.prototype.renderEntity = function(entity) {
   entity.el.css('-moz-transform', 'rotate('+(angleDeg)+'deg)');
   entity.el.css('-webkit-transform', 'rotate('+(angleDeg)+'deg)');
 };
+
+//renders the health bar on the ships if below max health
+renderer.prototype.renderEntityHealthBars = function(entity) {
+  var hbar = entity.el.parent().find('.health');
+  var bar = hbar.find('.bar');
+  //% entity.width = % health
+  var percentHealth = entity.health/entity.maxHealth;
+  var width = percentHealth*hbar.width();
+  if (percentHealth==1) {
+    hbar.hide();
+  }
+  else {
+    hbar.show();
+    bar.width(width);
+  }
+}
 
 renderer.prototype.selectEntity = function(entity) {
   var self = this;
@@ -81,6 +99,7 @@ renderer.prototype.bindEvents = function() {
       opt.entity.infoEl.addClass('dead');
       opt.entity.infoEl.removeClass('selected');
     }
+    opt.entity.el.parent().remove();
   });
 }
 
@@ -113,6 +132,7 @@ renderer.prototype.init = function() {
   var self = this;
   self.bindEvents();
   self.game.entities.forEach(function(entity) {
+      entity.el.parent().width(entity.width).height(entity.height);
       entity.el.attr('rel',entity.id);
       if (entity.controllable) {
         self.bindDom(entity);

@@ -3,15 +3,8 @@
     <link href="css/reset.css" rel="stylesheet" type="text/css" />
     <link href="css/interface.css" rel="stylesheet" type="text/css" />
     <link href="css/entities.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript">
-      // Array Remove - By John Resig (MIT Licensed)
-      Array.prototype.remove = function(from, to) {
-        var rest = this.slice((to || from) + 1 || this.length);
-       this.length = from < 0 ? this.length + from : from;
-       return this.push.apply(this, rest);
-      };
-    </script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/array.js"></script>
     <script type="text/javascript" src="js/lib/keyboard.js"></script>
     <script type="text/javascript" src="js/lib/microevent.js"></script>
     <script type="text/javascript" src="js/communicator.js"></script>
