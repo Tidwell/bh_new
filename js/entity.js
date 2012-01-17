@@ -179,7 +179,7 @@ entity.prototype.updateTargetPos = function() {
 //set the target move-to coordinates to the same as the ability target
 entity.prototype.turnOnAutopilot = function() {
   var self = this;
-  if (!self.abilityTarget) {return;}
+  if (!self.abilityTarget || self.abilityTarget.pctype != self.weapon.target) {return;}
   self.autopilot = true;
   self.setMoveTarget(self.abilityTarget.x,self.abilityTarget.y);
 };
