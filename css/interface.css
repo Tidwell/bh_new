@@ -1,7 +1,10 @@
+body {
+  background: #3d3d3d;
+}
 .stage {
   width: 800px;
   height: 500px;
-  margin: 20px auto;
+  margin: 0 auto;
   border: 6px solid black;
   background: url(../images/bg.png);
   position: relative;
@@ -17,34 +20,45 @@
 .actionbars li.selected {
   display: block;
 }
-.actionbars .attack .bind {
+.bind {
   position: absolute;
-  bottom: 0;
-  right: 0;
   color: white;
   font-size: 14px;
+}
+.actionbars .attack .bind {
+  bottom: 2px;
+  right: 2px;
+}
+.chars li .bind {
+  top: 2px;
+  left: 2px;
+  color: black;
 }
 .chars, .actionbars {
   width: 800px;
   overflow: hidden;
 }
 .chars {
-  background: #ccc;
-  margin: 10px auto;
+  background: black;
+  margin: 10px auto 0 auto;
+  border: 6px solid black;
 }
 .chars li, .actionbars li ul li {
   position: relative;
   width: 40px;
   height: 40px;
-  border: 2px solid black;
+  border: 2px solid #3d3d3d;
   float: left;
-  margin: 0 5px 0 0;
+  margin: 5px;
 }
 .chars li {
   background-color: white;
 }
 .chars li.dead {
   background: red;
+}
+.chars li.dead .bind {
+  display: none;
 }
 .chars li.selected {
  border: 2px solid green; 

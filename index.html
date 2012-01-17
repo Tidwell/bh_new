@@ -18,10 +18,26 @@
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/entity.js"></script>
     <script type="text/javascript" src="js/renderer.js"></script>
+    <script type="text/javascript" src="js/template.js"></script>
     
     <script type="text/javascript">
       $(function() {
-        var bh = new game({stage: $('.stage')});
+        var stage = $('.stage');
+        var t = new template;
+        stage.append(t.ship('ship1'))
+          .append(t.ship('ship2'))
+          .append(t.ship('ship3'))
+          .append(t.ship('bx bx1 enemy'))
+          
+        $('.actionbars').append(t.actionbar('ship1'))
+          .append(t.actionbar('ship2'))
+          .append(t.actionbar('ship3'))
+        
+        $('.chars').append(t.charInfo('ship1','images/green_ship.png'))
+          .append(t.charInfo('ship2','images/green_ship.png'))
+          .append(t.charInfo('ship3','images/green_healer.png'))
+        
+        var bh = new game({stage: stage});
         var char = new entity({
             id: 'ship1',
             controllable: true,
@@ -63,7 +79,7 @@
             infoEl: $('.chars .ship3'),
             actionbarEl: $('.actionbars .ship3'),
             selectKey: '3',
-            attackKey: 'h',
+            attackKey: 'a',
             type: 'pc'
         });
         var char2 = new entity({
@@ -169,9 +185,9 @@
         bh.addEntity(char2);
         bh.addEntity(char3);
         bh.addEntity(enemy);
-        bh.addEntity(enemy2);
-        bh.addEntity(enemy3);
-        bh.addEntity(enemy4);
+        //bh.addEntity(enemy2);
+        //bh.addEntity(enemy3);
+        //bh.addEntity(enemy4);
         
         var rend = new renderer({game: bh});
         bh.init();
@@ -181,47 +197,11 @@
   </head>
   <body>
       <ul class="chars">
-        <li class="ship1">
-          <img src="images/green_ship.png" />
-          <p class="health"></p>
-        </li>
-        <li class="ship2">
-          <img src="images/green_ship.png" />
-          <p class="health"></p>
-        </li>
-        <li class="ship3">
-          <img src="images/green_healer.png" />
-          <p class="health"></p>
-        </li>
       </ul>
       </div>
       <div class="stage">
         <ul class="actionbars">
-          <li class="ship1">
-            <ul>
-              <li class="attack"><p class="bind"></p></li>
-            </ul>
-          </li>
-          <li class="ship2">
-            <ul>
-              <li class="attack"><p class="bind"></p></li>
-            </ul>
-          </li>
-          <li class="ship3">
-            <ul>
-              <li class="attack"><p class="bind"></p></li>
-            </ul>
-          </li>
-
         </ul>
-
-        <div class="entity ship1"></div>
-        <div class="entity ship2"></div>
-        <div class="entity ship3"></div>
-        <div class="entity bx bx1 enemy"></div>
-        <div class="entity bx bx2 enemy"></div>
-        <div class="entity bx bx3 enemy"></div>
-        <div class="entity bx bx4 enemy"></div>
       </div>
       <!--
       Next:

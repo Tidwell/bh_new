@@ -1,14 +1,30 @@
 .entity {
+  border: 3px solid rgba(0,0,0,0);
+  border-radius: 100px;
   position: absolute;
 }
-.entity.ship1, .entity.ship2 {
+.entity.selected {
+  border: 3px solid rgba(0,125,0,.3);
+  border-radius: 100px;
+}
+.entity.img {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.entity.ship1, .entity.ship2,
+.entity.ship1 .img, .entity.ship2 .img {
   width: 43px;
   height: 33px;
+}
+.entity.ship1 .img, .entity.ship2 .img{
   background: url('../images/green_ship.png');
 }
-.entity.ship3 {
+.entity.ship3, .entity.ship3 .img{
   width: 43px;
   height: 36px;
+}
+.entity.ship3 .img{
   background: url('../images/green_healer.png');
 }
 

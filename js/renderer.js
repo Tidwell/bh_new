@@ -39,12 +39,14 @@ renderer.prototype.renderEntity = function(entity) {
       ) {
     angleDeg= -90-angleDeg;
   }
+  entity.el.css('-moz-transform', 'rotate('+(angleDeg)+'deg)');
   entity.el.css('-webkit-transform', 'rotate('+(angleDeg)+'deg)');
 };
 
 renderer.prototype.selectEntity = function(entity) {
   var self = this;
   if (!entity.controllable){ return;}
+  entity.el.addClass('selected');
   entity.infoEl.addClass('selected');
   entity.actionbarEl.addClass('selected');
   if (entity.attackKey) {
@@ -58,6 +60,7 @@ renderer.prototype.selectEntity = function(entity) {
 renderer.prototype.unselectEntity = function(entity) {
   var self = this;
   if (!entity.controllable){ return;}
+  entity.el.removeClass('selected');
   entity.infoEl.removeClass('selected');
   entity.actionbarEl.removeClass('selected');
 }
@@ -117,8 +120,10 @@ renderer.prototype.init = function() {
       if(entity.actionbarEl) {
         entity.actionbarEl.find('.attack .bind').html(entity.attackKey);
       }
+      if (entity.selectKey) {
+        entity.infoEl.find('.bind').html(entity.selectKey);
+      }
   });
   /***Inititalize the Main Render Loop***/
   setTimeout(function() {self.loop()}, 20);
 }
-
