@@ -114,6 +114,9 @@ renderer.prototype.init = function() {
       if (entity.controllable) {
         self.bindDom(entity);
       }
+      if(entity.actionbarEl) {
+        entity.actionbarEl.find('.attack .bind').html(entity.attackKey);
+      }
   });
   /***Inititalize the Main Render Loop***/
   setTimeout(function() {self.loop()}, 20);

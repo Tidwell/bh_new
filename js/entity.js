@@ -274,7 +274,7 @@ entity.prototype.attack = function() {
 //recieving a entity Id, make a reuest to the entity
 //for its' information to populate the ability target
 entity.prototype.setAbilityTarget = function(entityId) {
-  if (!entityId) {return;}
+  if (!entityId || entityId==this.id) {return;}
   var self = this;
   this.abilityTarget = entityId;
   this.com.trigger('requestPosition',{id: entityId, fromId: self.id});

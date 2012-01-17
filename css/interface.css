@@ -17,6 +17,13 @@
 .actionbars li.selected {
   display: block;
 }
+.actionbars .attack .bind {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: white;
+  font-size: 14px;
+}
 .chars, .actionbars {
   width: 800px;
   overflow: hidden;

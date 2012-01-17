@@ -18,13 +18,7 @@
   background: url('../images/red_ship.png');
 }
 
-.actionbars .ship1 .attack {
-  background: red;
-}
-.actionbars .ship2 .attack {
-  background: blue;
-}
-.actionbars .ship3 .attack {
-  background: green;
+.actionbars .attack {
+  background: url('../images/attack.png');
 }
 
