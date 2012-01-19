@@ -108,3 +108,9 @@ body {
 .bb .health .bar {
 background-color: green;
 }
+
+.stage #effects {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

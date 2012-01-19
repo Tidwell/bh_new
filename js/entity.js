@@ -203,7 +203,7 @@ entity.prototype.fireWeapon = function() {
     if (distance > this.weapon.range) { return; }
     
     self.weaponOnCooldown = true;
-    self.com.trigger('dmgDealt',{id: self.abilityTarget.id, dmg: self.weapon.damage});
+    self.com.trigger('dmgDealt',{id: self.abilityTarget.id, dmg: self.weapon.damage,self:self,target:self.abilityTarget});
     setTimeout(function(){
       self.weaponOnCooldown = false;
     },self.weapon.cooldown);
@@ -232,7 +232,9 @@ entity.prototype.bindEvents = function() {
         y: self.y,
         messageFromId: self.id,
         messageToId: opt.fromId,
-        pctype: self.type
+        pctype: self.type,
+        height: self.height,
+        width: self.width
       })
     }
   });
