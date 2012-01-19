@@ -101,6 +101,14 @@ renderer.prototype.bindEvents = function() {
     }
     opt.entity.el.parent().remove();
   });
+  this.com.bind('gameOver',function(winner){
+    if (winner = 'pc'){
+      alert('You Win!');
+    }
+    else {
+      alert('You lose')
+    }
+  });
 }
 
 renderer.prototype.bindDom = function(entity) {
