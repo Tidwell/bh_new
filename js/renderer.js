@@ -11,7 +11,9 @@ renderer.prototype.loop = function() {
   self.game.entities.forEach(function(entity) {
     self.renderEntity(entity);
   });
-  setTimeout(function() {self.loop()}, 20);
+  if (self.game.active) {
+    setTimeout(function() {self.loop()}, 20);
+  }
 }
 
 renderer.prototype.renderEntity = function(entity) {
