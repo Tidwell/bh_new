@@ -128,7 +128,7 @@ renderer.prototype.gameOver = function(winner) {
     }
   });
 
-  if (winner = 'pc'){
+  if (winner == 'pc'){
     alert('You Win!');
   }
   else {
