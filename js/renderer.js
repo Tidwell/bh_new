@@ -174,7 +174,7 @@ renderer.prototype.renderLaser = function(opt) {
     x2: x2,
     y2: y2,
     strokeStyle: (opt.self.weapon.damage > 0) ? 'rgb(255,0,0)' : 'rgb(0,255,0)',
-    lineWidth: 3
+    lineWidth: 2
   };
   var self = this;
   var pc = self.particleCount;
