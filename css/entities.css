@@ -1,16 +1,15 @@
-.entity.ship1, .entity.ship2,
-.entity.ship1 .img, .entity.ship2 .img {
+.entity.ship1, .entity.ship1 .img {
   width: 43px;
   height: 33px;
 }
 .entity.ship1 .img, .entity.ship2 .img{
   background: url('../images/green_ship.png');
 }
-.entity.ship3, .entity.ship3 .img{
+.entity.ship2, .entity.ship2 .img{
   width: 43px;
   height: 36px;
 }
-.entity.ship3 .img{
+.entity.ship2 .img{
   background: url('../images/green_healer.png');
 }
 

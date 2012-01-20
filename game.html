@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <link href="css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="css/world.css" rel="stylesheet" type="text/css" />
+    <link href="css/interface.css" rel="stylesheet" type="text/css" />
+    <link href="css/entities.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/array.js"></script>
+    <script type="text/javascript" src="js/lib/keyboard.js"></script>
+    <script type="text/javascript" src="js/lib/microevent.js"></script>
+    <script type="text/javascript" src="js/communicator.js"></script>
+    <script type="text/javascript" src="js/game.js"></script>
+    <script type="text/javascript" src="js/entity.js"></script>
+    <script type="text/javascript" src="js/renderer.js"></script>
+    <script type="text/javascript" src="js/template.js"></script>
+    <script type="text/javascript" src="js/world.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        var w = new world;
+      });
+    </script>
+  </head>
+  <body>
+    <div id="container">
+      <div id="main_menu">
+        <ul class="nav">
+           <li>Map</li>
+           <li>Store</li>
+           <li>Abilities</li>
+           <li>Recruit</li>
+           <li rel="train">Train</li>
+        </ul>
+      </div>
+      <div id="map">
+      </div>
+      <div id="store">
+      </div>
+      <div id="abilities">
+      </div>
+      <div id="recruit">
+      </div>
+    </div>
+  </body>
+</html>

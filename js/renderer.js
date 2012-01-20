@@ -118,6 +118,16 @@ renderer.prototype.bindEvents = function() {
 }
 
 renderer.prototype.gameOver = function(winner) {
+  var self = this;
+  if (self.kb) {
+      self.kb.clear();
+  }
+  self.game.entities.forEach(function(entity) {
+    if (entity.selectKey) {
+      KeyboardJS.unbind.key(entity.selectKey);
+    }
+  });
+
   if (winner = 'pc'){
     alert('You Win!');
   }
@@ -217,6 +227,7 @@ renderer.prototype.init = function() {
         entity.infoEl.find('.bind').html(entity.selectKey);
       }
   });
+  self.game.stage.show();
   /***Inititalize the Main Render Loop***/
   setTimeout(function() {self.loop()}, 20);
 }

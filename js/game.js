@@ -1,5 +1,5 @@
 var game = function(opt) {
-  this.com = new communicator();
+  this.com = opt.com;
   this.entities = [];
   this.active = false;
   this.stage = opt.stage;
