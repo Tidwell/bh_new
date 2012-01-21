@@ -2,14 +2,14 @@
   width: 43px;
   height: 33px;
 }
-.entity.ship1 .img, .entity.ship2 .img{
+.entity.ship1 .img {
   background: url('../images/green_ship.png');
 }
-.entity.ship2, .entity.ship2 .img{
+.entity.healer, .entity.healer .img{
   width: 43px;
   height: 36px;
 }
-.entity.ship2 .img{
+.entity.healer .img{
   background: url('../images/green_healer.png');
 }
 
