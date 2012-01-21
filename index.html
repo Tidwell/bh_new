@@ -1,6 +1,7 @@
 <html>
   <head>
     <link href="css/reset.css" rel="stylesheet" type="text/css" />
+    <link href="css/world.css" rel="stylesheet" type="text/css" />
     <link href="css/interface.css" rel="stylesheet" type="text/css" />
     <link href="css/entities.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
@@ -8,199 +9,22 @@
     <script type="text/javascript" src="js/lib/keyboard.js"></script>
     <script type="text/javascript" src="js/lib/microevent.js"></script>
     <script type="text/javascript" src="js/communicator.js"></script>
+    <script type="text/javascript" src="js/world.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/entity.js"></script>
     <script type="text/javascript" src="js/renderer.js"></script>
     <script type="text/javascript" src="js/template.js"></script>
-    
     <script type="text/javascript">
       $(function() {
-        var stage = $('.stage');
-        var t = new template;
-        stage.append(t.ship('ship1'))
-          .append(t.ship('ship2'))
-          .append(t.ship('ship3'))
-          .append(t.ship('bx bx1 enemy'))
-          
-        $('.actionbars').append(t.actionbar('ship1'))
-          .append(t.actionbar('ship2'))
-          .append(t.actionbar('ship3'))
-        
-        $('.chars').append(t.charInfo('ship1','images/green_ship.png'))
-          .append(t.charInfo('ship2','images/green_ship.png'))
-          .append(t.charInfo('ship3','images/green_healer.png'))
-        
-        var bh = new game({stage: stage});
-        var char = new entity({
-            id: 'ship1',
-            controllable: true,
-            startX: 20,
-            startY: 250,
-            height: 33, //px
-            width: 43, //px
-            rate: 200, //px/s
-            health: 100,
-            weapon: {
-              damage: 5,
-              range: 120, //px
-              cooldown: 2000, //ms
-              target: 'npc'
-            },
-            domEl: $('.entity.ship1'),
-            infoEl: $('.chars .ship1'),
-            actionbarEl: $('.actionbars .ship1'),
-            selectKey: '1',
-            attackKey: 'a',
-            type: 'pc'
-        });
-        var char3 = new entity({
-            id: 'healer',
-            controllable: true,
-            startX: 50,
-            startY: 300,
-            height: 36, //px
-            width: 43, //px
-            rate: 200, //px/s
-            health: 100,
-            weapon: {
-              damage: -5,
-              range: 120, //px
-              cooldown: 2500, //ms
-              target: 'pc'
-            },
-            domEl: $('.entity.ship3'),
-            infoEl: $('.chars .ship3'),
-            actionbarEl: $('.actionbars .ship3'),
-            selectKey: '3',
-            attackKey: 'a',
-            type: 'pc'
-        });
-        var char2 = new entity({
-            id: 'ship2',
-            controllable: true,
-            startX: 220,
-            startY: 350,
-            height: 33, //px
-            width: 43, //px
-            rate: 200, //px/s
-            health: 100,
-            weapon: {
-              damage: 5,
-              range: 120, //px
-              cooldown: 2000, //ms
-              target: 'npc'
-            },
-            domEl: $('.entity.ship2'),
-            infoEl: $('.chars .ship2'),
-            actionbarEl: $('.actionbars .ship2'),
-            selectKey: '2',
-            attackKey: 'a',
-            type: 'pc'
-        });
-        var enemy = new entity({
-            controllable: false,
-            startX: 400,
-            startY: 300,
-            height: 35, //px
-            width: 34, //px
-            rate: 20, //px/s
-            health: 100,
-            controllable: false,
-            weapon: {
-              damage: 10,
-              range: 50, //px
-              cooldown: 1500, //ms
-              target: 'pc'
-            },
-            domEl: $('.entity.bx1'),
-            validTargets: ['ship1'],
-            type: 'npc'
-        });
-        
-        var enemy2 = new entity({
-            controllable: false,
-            startX: 450,
-            startY: 350,
-            height: 35, //px
-            width: 34, //px
-            rate: 20, //px/s
-            health: 100,
-            controllable: false,
-            weapon: {
-              damage: 10,
-              range: 50, //px
-              cooldown: 1500, //ms
-              target: 'pc'
-            },
-            domEl: $('.entity.bx2'),
-            validTargets: ['ship1','ship2'],
-            type: 'npc'
-        });
-        var enemy3 = new entity({
-            controllable: false,
-            startX: 150,
-            startY: 150,
-            height: 35, //px
-            width: 34, //px
-            rate: 20, //px/s
-            health: 100,
-            controllable: false,
-            weapon: {
-              damage: 10,
-              range: 50, //px
-              cooldown: 1500, //ms
-              target: 'pc'
-            },
-            domEl: $('.entity.bx3'),
-            validTargets: ['ship1','ship2'],
-            type: 'npc'
-        });
-        var enemy4 = new entity({
-            controllable: false,
-            startX: 50,
-            startY: 450,
-            height: 35, //px
-            width: 34, //px
-            rate: 20, //px/s
-            health: 100,
-            controllable: false,
-            weapon: {
-              damage: 10,
-              range: 50, //px
-              cooldown: 1500, //ms
-              target: 'pc'
-            },
-            domEl: $('.entity.bx4'),
-            validTargets: ['ship1','ship2'],
-            type: 'npc'
-        });        
-        bh.addEntity(char);
-//        bh.addEntity(char2);
-        bh.addEntity(char3);
-        bh.addEntity(enemy);
-        //bh.addEntity(enemy2);
-        //bh.addEntity(enemy3);
-        //bh.addEntity(enemy4);
-        
-        var rend = new renderer({game: bh});
-        bh.init();
-        rend.init();
-      });
+        var w = new world;
+      })
     </script>
   </head>
   <body>
-      <div class="stage">
-        <div class="buttons">
-          <ul class="chars">
-          </ul>
-          <ul class="actionbars">
-          </ul>
-        </div>
-        <canvas width="800" height="500" id="effects"></canvas>
-      </div>
-      <!--
-      Next:
-        Make enemy follow
-      -->
+    <div id="container">
+      <ul class="nav">
+        <li rel="train">Start Random</li>
+      </ul>
+    </div>
   </body>
 </html>

@@ -1,7 +1,9 @@
 var world = function() {
   this.worldEl = $('#container');
   var self = this;
-  $('.nav').on('click', 'li', function(e){self.nav(e,$(this))});
+  $('.nav').on('click', 'li', function(e){
+    self.nav(e,$(this))
+  });
 }
 world.prototype.nav = function(e,el) {
   var self = this;
