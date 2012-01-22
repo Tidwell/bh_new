@@ -19,6 +19,9 @@
 }
 .stage {
   display: none;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 }
 
 #map, #armory {
@@ -31,7 +34,7 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  background: url('../images/bg.png');
+  background: url('../images/map.png');
 }
 #map .planet {
   width: 100px;

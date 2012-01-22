@@ -51,7 +51,7 @@ world.prototype.showHome = function() {
 }
 world.prototype.getData = function() {
   this.userData = $.jStorage.get('bh',{
-    activeUnits: this.defaultUnits,
+    activeUnits: defaultUnits,
     reserveUnits: [],
     map: [],
     inventory: []
@@ -73,8 +73,8 @@ world.prototype.bindDom = function() {
     return false;
   })
   $('#map .planet').click(function() {
-    var enemies = planets[$(this).attr('rel')].enemies;
-    self.startGame(enemies);
+    var stage = planets[$(this).attr('rel')];
+    self.startGame(stage);
     return false;
   })
   $('body').on('click','#armory .chars li',function() {
@@ -85,13 +85,15 @@ world.prototype.bindDom = function() {
 
 }
 
-world.prototype.startGame = function(enemies) {
+world.prototype.startGame = function(instance) {
+  var enemies = instance.enemies;
   var self = this;
   var t = new template;
   $('body').append(t.stage());
   $('.stage .home').show();
   self.stage = $('.stage');
   var stage = self.stage;
+  stage.css('background', 'url("'+instance.background+'")');
   var t = new template;
   self.worldEl.hide();
     
@@ -158,173 +160,4 @@ world.prototype.populateArmorySelected = function() {
   stats.find('.defense span').html(unit.defense);
   $('#armory .info img').attr('src',unit.img);
   $('#armory .info h3').html(unit.id);
-}
-
-world.prototype.defaultUnits = [{
-    id: 'ship1',
-    controllable: true,
-    startX: 20,
-    startY: 250,
-    height: 33, //px
-    width: 43, //px
-    rate: 200, //px/s
-    health: 100,
-    weapon: {
-      damage: 15,
-      range: 120, //px
-      cooldown: 2000, //ms
-      target: 'npc'
-    },
-    defense: 5,
-    selectKey: '1',
-    attackKey: 'a',
-    type: 'pc',
-    img: 'images/green_ship.png'
-},{
-    id: 'healer',
-    controllable: true,
-    startX: 50,
-    startY: 300,
-    height: 36, //px
-    width: 43, //px
-    rate: 200, //px/s
-    health: 100,
-    weapon: {
-      damage: -5,
-      range: 120, //px
-      cooldown: 2500, //ms
-      target: 'pc'
-    },
-    defense: 5,
-    selectKey: '2',
-    attackKey: 'a',
-    type: 'pc',
-    img: 'images/green_healer.png'
-}];
-
-
-var planets = {
-  planet1: {
-    enemies: [{
-      id: 'bx',
-      controllable: false,
-      startX: 400,
-      startY: 300,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['ship1','healer'],
-      type: 'npc'
-    }]
-  },
-  planet2: {
-    enemies: [{
-      id: 'bx',
-      controllable: false,
-      startX: 400,
-      startY: 300,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['ship1','healer'],
-      type: 'npc'
-    },{
-      id: 'bx2',
-      controllable: false,
-      startX: 430,
-      startY: 220,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['ship1','healer'],
-      type: 'npc'
-    }]
-  },
-  planet3: {
-    enemies: [{
-      id: 'bx',
-      controllable: false,
-      startX: 400,
-      startY: 300,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['ship1','healer'],
-      type: 'npc'
-    },{
-      id: 'bx2',
-      controllable: false,
-      startX: 430,
-      startY: 220,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['ship1','healer'],
-      type: 'npc'
-    },{
-      id: 'bx3',
-      controllable: false,
-      startX: 130,
-      startY: 20,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['ship1','healer'],
-      type: 'npc'
-    }]
-  }
 }

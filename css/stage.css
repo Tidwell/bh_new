@@ -6,7 +6,6 @@ body {
   height: 500px;
   margin: 20px auto;
   border: 6px solid black;
-  background: url(../images/bg.png);
   position: relative;
 }
 .stage .buttons {
@@ -45,6 +44,7 @@ body {
 }
 .chars li {
   color: white;
+  background: rgba(0,0,0,.6);
 }
 .chars li .bind {
   top: 2px;
@@ -57,7 +57,8 @@ body {
   display: none;
 }
 .chars li.selected {
- border: 2px solid green; 
+  border: 2px solid green;
+  background: rgba(0,0,0,1);
 }
 .chars img {
   position: absolute;
