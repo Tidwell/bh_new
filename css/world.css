@@ -66,6 +66,11 @@
   left: 10px;
   background: url('../images/planets/planet3.png');
 }
+#map .planet4 {
+  top: 140px;
+  left: 500px;
+  background: url('../images/planets/planet4.png');
+}
 
 #armory .chars {
   margin: 20px;

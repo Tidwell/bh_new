@@ -169,5 +169,28 @@ var planets = {
       validTargets: ['tank','healer'],
       type: 'npc'
     }]
-  }
+  },
+   planet4: {
+    background: 'images/backgrounds/space5.jpg',
+    enemies: [{
+      id: 'bx',
+      controllable: false,
+      startX: 200,
+      startY: 200,
+      height: 35, //px
+      width: 34, //px
+      rate: 80, //px/s
+      health: 200,
+      controllable: false,
+      weapon: {
+        damage: 15,
+        range: 80, //px
+        cooldown: 1200, //ms
+        target: 'pc'
+      },
+      defense: 0,
+      validTargets: ['tank','healer'],
+      type: 'npc'
+    }],
+   }
 }
