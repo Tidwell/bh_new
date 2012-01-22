@@ -131,8 +131,11 @@ renderer.prototype.gameOver = function(winner) {
   if (winner == 'pc'){
     alert('You Win!');
   }
-  else {
+  else if (winner=='npc'){
     alert('You lose')
+  }
+  else {
+    alert('RETREAT!')
   }
 }
 

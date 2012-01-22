@@ -49,12 +49,12 @@ game.prototype.checkOver = function() {
     }
   });
   if (!hasPlayers && hasEnemies) {
-    self.com.trigger('gameOver','npc');
     self.active = false;
+    self.com.trigger('gameOver','npc');
   }
   if (hasPlayers && !hasEnemies) {
-    self.com.trigger('gameOver','pc');
     self.active = false;
+    self.com.trigger('gameOver','pc');
   }
 }
 

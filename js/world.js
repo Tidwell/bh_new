@@ -7,13 +7,8 @@ var world = function() {
 }
 world.prototype.nav = function(e,el) {
   var self = this;
-  var t = new template;
-  $('body').append(t.stage());
   var item = el.attr('rel');
   switch (item) {
-    case 'train':
-      self.startRandom();
-      break;
     case 'map':
       self.showMap();
       break;
@@ -26,9 +21,18 @@ world.prototype.showMap = function() {
   $('#map').show();
   $('.home').show();
 }
-world.prototype.showHome = function(stage) {
-  if (stage) {
-    stage.remove();
+world.prototype.showHome = function() {
+  var self = this;
+  if (self.stage) {
+    self.stage.remove();
+    self.stage = null;
+  }
+  if (self.rend && self.game && self.game.active) {
+    self.rend.gameOver();
+    self.rend = null;
+  }
+  if (self.game) {
+    self.game = null;
   }
   this.worldEl.show();
   $('#nav').show();
@@ -54,7 +58,7 @@ world.prototype.bindDom = function() {
   $('#nav').on('click', 'li', function(e){
     self.nav(e,$(this))
   });
-  $('.home').click(function() {
+  $('body').on('click', '.home', function() {
     self.showHome();
     return false;
   })
@@ -68,12 +72,17 @@ world.prototype.bindDom = function() {
 
 world.prototype.startGame = function(enemies) {
   var self = this;
-  var stage = $('.stage');
+  var t = new template;
+  $('body').append(t.stage());
+  $('.stage .home').show();
+  self.stage = $('.stage');
+  var stage = self.stage;
   var t = new template;
   self.worldEl.hide();
     
   var com = new communicator();
-  var bh = new game({stage: stage, com: com});
+  self.game = new game({stage: stage, com: com});
+  var bh = self.game;
   
   self.userData.activeUnits.forEach(function(unit,i){
     //make dom els
@@ -98,16 +107,16 @@ world.prototype.startGame = function(enemies) {
     bh.addEntity(new entity(unit))
   })
   
-  self.bindEvents(com,stage);
-  var rend = new renderer({game: bh});
+  self.bindEvents(com);
+  self.rend = new renderer({game: bh});
   bh.init();
-  rend.init();
+  self.rend.init();
 };
 
-world.prototype.bindEvents = function(com,stage) {
+world.prototype.bindEvents = function(com) {
   var self = this;
   com.bind('gameOver',function(winner) {
-    self.showHome(stage);
+    self.showHome();
   });
 }
 
