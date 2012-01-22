@@ -249,7 +249,6 @@ entity.prototype.bindEvents = function() {
         dmg = (dmg-self.defense < 0) ? 0 : (dmg-self.defense);
       }
       self.health = self.health - dmg;
-      console.log(self, 'took: ' + dmg,opt.dmg,self.defense)
       if (self.health > self.maxHealth) {self.health = self.maxHealth;}
     }
   });

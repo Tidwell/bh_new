@@ -77,6 +77,11 @@ world.prototype.bindDom = function() {
     self.startGame(enemies);
     return false;
   })
+  $('body').on('click','#armory .chars li',function() {
+    $('#armory .chars li').removeClass('selected');
+    $(this).addClass('selected');
+    self.populateArmorySelected();
+  })
 
 }
 
@@ -134,16 +139,25 @@ world.prototype.populateArmory = function() {
   var t = new template;
   $('#armory .chars li').remove();
   this.userData.activeUnits.forEach(function(unit,i){
-    $('#armory .chars').append(t.armoryChar(unit.id,unit.img,unit.id));
+    $('#armory .chars').append(t.armoryChar(unit.id,unit.img,i));
   })
   $($('#armory .chars li')[0]).addClass('selected');
   this.populateArmorySelected();
 }
 
 world.prototype.populateArmorySelected = function() {
+  var stats = $('#armory .stats');
   var i = $('#armory .chars .selected').attr('rel');
   var unit = this.userData.activeUnits[i];
-  
+  stats.find('.attack span').html(Math.abs(unit.weapon.damage));
+  if (unit.weapon.damage < 0) {
+    stats.find('.attack label').html('Heals:');
+  } else {
+    stats.find('.attack label').html('Attack:');
+  }
+  stats.find('.defense span').html(unit.defense);
+  $('#armory .info img').attr('src',unit.img);
+  $('#armory .info h3').html(unit.id);
 }
 
 world.prototype.defaultUnits = [{
