@@ -127,7 +127,7 @@
 }
 #armory .info .stats {
   position: absolute;
-  bottom: 20px;
+  bottom: 33px;
   left: 200px;
   width: 200px;
 }
@@ -135,6 +135,7 @@
   float: left;
   width: 100px;
   line-height: 22px;
+  margin: 2px 0;
 }
 #armory .info .stats span {
   float: right;
@@ -144,6 +145,18 @@
   width: 20px;
   height: 20px;
   text-align: center;
+}
+#armory .info .progression {
+  position: absolute;
+  bottom: 5px;
+  left: 20px;
+}
+#armory .info .progression li {
+  float: left;
+  margin: 0 10px;
+}
+#armory .info .progression li span {
+  margin: 0 5px;
 }
 #armory .desc {
   position: absolute;

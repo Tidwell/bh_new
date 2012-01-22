@@ -1,5 +1,6 @@
 var defaultUnits = [{
     id: 'tank',
+    level: 1,
     controllable: true,
     startX: 20,
     startY: 250,
@@ -21,6 +22,7 @@ var defaultUnits = [{
     img: 'images/green_ship.png'
 },{
     id: 'healer',
+    level: 1,
     controllable: true,
     startX: 50,
     startY: 300,

@@ -103,6 +103,8 @@ world.prototype.startGame = function(instance) {
   self.game = new game({stage: stage, com: com});
   var bh = self.game;
   self.userData.activeUnits.forEach(function(unit,i){
+    //copy so we dont muck up the one storing the user's data
+    var unit = $.extend(true,{},unit);
     //make dom els
     stage.append(t.ship(unit.id));
     stage.find('.actionbars').append(t.actionbar(unit.id));
@@ -136,6 +138,13 @@ world.prototype.bindEvents = function(com) {
   com.bind('gameRenderDone',function(winner) {
     self.showHome();  
   });
+  com.bind('xpGain',function(amount){
+    console.log(self.userData);
+    self.userData.activeUnits.forEach(function(unit,i){
+      unit.xp+=amount;
+    });
+    self.saveData();
+  })
 }
 
 world.prototype.populateArmory = function() {
@@ -159,6 +168,8 @@ world.prototype.populateArmorySelected = function() {
     stats.find('.attack label').html('Attack:');
   }
   stats.find('.defense span').html(unit.defense);
+  $('#armory .progression .level span').html(unit.level);
+  $('#armory .progression .xp span').html(unit.xp);
   $('#armory .info img').attr('src',unit.img);
   $('#armory .info h3').html(unit.id);
 }

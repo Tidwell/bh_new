@@ -54,6 +54,7 @@ game.prototype.checkOver = function() {
   }
   if (hasPlayers && !hasEnemies) {
     self.active = false;
+    self.com.trigger('xpGain',10);
     self.com.trigger('gameOver','pc');
   }
 }
