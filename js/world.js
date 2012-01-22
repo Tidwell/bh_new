@@ -1,5 +1,6 @@
 var world = function() {
   this.worldEl = $('#container');
+  this.userData;
   var self = this;
   self.getData();
   self.bindDom();
@@ -68,6 +69,7 @@ world.prototype.saveData = function() {
 
 world.prototype.bindDom = function() {
   var self = this;
+  var t = new template;
   $('#map .planet').click(function() {
     var stage = planets[$(this).attr('rel')];
     self.startGame(stage);
@@ -78,6 +80,16 @@ world.prototype.bindDom = function() {
     $(this).addClass('selected');
     self.populateArmorySelected();
   })
+  $('#armory').on('click','#armory .item',function(event) {
+    var el = $(this);
+    $('#armory .item').removeClass('selected');
+    el.addClass('selected');
+    var name = el.attr('title');
+    var desc = el.attr('data-desc');
+    var img = el.find('img').attr('src');
+    var users = el.attr('data-users');
+    $('#armory .desc').html(t.armoryDesc(name,desc,img,users));
+  });
 
 }
 
@@ -135,12 +147,23 @@ world.prototype.bindEvents = function(com) {
     self.showHome();  
   });
   com.bind('xpGain',function(amount){
-    console.log(self.userData);
     self.userData.activeUnits.forEach(function(unit,i){
       unit.xp+=amount;
     });
     self.saveData();
   })
+  com.bind('itemGain',function(opt){self.itemGain(opt)});
+}
+
+world.prototype.itemGain = function(number) {
+  var self = this;
+  for(var i=0;i<number;i++) {
+    var rand = Math.floor(Math.random()*items.length);
+    var item = items[rand];
+    console.log(self,item,items,rand);
+    self.userData.inventory.push(item);
+    self.saveData();
+  }
 }
 
 world.prototype.populateArmory = function() {
@@ -150,6 +173,11 @@ world.prototype.populateArmory = function() {
     $('#armory .chars').append(t.armoryChar(unit.id,unit.img,i));
   })
   $($('#armory .chars li')[0]).addClass('selected');
+  var inv = $('.unequip');
+  $('.unequip li').remove();
+  this.userData.inventory.forEach(function(item,i){
+    inv.append(t.armoryItem(item,i));
+  })
   this.populateArmorySelected();
 }
 

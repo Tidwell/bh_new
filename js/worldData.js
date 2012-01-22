@@ -172,27 +172,48 @@ var planets = {
       type: 'npc'
     }]
   },
-   planet4: {
+  planet4: {
     background: 'images/backgrounds/space5.jpg',
     enemies: [{
       id: 'bx',
       controllable: false,
-      startX: 200,
-      startY: 200,
-      height: 35, //px
-      width: 34, //px
-      rate: 80, //px/s
-      health: 200,
-      controllable: false,
-      weapon: {
-        damage: 15,
-        range: 80, //px
-        cooldown: 1200, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['tank','healer'],
-      type: 'npc'
+        startX: 200,
+        startY: 200,
+        height: 35, //px
+        width: 34, //px
+        rate: 80, //px/s
+        health: 200,
+        controllable: false,
+        weapon: {
+          damage: 15,
+          range: 80, //px
+          cooldown: 1200, //ms
+          target: 'pc'
+        },
+        defense: 0,
+        validTargets: ['tank','healer'],
+        type: 'npc'
     }],
-   }
+  }
 }
+
+
+var items = [{
+  name: 'Advanced Shields',
+  effect: function(entity) {
+    return {defense: entity.defense+3};
+  },
+  desc: 'Increses a ships shields by +3',
+  validClass: ['healer'],
+  img: 'images/items/shield.png',
+},
+{
+  name: 'Super Advanced Shields',
+  effect: function(entity) {
+    return {defense: entity.defense+6};
+  },
+  desc: 'Increses a ships shields by +6',
+  validClass: ['healer'],
+  img: 'images/items/shield.png',
+}]
+
