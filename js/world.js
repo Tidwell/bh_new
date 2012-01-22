@@ -212,5 +212,62 @@ var planets = {
       validTargets: ['ship1','healer'],
       type: 'npc'
     }]
+  },
+  planet3: {
+    enemies: [{
+      id: 'bx',
+      controllable: false,
+      startX: 400,
+      startY: 300,
+      height: 35, //px
+      width: 34, //px
+      rate: 20, //px/s
+      health: 100,
+      controllable: false,
+      weapon: {
+        damage: 10,
+        range: 50, //px
+        cooldown: 1500, //ms
+        target: 'pc'
+      },
+      validTargets: ['ship1','healer'],
+      type: 'npc'
+    },{
+      id: 'bx2',
+      controllable: false,
+      startX: 430,
+      startY: 220,
+      height: 35, //px
+      width: 34, //px
+      rate: 20, //px/s
+      health: 100,
+      controllable: false,
+      weapon: {
+        damage: 10,
+        range: 50, //px
+        cooldown: 1500, //ms
+        target: 'pc'
+      },
+      validTargets: ['ship1','healer'],
+      type: 'npc'
+    },{
+      id: 'bx3',
+      controllable: false,
+      startX: 130,
+      startY: 20,
+      height: 35, //px
+      width: 34, //px
+      rate: 20, //px/s
+      health: 100,
+      controllable: false,
+      weapon: {
+        damage: 10,
+        range: 50, //px
+        cooldown: 1500, //ms
+        target: 'pc'
+      },
+      validTargets: ['ship1','healer'],
+      type: 'npc'
+    }]
   }
 }

@@ -41,6 +41,12 @@
   -o-background-size: cover;
   background-size: cover;
   cursor: pointer;
+  border: 3px dashed transparent;
+  border-radius: 300px;
+}
+#map .planet:hover {
+  border: 3px solid rgba(0,125,0,.6);
+  border-radius: 300px;
 }
 #map .planet1 {
   top: 30px;
@@ -51,6 +57,11 @@
   top: 300px;
   left: 280px;
   background: url('../images/planets/planet2.png');
+}
+#map .planet3 {
+  top: 380px;
+  left: 10px;
+  background: url('../images/planets/planet3.png');
 }
 
 .home {
