@@ -216,7 +216,6 @@ world.prototype.bindHash = function() {
   var self = this;
   $(window).hashchange( function(){
     var hash = location.hash.replace('#','');
-    console.log(hash)
     self.nav(hash);
   });
   //check for pageload
