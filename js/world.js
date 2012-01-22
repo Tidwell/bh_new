@@ -3,6 +3,7 @@ var world = function() {
   var self = this;
   self.getData();
   self.bindDom();
+  self.showHome();
 }
 world.prototype.nav = function(e,el) {
   var self = this;
@@ -13,10 +14,27 @@ world.prototype.nav = function(e,el) {
     case 'train':
       self.startRandom();
       break;
+    case 'map':
+      self.showMap();
+      break;
   default:
 
   }
 };
+world.prototype.showMap = function() {
+  $('.nav').hide();
+  $('#map').show();
+  $('.home').show();
+}
+world.prototype.showHome = function(stage) {
+  if (stage) {
+    stage.remove();
+  }
+  this.worldEl.show();
+  $('.nav').show();
+  $('#map').hide();
+  $('.home').hide();
+}
 world.prototype.getData = function() {
   this.userData = $.jStorage.get('bh',{
     activeUnits: this.defaultUnits,
@@ -36,15 +54,24 @@ world.prototype.bindDom = function() {
   $('.nav').on('click', 'li', function(e){
     self.nav(e,$(this))
   });
+  $('.home').click(function() {
+    self.showHome();
+    return false;
+  })
+  $('#map .planet').click(function() {
+    var enemies = planets[$(this).attr('rel')].enemies;
+    self.startGame(enemies);
+    return false;
+  })
 
 }
 
-world.prototype.startRandom = function() {
+world.prototype.startGame = function(enemies) {
   var self = this;
   var stage = $('.stage');
   var t = new template;
   self.worldEl.hide();
-  
+    
   var com = new communicator();
   var bh = new game({stage: stage, com: com});
   
@@ -61,27 +88,16 @@ world.prototype.startRandom = function() {
     bh.addEntity(new entity(unit))
   })
   
-  stage.append(t.ship('bx bx1 enemy'))
-  var enemy = new entity({
-      controllable: false,
-      startX: 400,
-      startY: 300,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      domEl: $('.entity.bx1'),
-      validTargets: ['ship1','healer'],
-      type: 'npc'
-  });
-  bh.addEntity(enemy);  
+  enemies.forEach(function(unit,i){
+    //make dom els
+    stage.append(t.ship(unit.id+' enemy'));
+    
+    //set unit dom info
+    unit.domEl = $('.entity.'+unit.id)
+    //add to game
+    bh.addEntity(new entity(unit))
+  })
+  
   self.bindEvents(com,stage);
   var rend = new renderer({game: bh});
   bh.init();
@@ -91,8 +107,7 @@ world.prototype.startRandom = function() {
 world.prototype.bindEvents = function(com,stage) {
   var self = this;
   com.bind('gameOver',function(winner) {
-    stage.remove();
-    self.worldEl.show();
+    self.showHome(stage);
   });
 }
 
@@ -135,3 +150,67 @@ world.prototype.defaultUnits = [{
     type: 'pc',
     img: 'images/green_healer.png'
 }];
+
+
+var planets = {
+  planet1: {
+    enemies: [{
+      id: 'bx',
+      controllable: false,
+      startX: 400,
+      startY: 300,
+      height: 35, //px
+      width: 34, //px
+      rate: 20, //px/s
+      health: 100,
+      controllable: false,
+      weapon: {
+        damage: 10,
+        range: 50, //px
+        cooldown: 1500, //ms
+        target: 'pc'
+      },
+      validTargets: ['ship1','healer'],
+      type: 'npc'
+    }]
+  },
+  planet2: {
+    enemies: [{
+      id: 'bx',
+      controllable: false,
+      startX: 400,
+      startY: 300,
+      height: 35, //px
+      width: 34, //px
+      rate: 20, //px/s
+      health: 100,
+      controllable: false,
+      weapon: {
+        damage: 10,
+        range: 50, //px
+        cooldown: 1500, //ms
+        target: 'pc'
+      },
+      validTargets: ['ship1','healer'],
+      type: 'npc'
+    },{
+      id: 'bx2',
+      controllable: false,
+      startX: 430,
+      startY: 220,
+      height: 35, //px
+      width: 34, //px
+      rate: 20, //px/s
+      health: 100,
+      controllable: false,
+      weapon: {
+        damage: 10,
+        range: 50, //px
+        cooldown: 1500, //ms
+        target: 'pc'
+      },
+      validTargets: ['ship1','healer'],
+      type: 'npc'
+    }]
+  }
+}

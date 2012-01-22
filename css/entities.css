@@ -13,7 +13,7 @@
   background: url('../images/green_healer.png');
 }
 
-.entity.bx {
+.entity.bx, .entity.bx2{
   width: 34px;
   height: 35px;
   background: url('../images/red_ship.png');
