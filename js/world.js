@@ -24,12 +24,16 @@ world.prototype.nav = function(hash) {
   }
 };
 world.prototype.showMap = function() {
+  this.worldEl.show();
+  this.destroyGame();
   $('#nav').hide();
   $('#armory').hide();
   $('#map').show();
   $('.home').show();
 }
 world.prototype.showArmory = function() {
+  this.worldEl.show();
+  this.destroyGame();
   this.populateArmory();
   $('#nav').hide();
   $('#map').hide();
@@ -37,19 +41,8 @@ world.prototype.showArmory = function() {
   $('.home').show();
 }
 world.prototype.showHome = function() {
-  var self = this;
-  if (self.stage) {
-    self.stage.remove();
-    self.stage = null;
-  }
-  if (self.rend && self.game && self.game.active) {
-    self.rend.gameOver();
-    self.rend = null;
-  }
-  if (self.game) {
-    self.game = null;
-  }
   this.worldEl.show();
+  this.destroyGame();
   $('#nav').show();
   $('#map').hide();
   $('#armory').hide();
@@ -142,7 +135,24 @@ world.prototype.startGame = function(instance) {
   self.rend = new renderer({game: bh});
   bh.init();
   self.rend.init();
+  location = location.hash.replace(location.hash,'#game');
 };
+
+world.prototype.destroyGame = function() {
+  var self = this;
+  if (self.stage) {
+    self.stage.remove();
+    self.stage = null;
+  }
+  if (self.rend && self.game && self.game.active) {
+    self.rend.gameOver();
+    self.rend = null;
+  }
+  if (self.game) {
+    self.game.gameOver();
+    self.game = null;
+  }
+}
 
 world.prototype.bindEvents = function(com) {
   var self = this;
@@ -206,6 +216,7 @@ world.prototype.bindHash = function() {
   var self = this;
   $(window).hashchange( function(){
     var hash = location.hash.replace('#','');
+    console.log(hash)
     self.nav(hash);
   });
   //check for pageload

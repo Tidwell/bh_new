@@ -25,13 +25,13 @@ game.prototype.removeEntity = function(opt){
 //main game loop
 game.prototype.loop = function() {
   var self = this;
-  var d = new Date();
-  var t = d.getTime();
-  self.entities.forEach(function(entity) {
-    entity.update(t);
-  });
   self.checkOver();
   if (self.active) {
+    var d = new Date();
+    var t = d.getTime();
+    self.entities.forEach(function(entity) {
+      entity.update(t);
+    });
     setTimeout(function() {self.loop()}, 20);
   }
 };
@@ -59,7 +59,9 @@ game.prototype.checkOver = function() {
     self.com.trigger('gameOver','pc');
   }
 }
-
+game.prototype.gameOver = function() {
+  this.active = false;
+}
 game.prototype.init = function() {
   var self = this;
   //inititalize each of the entities
