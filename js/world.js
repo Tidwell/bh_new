@@ -88,7 +88,8 @@ world.prototype.bindDom = function() {
     var desc = el.attr('data-desc');
     var img = el.find('img').attr('src');
     var users = el.attr('data-users');
-    $('#armory .desc').html(t.armoryDesc(name,desc,img,users));
+    var slot = el.attr('data-slot');
+    $('#armory .desc').html(t.armoryDesc(name,desc,img,users,slot));
   });
 
 }
@@ -160,7 +161,6 @@ world.prototype.itemGain = function(number) {
   for(var i=0;i<number;i++) {
     var rand = Math.floor(Math.random()*items.length);
     var item = items[rand];
-    console.log(self,item,items,rand);
     self.userData.inventory.push(item);
     self.saveData();
   }

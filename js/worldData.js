@@ -206,6 +206,7 @@ var items = [{
   desc: 'Increses a ships shields by +3',
   validClass: ['healer'],
   img: 'images/items/shield.png',
+  slot: 'defense'
 },
 {
   name: 'Super Advanced Shields',
@@ -215,5 +216,6 @@ var items = [{
   desc: 'Increses a ships shields by +6',
   validClass: ['healer'],
   img: 'images/items/shield.png',
+  slot: 'defense'
 }]
 
