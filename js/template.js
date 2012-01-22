@@ -13,3 +13,6 @@ template.prototype.actionbar = function(classes) {
 template.prototype.charInfo = function(classes,image) {
   return '<li class="'+classes+'"><p class="bind"></p><img src="'+image+'" /><p class="health"></p></li>';
 }
+template.prototype.armoryChar = function(classes,image,rel) {
+  return '<li class="'+classes+'" rel="'+rel+'"><img src="'+image+'" /></li>';
+}

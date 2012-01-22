@@ -2,7 +2,7 @@
   <head>
     <link href="css/reset.css" rel="stylesheet" type="text/css" />
     <link href="css/world.css" rel="stylesheet" type="text/css" />
-    <link href="css/interface.css" rel="stylesheet" type="text/css" />
+    <link href="css/stage.css" rel="stylesheet" type="text/css" />
     <link href="css/entities.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/lib/array.js"></script>
@@ -25,6 +25,7 @@
     <div id="container">
       <ul id="nav">
         <li rel="map" class="button">Map</li>
+        <li rel="armory" class="button">Armory</li>
       </ul>
       <div id="map">
         <div class="planet planet1" rel="planet1">
@@ -35,6 +36,29 @@
         </div>
       </div>
       <a href="#" class="home button">Home</a>
+    
+      <div id="armory">
+        <ul class="chars">
+        </ul>
+        
+        <div class="info">
+          <ul class="equip">
+            <li class="attack">Attack: <span></span></li>
+            <li class="defense">Defense: <span></span></li>
+            <li class="misc1">Misc1: <span></span></li>
+            <li class="misc2">Misc2: <span></span></li>
+          </ul>
+          <h3></h3>
+          <img />
+          <ul class="stats">
+            <li class="attack">Attack:<span></span></li>
+            <li class="defense">Defense:<span></span></li>
+          </ul>
+        </div>
+        <p class="desc"></p>
+        <ul class="unequip">
+        </ul>
+      </div>
     </div>
   </body>
 </html>

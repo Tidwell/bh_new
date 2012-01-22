@@ -38,7 +38,8 @@ var entity = function(opt) {
     range: 0,
     cooldown: 0,
     type: ''
-  }
+  };
+  this.defense = opt.defense || 0;
   //combat state
   this.weaponOnCooldown = false;
   this.abilityTarget = 0;
@@ -243,7 +244,12 @@ entity.prototype.bindEvents = function() {
   });
   self.com.bind('dmgDealt',function(opt){
     if (opt.id == self.id) {
-      self.health = self.health - opt.dmg;
+      var dmg = opt.dmg;
+      if (dmg > 0) {
+        dmg = (dmg-self.defense < 0) ? 0 : (dmg-self.defense);
+      }
+      self.health = self.health - dmg;
+      console.log(self, 'took: ' + dmg,opt.dmg,self.defense)
       if (self.health > self.maxHealth) {self.health = self.maxHealth;}
     }
   });

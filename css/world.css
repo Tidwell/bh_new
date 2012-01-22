@@ -21,13 +21,17 @@
   display: none;
 }
 
+#map, #armory {
+  width: 800px;
+  height: 500px;
+  display: none;
+}
+
 #map {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   background: url('../images/bg.png');
-  width: 800px;
-  height: 500px;
 }
 #map .planet {
   width: 100px;
@@ -59,6 +63,30 @@
   left: 10px;
   background: url('../images/planets/planet3.png');
 }
+
+#armory .info {
+  position: absolute;
+  top: 100px;
+  left: 20px;
+  background: white;
+  width: 400px;
+  height: 200px;
+}
+
+#armory .info .equip li {
+  display: block;
+  width: 120px;
+  overflow: hidden;
+  margin: 2px 0;
+}
+#armory .info .equip span {
+  display: block;
+  width: 30px;
+  height: 30px;
+  background: black;
+  float: right;
+}
+
 
 .home {
   display: block;

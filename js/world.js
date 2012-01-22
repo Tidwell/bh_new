@@ -12,6 +12,9 @@ world.prototype.nav = function(e,el) {
     case 'map':
       self.showMap();
       break;
+    case 'armory':
+      self.showArmory();
+      break;
   default:
 
   }
@@ -19,6 +22,12 @@ world.prototype.nav = function(e,el) {
 world.prototype.showMap = function() {
   $('#nav').hide();
   $('#map').show();
+  $('.home').show();
+}
+world.prototype.showArmory = function() {
+  this.populateArmory();
+  $('#nav').hide();
+  $('#armory').show();
   $('.home').show();
 }
 world.prototype.showHome = function() {
@@ -37,6 +46,7 @@ world.prototype.showHome = function() {
   this.worldEl.show();
   $('#nav').show();
   $('#map').hide();
+  $('#armory').hide();
   $('.home').hide();
 }
 world.prototype.getData = function() {
@@ -87,8 +97,8 @@ world.prototype.startGame = function(enemies) {
   self.userData.activeUnits.forEach(function(unit,i){
     //make dom els
     stage.append(t.ship(unit.id));
-    $('.actionbars').append(t.actionbar(unit.id));
-    $('.chars').append(t.charInfo(unit.id,unit.img));
+    stage.find('.actionbars').append(t.actionbar(unit.id));
+    stage.find('.chars').append(t.charInfo(unit.id,unit.img));
     //set unit dom info
     unit.domEl = $('.entity.'+unit.id)
     unit.infoEl = $('.chars .'+unit.id)
@@ -120,6 +130,22 @@ world.prototype.bindEvents = function(com) {
   });
 }
 
+world.prototype.populateArmory = function() {
+  var t = new template;
+  $('#armory .chars li').remove();
+  this.userData.activeUnits.forEach(function(unit,i){
+    $('#armory .chars').append(t.armoryChar(unit.id,unit.img,unit.id));
+  })
+  $($('#armory .chars li')[0]).addClass('selected');
+  this.populateArmorySelected();
+}
+
+world.prototype.populateArmorySelected = function() {
+  var i = $('#armory .chars .selected').attr('rel');
+  var unit = this.userData.activeUnits[i];
+  
+}
+
 world.prototype.defaultUnits = [{
     id: 'ship1',
     controllable: true,
@@ -135,6 +161,7 @@ world.prototype.defaultUnits = [{
       cooldown: 2000, //ms
       target: 'npc'
     },
+    defense: 5,
     selectKey: '1',
     attackKey: 'a',
     type: 'pc',
@@ -154,6 +181,7 @@ world.prototype.defaultUnits = [{
       cooldown: 2500, //ms
       target: 'pc'
     },
+    defense: 5,
     selectKey: '2',
     attackKey: 'a',
     type: 'pc',
@@ -179,6 +207,7 @@ var planets = {
         cooldown: 1500, //ms
         target: 'pc'
       },
+      defense: 0,
       validTargets: ['ship1','healer'],
       type: 'npc'
     }]
@@ -200,6 +229,7 @@ var planets = {
         cooldown: 1500, //ms
         target: 'pc'
       },
+      defense: 0,
       validTargets: ['ship1','healer'],
       type: 'npc'
     },{
@@ -218,6 +248,7 @@ var planets = {
         cooldown: 1500, //ms
         target: 'pc'
       },
+      defense: 0,
       validTargets: ['ship1','healer'],
       type: 'npc'
     }]
@@ -239,6 +270,7 @@ var planets = {
         cooldown: 1500, //ms
         target: 'pc'
       },
+      defense: 0,
       validTargets: ['ship1','healer'],
       type: 'npc'
     },{
@@ -257,6 +289,7 @@ var planets = {
         cooldown: 1500, //ms
         target: 'pc'
       },
+      defense: 0,
       validTargets: ['ship1','healer'],
       type: 'npc'
     },{
@@ -275,6 +308,7 @@ var planets = {
         cooldown: 1500, //ms
         target: 'pc'
       },
+      defense: 0,
       validTargets: ['ship1','healer'],
       type: 'npc'
     }]
