@@ -25,12 +25,14 @@ world.prototype.nav = function(hash) {
 };
 world.prototype.showMap = function() {
   $('#nav').hide();
+  $('#armory').hide();
   $('#map').show();
   $('.home').show();
 }
 world.prototype.showArmory = function() {
   this.populateArmory();
   $('#nav').hide();
+  $('#map').hide();
   $('#armory').show();
   $('.home').show();
 }
@@ -152,6 +154,7 @@ world.prototype.bindEvents = function(com) {
       unit.xp+=amount;
     });
     self.saveData();
+    self.populateArmory();
   })
   com.bind('itemGain',function(opt){self.itemGain(opt)});
 }
@@ -164,6 +167,7 @@ world.prototype.itemGain = function(number) {
     self.userData.inventory.push(item);
     self.saveData();
   }
+  self.populateArmory();
 }
 
 world.prototype.populateArmory = function() {
