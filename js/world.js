@@ -22,7 +22,7 @@ world.prototype.nav = function(e,el) {
   }
 };
 world.prototype.showMap = function() {
-  $('.nav').hide();
+  $('#nav').hide();
   $('#map').show();
   $('.home').show();
 }
@@ -31,7 +31,7 @@ world.prototype.showHome = function(stage) {
     stage.remove();
   }
   this.worldEl.show();
-  $('.nav').show();
+  $('#nav').show();
   $('#map').hide();
   $('.home').hide();
 }
@@ -51,7 +51,7 @@ world.prototype.saveData = function() {
 
 world.prototype.bindDom = function() {
   var self = this;
-  $('.nav').on('click', 'li', function(e){
+  $('#nav').on('click', 'li', function(e){
     self.nav(e,$(this))
   });
   $('.home').click(function() {

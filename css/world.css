@@ -5,21 +5,17 @@
   border: 6px solid black;
   background: #CCC;
   position: relative;
+  background: url('../images/menu.jpg');
 }
-.nav {
+#nav {
   width: 300px;
 }
-.nav li {
+#nav li {
   margin: 20px;
   font-size: 24px;
   padding: 5px;
-  border: 1px dashed black;
   text-align: center;
   cursor: pointer;
-  background: white;
-}
-.nav li {
-  border: 1px solid black;
 }
 .stage {
   display: none;
@@ -73,12 +69,15 @@
   position: absolute;
   top: 5px;
   right: 5px;
+}
+.button {
   text-decoration: none;
   background: black;
   color: white;
   font-family: Helvetica;
+  border: 2px solid white;
 }
-.home:hover {
+.button:hover {
   font-weight: bold;
   background: #3d3d3d;
 }
