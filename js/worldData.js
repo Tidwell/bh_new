@@ -1,9 +1,9 @@
 var defaultUnits = [{
-    id: 'ship1',
+    id: 'tank',
     controllable: true,
     startX: 20,
     startY: 250,
-    height: 33, //px
+    height: 33, //px//
     width: 43, //px
     rate: 200, //px/s
     health: 100,
@@ -13,6 +13,7 @@ var defaultUnits = [{
       cooldown: 2000, //ms
       target: 'npc'
     },
+    xp: 0,
     defense: 5,
     selectKey: '1',
     attackKey: 'a',
@@ -33,6 +34,7 @@ var defaultUnits = [{
       cooldown: 2500, //ms
       target: 'pc'
     },
+    xp: 0,
     defense: 5,
     selectKey: '2',
     attackKey: 'a',
@@ -61,7 +63,7 @@ var planets = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['ship1','healer'],
+      validTargets: ['tank','healer'],
       type: 'npc'
     }]
   },
@@ -84,7 +86,7 @@ var planets = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['ship1','healer'],
+      validTargets: ['tank','healer'],
       type: 'npc'
     },{
       id: 'bx2',
@@ -103,7 +105,7 @@ var planets = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['ship1','healer'],
+      validTargets: ['tank','healer'],
       type: 'npc'
     }]
   },
@@ -126,7 +128,7 @@ var planets = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['ship1','healer'],
+      validTargets: ['tank','healer'],
       type: 'npc'
     },{
       id: 'bx2',
@@ -145,7 +147,7 @@ var planets = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['ship1','healer'],
+      validTargets: ['tank','healer'],
       type: 'npc'
     },{
       id: 'bx3',
@@ -164,7 +166,7 @@ var planets = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['ship1','healer'],
+      validTargets: ['tank','healer'],
       type: 'npc'
     }]
   }

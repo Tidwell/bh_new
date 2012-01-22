@@ -22,7 +22,6 @@ renderer.prototype.loop = function() {
 }
 
 renderer.prototype.renderEntity = function(entity) {
-  //console.log(entity.el.parent())
   entity.el.parent().css('left',entity.x).css('top',entity.y);
   this.renderEntityHealthBars(entity);
 
@@ -128,14 +127,40 @@ renderer.prototype.gameOver = function(winner) {
     }
   });
 
+  $(self.canvas).hide();
+  $('.buttons').fadeOut('fast');
+  $('.home').fadeOut('fast');
+  $('.bb .health').fadeOut('fast');
+  
   if (winner == 'pc'){
-    alert('You Win!');
+    $('.entity').removeClass('selected');
+    $('.stage').append('<h1 class="victory">You Win</h1>');
+    $('.victory').fadeIn('fast');
+    $('.victory').fadeIn();
+    var left = 325;
+    $('.entity').parent().each(function(){
+      $(this).animate({top: 200, left: left},2000);
+      left += 100;
+    })
+    setTimeout(function(){
+      $('.stage').fadeOut(function(){
+        self.com.trigger('gameRenderDone');
+      });
+    },3000);
   }
   else if (winner=='npc'){
-    alert('You lose')
+    $('.stage').append('<h1 class="victory">You Lose</h1>');
+    $('.victory').fadeIn('fast');
+    setTimeout(function(){
+      $('.stage').fadeOut(function(){
+          self.com.trigger('gameRenderDone');
+        });
+      },3000);
   }
   else {
-    alert('RETREAT!')
+    $('.stage').fadeOut(function(){
+      self.com.trigger('gameRenderDone');
+    });
   }
 }
 

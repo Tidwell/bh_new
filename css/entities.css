@@ -1,8 +1,8 @@
-.entity.ship1, .entity.ship1 .img {
+.entity.tank, .entity.tank .img {
   width: 43px;
   height: 33px;
 }
-.entity.ship1 .img {
+.entity.tank .img {
   background: url('../images/green_ship.png');
 }
 .entity.healer, .entity.healer .img{

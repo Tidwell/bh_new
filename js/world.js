@@ -86,6 +86,8 @@ world.prototype.bindDom = function() {
 }
 
 world.prototype.startGame = function(instance) {
+  //copy the options so we dont muck with them
+  var instance = $.extend(true,{}, instance);
   var enemies = instance.enemies;
   var self = this;
   var t = new template;
@@ -100,7 +102,6 @@ world.prototype.startGame = function(instance) {
   var com = new communicator();
   self.game = new game({stage: stage, com: com});
   var bh = self.game;
-  
   self.userData.activeUnits.forEach(function(unit,i){
     //make dom els
     stage.append(t.ship(unit.id));
@@ -132,8 +133,8 @@ world.prototype.startGame = function(instance) {
 
 world.prototype.bindEvents = function(com) {
   var self = this;
-  com.bind('gameOver',function(winner) {
-    self.showHome();
+  com.bind('gameRenderDone',function(winner) {
+    self.showHome();  
   });
 }
 
