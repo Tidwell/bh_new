@@ -11,11 +11,16 @@
   width: 300px;
 }
 #nav li {
+  width: 300px;
   margin: 20px;
   font-size: 24px;
   padding: 5px;
   text-align: center;
   cursor: pointer;
+}
+#nav li .button {
+  width: 100%;
+  display: block;
 }
 .stage {
   display: none;

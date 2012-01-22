@@ -4,16 +4,19 @@ var world = function() {
   self.getData();
   self.bindDom();
   self.showHome();
+  self.bindHash();
 }
-world.prototype.nav = function(e,el) {
+world.prototype.nav = function(hash) {
   var self = this;
-  var item = el.attr('rel');
-  switch (item) {
+  switch (hash) {
     case 'map':
       self.showMap();
       break;
     case 'armory':
       self.showArmory();
+      break;
+    case 'home':
+      self.showHome();
       break;
   default:
 
@@ -65,13 +68,6 @@ world.prototype.saveData = function() {
 
 world.prototype.bindDom = function() {
   var self = this;
-  $('#nav').on('click', 'li', function(e){
-    self.nav(e,$(this))
-  });
-  $('body').on('click', '.home', function() {
-    self.showHome();
-    return false;
-  })
   $('#map .planet').click(function() {
     var stage = planets[$(this).attr('rel')];
     self.startGame(stage);
@@ -173,3 +169,14 @@ world.prototype.populateArmorySelected = function() {
   $('#armory .info img').attr('src',unit.img);
   $('#armory .info h3').html(unit.id);
 }
+
+world.prototype.bindHash = function() {
+  var self = this;
+  $(window).hashchange( function(){
+    var hash = location.hash.replace('#','');
+    self.nav(hash);
+  });
+  //check for pageload
+  $(window).hashchange();
+  
+};

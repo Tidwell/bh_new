@@ -4,11 +4,14 @@
     <link href="css/world.css" rel="stylesheet" type="text/css" />
     <link href="css/stage.css" rel="stylesheet" type="text/css" />
     <link href="css/entities.css" rel="stylesheet" type="text/css" />
+    
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" src="js/lib/array.js"></script>
     <script type="text/javascript" src="js/lib/keyboard.js"></script>
     <script type="text/javascript" src="js/lib/microevent.js"></script>
-        <script type="text/javascript" src="js/lib/jStorage.js"></script>
+    <script type="text/javascript" src="js/lib/jStorage.js"></script>
+    <script type="text/javascript" src="js/lib/hashchange.js"></script>
+    
     <script type="text/javascript" src="js/communicator.js"></script>
     <script type="text/javascript" src="js/worldData.js"></script>
     <script type="text/javascript" src="js/world.js"></script>
@@ -16,6 +19,7 @@
     <script type="text/javascript" src="js/entity.js"></script>
     <script type="text/javascript" src="js/renderer.js"></script>
     <script type="text/javascript" src="js/template.js"></script>
+    
     <script type="text/javascript">
       $(function() {
         var w = new world;
@@ -25,8 +29,8 @@
   <body>
     <div id="container">
       <ul id="nav">
-        <li rel="map" class="button">Map</li>
-        <li rel="armory" class="button">Armory</li>
+        <li><a href="#map" class="button">Map</a></li>
+        <li><a href="#armory" class="button">Armory</a></li>
       </ul>
       <div id="map">
         <div class="planet planet1" rel="planet1">
@@ -38,20 +42,20 @@
         <div class="planet planet4" rel="planet4">
         </div>
       </div>
-      <a href="#" class="home button">Home</a>
+      <a href="#home" class="home button">Home</a></a>
     
       <div id="armory">
         <ul class="chars">
         </ul>
         
         <div class="info">
+          <h3></h3>
           <ul class="equip">
             <li class="attack">Attack: <span></span></li>
             <li class="defense">Defense: <span></span></li>
             <li class="misc1">Misc1: <span></span></li>
             <li class="misc2">Misc2: <span></span></li>
           </ul>
-          <h3></h3>
           <img />
           <ul class="stats">
             <li class="attack"><label>Attack:</label><span></span></li>

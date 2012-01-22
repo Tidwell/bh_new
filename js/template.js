@@ -2,7 +2,7 @@ var template = function() {
   
 }
 template.prototype.stage = function() {
-  return '<div class="stage"><div class="buttons"><ul class="chars"></ul><ul class="actionbars"></ul></div><canvas width="800" height="500" id="effects"></canvas><a href="#" class="home button">Home</a></div>';      
+  return '<div class="stage"><div class="buttons"><ul class="chars"></ul><ul class="actionbars"></ul></div><canvas width="800" height="500" id="effects"></canvas><a href="#home" class="home button">Home</a></a></div>';      
 }
 template.prototype.ship = function(classes) {
   return '<div class="bb"><div class="entity '+classes+'"><div class="img"></div></div><div class="health"><span class="bar"></span></div></div>';
