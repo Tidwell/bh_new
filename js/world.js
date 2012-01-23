@@ -248,9 +248,6 @@ world.prototype.changeItem = function(el,e,obj){
   if (item.validClass.indexOf(unit.unitClass) != -1 && item.slots.indexOf(slot) != -1) {
     //switch out if necessary
     self.userData.inventory.remove($(itemEl).attr('rel'))
-    if (unit.items[slot]) {
-      self.userData.inventory.push(unit.items[slot]);
-    }
     //set the item in the slot
     unit.items[slot] = item;
     self.saveData();
