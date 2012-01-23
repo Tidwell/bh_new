@@ -245,7 +245,7 @@ world.prototype.changeItem = function(el,e,obj){
   var i = $('#armory .chars .selected').attr('rel');
   var unit = self.userData.activeUnits[i];
   //if the class can use the item and slot can accept the item
-  if (item.validClass.indexOf(unit.unitClass) != -1 && item.slots.indexOf(slot) != -1) {
+  if (item.validClass.indexOf(unit.unitClass) != -1 && item.slots.indexOf(slot) != -1 && !unit.items[slot]) {
     //switch out if necessary
     self.userData.inventory.remove($(itemEl).attr('rel'))
     //set the item in the slot
