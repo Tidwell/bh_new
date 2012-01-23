@@ -181,17 +181,33 @@ world.prototype.itemGain = function(number) {
 }
 
 world.prototype.populateArmory = function() {
+  var self = this;
+  $('.drop').droppable( "destroy" );
+  $( ".item" ).draggable( "destroy" );
+  $('#armory .desc').html('');
   var t = new template;
+  var currentSelected = $('#armory .chars .selected').attr('rel') || 0;
   $('#armory .chars li').remove();
   this.userData.activeUnits.forEach(function(unit,i){
     $('#armory .chars').append(t.armoryChar(unit.id,unit.img,i));
   })
-  $($('#armory .chars li')[0]).addClass('selected');
+  $($('#armory .chars li')[currentSelected]).addClass('selected');
   var inv = $('.unequip');
   $('.unequip li').remove();
   this.userData.inventory.forEach(function(item,i){
-    inv.append(t.armoryItem(item,i));
+    inv.append('<li>'+t.armoryItem(item,i)+'</li>');
   })
+  //fucking droppable throws error when destroyed with revert, ignore it
+  $('.drop').droppable({
+    accept: '.item',
+    drop: function(e,obj) {
+      self.changeItem(this,e,obj);
+    }
+  });
+  $( ".item" ).draggable({
+    revert:true,
+    revertDuration: 500,
+  });
   this.populateArmorySelected();
 }
 
@@ -206,10 +222,40 @@ world.prototype.populateArmorySelected = function() {
     stats.find('.attack label').html('Attack:');
   }
   stats.find('.defense span').html(unit.defense);
+  var t = new template;
+  $('#armory .equip .attack .drop').html(t.armoryItem(unit.items.attack));
+  var def = t.armoryItem(unit.items.defense);
+  $('#armory .equip .defense .drop').html(def);
+  $('#armory .equip .misc1 .drop').html(t.armoryItem(unit.items.misc1));
+  $('#armory .equip .misc2 .drop').html(t.armoryItem(unit.items.misc2));
   $('#armory .progression .level span').html(unit.level);
   $('#armory .progression .xp span').html(unit.xp);
-  $('#armory .info img').attr('src',unit.img);
+  $('#armory .info img.charImg').attr('src',unit.img);
   $('#armory .info h3').html(unit.id);
+}
+
+world.prototype.changeItem = function(el,e,obj){
+  var self = this;
+  //get the item
+  var itemEl = obj.draggable;
+  var item = self.userData.inventory[$(itemEl).attr('rel')];
+  
+  var slot = $(el).attr('rel');
+  //get the active unit
+  var i = $('#armory .chars .selected').attr('rel');
+  var unit = self.userData.activeUnits[i];
+  //if the class can use the item and slot can accept the item
+  if (item.validClass.indexOf(unit.unitClass) != -1 && item.slots.indexOf(slot) != -1) {
+    //switch out if necessary
+    self.userData.inventory.remove($(itemEl).attr('rel'))
+    if (unit.items[slot]) {
+      self.userData.inventory.push(unit.items[slot]);
+    }
+    //set the item in the slot
+    unit.items[slot] = item;
+    self.saveData();
+    self.populateArmory();
+  }
 }
 
 world.prototype.bindHash = function() {

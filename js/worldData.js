@@ -1,5 +1,6 @@
 var defaultUnits = [{
     id: 'tank',
+    unitClass: 'tank',
     level: 1,
     controllable: true,
     startX: 20,
@@ -14,6 +15,12 @@ var defaultUnits = [{
       cooldown: 2000, //ms
       target: 'npc'
     },
+    items: {
+      attack: null,
+      defense: null,
+      misc1: null,
+      misc2: null
+    },
     xp: 0,
     defense: 5,
     selectKey: '1',
@@ -22,6 +29,7 @@ var defaultUnits = [{
     img: 'images/green_ship.png'
 },{
     id: 'healer',
+    unitClass: 'healer',
     level: 1,
     controllable: true,
     startX: 50,
@@ -35,6 +43,12 @@ var defaultUnits = [{
       range: 120, //px
       cooldown: 2500, //ms
       target: 'pc'
+    },
+    items: {
+      attack: null,
+      defense: null,
+      misc1: null,
+      misc2: null
     },
     xp: 0,
     defense: 5,
@@ -198,7 +212,7 @@ var planets = {
 }
 
 
-var items = [{
+var items = [/*{
   name: 'Advanced Shields',
   effect: function(entity) {
     return {defense: entity.defense+3};
@@ -206,7 +220,7 @@ var items = [{
   desc: 'Increses a ships shields by +3',
   validClass: ['healer'],
   img: 'images/items/shield.png',
-  slot: 'defense'
+  slots: ['defense']
 },
 {
   name: 'Super Advanced Shields',
@@ -216,6 +230,16 @@ var items = [{
   desc: 'Increses a ships shields by +6',
   validClass: ['healer'],
   img: 'images/items/shield.png',
-  slot: 'defense'
+  slots: ['defense']
+},*/
+{
+  name: 'Better Engine',
+  effect: function(entity) {
+    return {rate: entity.rate+100};
+  },
+  desc: 'Increses a ships speed',
+  validClass: ['healer','tank'],
+  img: 'images/items/engine.png',
+  slots: ['misc1','misc2']
 }]
 

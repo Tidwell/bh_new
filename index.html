@@ -6,6 +6,7 @@
     <link href="css/entities.css" rel="stylesheet" type="text/css" />
     
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui-1.8.17.custom.min.js"></script>
     <script type="text/javascript" src="js/lib/array.js"></script>
     <script type="text/javascript" src="js/lib/keyboard.js"></script>
     <script type="text/javascript" src="js/lib/microevent.js"></script>
@@ -51,12 +52,12 @@
         <div class="info">
           <h3></h3>
           <ul class="equip">
-            <li class="attack">Attack: <span></span></li>
-            <li class="defense">Defense: <span></span></li>
-            <li class="misc1">Misc1: <span></span></li>
-            <li class="misc2">Misc2: <span></span></li>
+            <li class="attack">Attack: <span rel="attack" class="drop"></span></li>
+            <li class="defense">Defense: <span rel="defense" class="drop"></span></li>
+            <li class="misc1">Misc1: <span rel="misc1" class="drop"></span></li>
+            <li class="misc2">Misc2: <span rel="misc2" class="drop"></span></li>
           </ul>
-          <img />
+          <img class="charImg"/>
           <ul class="stats">
             <li class="attack"><label>Attack:</label><span></span></li>
             <li class="defense">Defense:<span></span></li>
