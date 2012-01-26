@@ -1,8 +1,8 @@
 var world = function() {
+  this.dm = new dataModel;
   this.worldEl = $('#container');
-  this.userData;
+  this.userData = this.dm.getData();
   var self = this;
-  self.getData();
   self.bindDom();
   self.showHome();
   self.bindHash();
@@ -49,19 +49,6 @@ world.prototype.showHome = function() {
   $('#armory').hide();
   $('.home').hide();
 }
-world.prototype.getData = function() {
-  this.userData = $.jStorage.get('bh',{
-    activeUnits: defaultUnits,
-    reserveUnits: [],
-    map: [],
-    inventory: []
-  });
-  this.saveData();
-};
-
-world.prototype.saveData = function() {
-  $.jStorage.set('bh', this.userData);
-};
 
 world.prototype.bindDom = function() {
   var self = this;
@@ -157,17 +144,16 @@ world.prototype.destroyGame = function() {
 
 world.prototype.bindEvents = function(com) {
   var self = this;
-  com.bind('gameRenderDone',function(winner) {
-    self.showHome();  
-  });
-  com.bind('xpGain',function(amount){
-    self.userData.activeUnits.forEach(function(unit,i){
-      unit.xp+=amount;
-    });
-    self.saveData();
-    self.populateArmory();
-  })
+  com.bind('gameRenderDone',function() {self.showHome();});
+  com.bind('xpGain',function(opt){self.xpGain(opt);});
   com.bind('itemGain',function(opt){self.itemGain(opt)});
+}
+world.prototype.xpGain = function(amount){
+  var self = this;
+  self.userData.activeUnits.forEach(function(unit,i){
+    self.userData = self.dm.setUnitXP(i,unit.xp+amount);
+  });
+  self.populateArmory();
 }
 
 world.prototype.itemGain = function(number) {
@@ -175,8 +161,7 @@ world.prototype.itemGain = function(number) {
   for(var i=0;i<number;i++) {
     var rand = Math.floor(Math.random()*items.length);
     var item = items[rand];
-    self.userData.inventory.push(item);
-    self.saveData();
+    self.userData = self.dm.addInventory(item)
   }
   self.populateArmory();
 }
@@ -205,9 +190,35 @@ world.prototype.populateArmory = function() {
       self.changeItem(this,e,obj);
     }
   });
-  $( ".item" ).draggable({
-    revert:true,
-    revertDuration: 500,
+  $( ".item" ).droppable({
+    accept: '.item',
+    drop: function(e,obj,a,b) {
+      var otherIndex = $(this).attr('rel');
+      var droppedIndex = $(obj.draggable[0]).attr('rel');
+      //if we are just moving stuff in the inventory
+      if (!isNaN(Number(otherIndex)) && !isNaN(Number(droppedIndex))) {
+        self.userData = self.dm.switchItemsInventory( Number(otherIndex),Number(droppedIndex))
+        self.populateArmory();
+      }
+      else {
+        
+        var slot = droppedIndex;
+        var itemIndex = otherIndex;
+        var unitIndex = $('#armory .chars .selected').attr('rel');
+        self.userData = self.dm.setItemSlot(unitIndex,slot,itemIndex)
+
+        self.populateArmory();
+      }
+    }
+  });
+  $( ".unequip" ).droppable({
+    accept: '.equip .item',
+    drop: function(e,obj) {
+      var slot = $(obj.draggable[0]).attr('rel');
+      var unitIndex = $('#armory .chars .selected').attr('rel');
+      self.userData = self.dm.removeItemSlot(unitIndex,slot);
+      self.populateArmory();
+    }
   });
   this.populateArmorySelected();
 }
@@ -224,15 +235,21 @@ world.prototype.populateArmorySelected = function() {
   }
   stats.find('.defense span').html(unit.defense);
   var t = new template;
-  $('#armory .equip .attack .drop').html(t.armoryItem(unit.items.attack));
-  var def = t.armoryItem(unit.items.defense);
+  $('#armory .equip .attack .drop').html(t.armoryItem(unit.items.attack,'attack'));
+  var def = t.armoryItem(unit.items.defense,'defense');
   $('#armory .equip .defense .drop').html(def);
-  $('#armory .equip .misc1 .drop').html(t.armoryItem(unit.items.misc1));
-  $('#armory .equip .misc2 .drop').html(t.armoryItem(unit.items.misc2));
+  $('#armory .equip .misc1 .drop').html(t.armoryItem(unit.items.misc1,'misc1'));
+  $('#armory .equip .misc2 .drop').html(t.armoryItem(unit.items.misc2,'misc2'));
   $('#armory .progression .level span').html(unit.level);
   $('#armory .progression .xp span').html(unit.xp);
   $('#armory .info img.charImg').attr('src',unit.img);
   $('#armory .info h3').html(unit.id);
+  $( ".item" ).draggable({
+    revert:true,
+    revertDuration: 500,
+  });
+
+
 }
 
 world.prototype.changeItem = function(el,e,obj){
@@ -243,17 +260,14 @@ world.prototype.changeItem = function(el,e,obj){
   
   var slot = $(el).attr('rel');
   //get the active unit
-  var i = $('#armory .chars .selected').attr('rel');
-  var unit = self.userData.activeUnits[i];
+  var unitIndex = $('#armory .chars .selected').attr('rel');
+  var unit = self.userData.activeUnits[unitIndex];
   //if the class can use the item and slot can accept the item
-  if (item.validClass.indexOf(unit.unitClass) != -1 && item.slots.indexOf(slot) != -1 && !unit.items[slot]) {
-    //switch out if necessary
-    self.userData.inventory.remove($(itemEl).attr('rel'))
-    //set the item in the slot
-    unit.items[slot] = item;
-    self.saveData();
-    self.populateArmory();
-  }
+  
+  //set the item in the slot
+  var itemIndex = $(itemEl).attr('rel');
+  self.userData = self.dm.setItemSlot(unitIndex,slot,itemIndex)
+  self.populateArmory();
 }
 
 world.prototype.bindHash = function() {

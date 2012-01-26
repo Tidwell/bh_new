@@ -105,7 +105,6 @@
 #armory .info .equip li {
   display: block;
   width: 120px;
-  overflow: hidden;
   margin: 5px 0;
   line-height: 32px;
 }
@@ -180,9 +179,11 @@
   width: 340px;
   height: 200px;
 }
+#armory .unequip li {
+  float: left;
+}
 #armory .unequip .item {
   margin: 5px;
-  float: left;
 }
 
 #armory .item {
