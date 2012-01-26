@@ -28,7 +28,6 @@ dataModel.prototype.setItemSlot = function(unitIndex,slot,itemIndex) {
   return this.saveData();
 }
 dataModel.prototype.removeItemSlot = function(unitIndex,slot) {
-  console.log(unitIndex,slot)
   this.userData.inventory.push(this.userData.activeUnits[unitIndex].items[slot]);
   this.userData.activeUnits[unitIndex].items[slot] = null;
   return this.saveData();
@@ -41,6 +40,25 @@ dataModel.prototype.switchItemsInventory = function(index1,index2) {
   return this.saveData();
 }
 
+dataModel.prototype.populateItems = function() {
+  var self = this;
+  //put the item's effects back since they dont serialize
+  var sortedFunc = {};
+  items.forEach(function(item,i){
+    sortedFunc[item.name] = item.effect;
+  })
+  this.userData.inventory.forEach(function(item,i){
+    self.userData.inventory[i].effect = sortedFunc[item.name];
+  })
+
+  this.userData.activeUnits.forEach(function(unit,i){
+    for (slot in unit.items) {
+      if (unit.items.hasOwnProperty(slot) && unit.items[slot]) {
+        unit.items[slot].effect = sortedFunc[unit.items[slot].name];
+      }
+    }
+  })
+}
 dataModel.prototype.getData = function() {
   this.userData = $.jStorage.get('bh',{
     activeUnits: defaultUnits,
@@ -48,6 +66,7 @@ dataModel.prototype.getData = function() {
     map: [],
     inventory: []
   });
+  this.populateItems();
   return this.saveData();
 };
 

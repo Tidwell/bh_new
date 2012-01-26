@@ -227,6 +227,8 @@ world.prototype.populateArmorySelected = function() {
   var stats = $('#armory .stats');
   var i = $('#armory .chars .selected').attr('rel');
   var unit = this.userData.activeUnits[i];
+  var unit = new entity(unit);
+  unit.applyItems();
   stats.find('.attack span').html(Math.abs(unit.weapon.damage));
   if (unit.weapon.damage < 0) {
     stats.find('.attack label').html('Heals:');

@@ -1,6 +1,9 @@
 var entity = function(opt) {
-  this._id = opt.id || Math.floor(Math.random()*100000),
-  this.id = opt.id || this._id,
+  this._id = opt.id || Math.floor(Math.random()*100000);
+  this.xp = opt.xp || 0;
+  this.level = opt.level || 0;
+  this.img = opt.img || '';
+  this.id = opt.id || this._id;
   this.com = opt.communicator;
   this.dead = false;
   this.type = opt.type || undefined;
@@ -39,6 +42,7 @@ var entity = function(opt) {
     cooldown: 0,
     type: ''
   };
+  this.items = opt.items || {};
   this.defense = opt.defense || 0;
   //combat state
   this.weaponOnCooldown = false;
@@ -298,7 +302,21 @@ entity.prototype.populateAbilityTarget = function(opt) {
   }
 }
 
+entity.prototype.applyItems = function() {
+  for (slot in this.items) {
+    if (this.items.hasOwnProperty(slot) && this.items[slot]) {
+      var mods = this.items[slot].effect(this);
+      for (mod in mods) {
+        if (mods.hasOwnProperty(mod) && mods[mod]) {
+          this[mod] = mods[mod];
+        }
+      }
+    }
+  }
+}
+
 entity.prototype.init = function() {
   //message passing events
   this.bindEvents();
+  this.applyItems();
 }
