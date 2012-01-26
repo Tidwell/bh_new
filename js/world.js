@@ -17,6 +17,7 @@ world.prototype.nav = function(hash) {
       self.showArmory();
       break;
     case 'home':
+    case '':
       self.showHome();
       break;
   default:
