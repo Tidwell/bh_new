@@ -177,8 +177,12 @@ entity.prototype.behaviors = function(t) {
 entity.prototype.updateTargetPos = function() {
   var self = this;
   //dont update the target if we havent gotten anything back from them yet
-  if (typeof self.abilityTarget != 'object');
-  self.setAbilityTarget(self.abilityTarget.id);
+  if (typeof self.abilityTarget != 'object') {
+    return;
+  };
+  //self.setAbilityTarget(self.abilityTarget.id);
+  this.com.trigger('requestPosition',{id: self.abilityTarget.id, fromId: self.id});
+  this.disableAutopilot = false;
   self.turnOnAutopilot();
 }
 //set the target move-to coordinates to the same as the ability target
@@ -238,7 +242,8 @@ entity.prototype.respondPosition = function(opt) {
       messageToId: opt.fromId,
       pctype: self.type,
       height: self.height,
-      width: self.width
+      width: self.width,
+      self: self
     })
   }
 }
@@ -250,8 +255,9 @@ entity.prototype.takeDamage = function(opt) {
   }
   self.health = self.health - dmg;
   if (self.health > self.maxHealth) {self.health = self.maxHealth;}
-  if (!self.abiityTarget) {
-    
+  if (!self.abilityTarget && opt.self.type == self.weapon.target) {
+    self.setAbilityTarget(opt.self.id);
+    self.attacking = true;
   }
 }
 entity.prototype.removeEntity = function(opt) {
@@ -259,6 +265,7 @@ entity.prototype.removeEntity = function(opt) {
   //strip the ability target if its there
   if (self.abilityTarget && self.abilityTarget.id == opt.id ||
        self.abilityTarget) {
+    console.log('destory')
      self.abilityTarget = undefined;
    }
    if (!self.validTargets){return;}
@@ -286,6 +293,7 @@ entity.prototype.attack = function() {
 entity.prototype.setAbilityTarget = function(entityId) {
   if (!entityId || entityId==this.id) {return;}
   var self = this;
+  //console.log(self.id+' set to',entityId)
   this.abilityTarget = entityId;
   this.com.trigger('requestPosition',{id: entityId, fromId: self.id});
   this.disableAutopilot = false;
@@ -298,7 +306,12 @@ entity.prototype.populateAbilityTarget = function(opt) {
   if ((opt.messageFromId==targetId) && opt.messageToId == self.id) {
     opt.id = opt.messageFromId;
     delete opt.messageFromId;
+    //console.log(self.id+' set to',opt)
+    if (!opt) {
+      console.log('set null')
+    }
     self.abilityTarget = opt;
+    //console.log('target set',opt)
   }
 }
 
