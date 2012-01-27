@@ -223,55 +223,55 @@ entity.prototype.AITarget = function() {
     this.setAbilityTarget(id);
   }
 };
-
-entity.prototype.bindEvents = function() {
+entity.prototype.unselect = function() {
   var self = this;
-  this.com.bind('newSelect', function() {
-    self.selected = false;
-    self.com.trigger('unselected', {entity: self})
-  });
-  self.com.bind('requestPosition', function(opt){
-    if (opt.id == self.id) {
-      self.com.trigger('tellPosition', {
-        x: self.x,
-        y: self.y,
-        messageFromId: self.id,
-        messageToId: opt.fromId,
-        pctype: self.type,
-        height: self.height,
-        width: self.width
-      })
-    }
-  });
-  self.com.bind('tellPosition', function(opt){
-    self.populateAbilityTarget(opt);
-  });
-  self.com.bind('dmgDealt',function(opt){
-    if (opt.id == self.id) {
-      var dmg = opt.dmg;
-      if (dmg > 0) {
-        dmg = (dmg-self.defense < 0) ? 0 : (dmg-self.defense);
-      }
-      self.health = self.health - dmg;
-      if (self.health > self.maxHealth) {self.health = self.maxHealth;}
-    }
-  });
-  self.com.bind('removeEntity', function(opt) {
-    if (self.abilityTarget && self.abilityTarget.id == opt.id ||
-        self.abilityTarget) {
-      self.abilityTarget = undefined;
-    }
-    if (!self.validTargets){return;}
-    var toRemove;
-    self.validTargets.forEach(function(target,i){
-      if (target == opt.id) {
-        toRemove = i;
-      }
-    });
-    if (toRemove != undefined){
-      self.validTargets.remove(toRemove);
-    }
-  });
+  self.selected = false;
+  self.com.trigger('unselected', {entity: self})
+}
+entity.prototype.respondPosition = function(opt) {
+  var self = this;
+  if (opt.id == self.id) {
+    self.com.trigger('tellPosition', {
+      x: self.x,
+      y: self.y,
+      messageFromId: self.id,
+      messageToId: opt.fromId,
+      pctype: self.type,
+      height: self.height,
+      width: self.width
+    })
+  }
+}
+entity.prototype.takeDamage = function(opt) {
+  var self = this;
+  var dmg = opt.dmg;
+  if (dmg > 0) {
+    dmg = (dmg-self.defense < 0) ? 0 : (dmg-self.defense);
+  }
+  self.health = self.health - dmg;
+  if (self.health > self.maxHealth) {self.health = self.maxHealth;}
+  if (!self.abiityTarget) {
+    
+  }
+}
+entity.prototype.removeEntity = function(opt) {
+  var self = this;
+  //strip the ability target if its there
+  if (self.abilityTarget && self.abilityTarget.id == opt.id ||
+       self.abilityTarget) {
+     self.abilityTarget = undefined;
+   }
+   if (!self.validTargets){return;}
+   //strip the valid targets on AI entitys
+   var toRemove;
+   self.validTargets.forEach(function(target,i){
+     if (target == opt.id) {
+       toRemove = i;
+     }
+   });
+   if (toRemove != undefined){
+     self.validTargets.remove(toRemove);
+   }
 }
 entity.prototype.makeSelected = function() {
   this.com.trigger('newSelect',{entity:this});
@@ -314,7 +314,14 @@ entity.prototype.applyItems = function() {
     }
   }
 }
-
+entity.prototype.bindEvents = function() {
+  var self = this;
+  this.com.bind('newSelect', function() {self.unselect()});
+  self.com.bind('requestPosition', function(opt){self.respondPosition(opt)});
+  self.com.bind('tellPosition', function(opt){self.populateAbilityTarget(opt);});
+  self.com.bind('dmgDealt',function(opt){if (opt.id == self.id) {self.takeDamage(opt);}});
+  self.com.bind('removeEntity', function(opt) {self.removeEntity(opt)});
+}
 entity.prototype.init = function() {
   //message passing events
   this.bindEvents();
