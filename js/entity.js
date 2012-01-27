@@ -111,6 +111,7 @@ entity.prototype.setMoveTarget = function(x2,y2) {
 
 entity.prototype.initMove = function(newX, newY) {
   this.disableAutopilot = true;
+  this.abilityTarget = null;
   this.setMoveTarget(newX, newY);
 }
 
@@ -143,7 +144,7 @@ entity.prototype.behaviors = function(t) {
   var self = this;
   if (!self.controllable) { self.AITarget(); }
   //we have a target
-  if (this.attacking && typeof this.abilityTarget == 'object') {
+  if (this.attacking && this.abilityTarget && typeof this.abilityTarget == 'object') {
     //see if the target is in range
     var distance = this.distance(this.x,this.y,this.abilityTarget.x,this.abilityTarget.y);
     //in range
@@ -265,7 +266,6 @@ entity.prototype.removeEntity = function(opt) {
   //strip the ability target if its there
   if (self.abilityTarget && self.abilityTarget.id == opt.id ||
        self.abilityTarget) {
-    console.log('destory')
      self.abilityTarget = undefined;
    }
    if (!self.validTargets){return;}
@@ -293,7 +293,6 @@ entity.prototype.attack = function() {
 entity.prototype.setAbilityTarget = function(entityId) {
   if (!entityId || entityId==this.id) {return;}
   var self = this;
-  //console.log(self.id+' set to',entityId)
   this.abilityTarget = entityId;
   this.com.trigger('requestPosition',{id: entityId, fromId: self.id});
   this.disableAutopilot = false;
@@ -302,16 +301,11 @@ entity.prototype.setAbilityTarget = function(entityId) {
 //ability target
 entity.prototype.populateAbilityTarget = function(opt) {
   var self = this;
-  var targetId = (typeof self.abilityTarget == 'object') ? self.abilityTarget.id : self.abilityTarget;
+  var targetId = (self.abilityTarget && typeof self.abilityTarget == 'object') ? self.abilityTarget.id : self.abilityTarget;
   if ((opt.messageFromId==targetId) && opt.messageToId == self.id) {
     opt.id = opt.messageFromId;
     delete opt.messageFromId;
-    //console.log(self.id+' set to',opt)
-    if (!opt) {
-      console.log('set null')
-    }
     self.abilityTarget = opt;
-    //console.log('target set',opt)
   }
 }
 

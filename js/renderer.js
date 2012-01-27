@@ -172,8 +172,9 @@ renderer.prototype.bindDom = function(entity) {
   //bind the click event to move
   $(self.stage).click(function(e) {
     if (!self.selected) { return; }
-    //we dont want to move, we want to target if they are an enemy
-    if ($(e.srcElement).hasClass('enemy') && self.attacking){ return; }
+    //we dont want to move, we want to target if they are a valid target
+    if ($(e.srcElement).hasClass('enemy') && self.attacking && self.weapon.target == 'npc'){ return; }
+    if ($(e.srcElement).parent().hasClass('friendly') && self.attacking && self.weapon.target == 'pc'){ return; }
     //otherwise we are moving
     var s = self.stage;
     var newX = e.pageX-s.offset().left;

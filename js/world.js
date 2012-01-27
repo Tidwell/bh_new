@@ -98,7 +98,7 @@ world.prototype.startGame = function(instance) {
     //copy so we dont muck up the one storing the user's data
     var unit = $.extend(true,{},unit);
     //make dom els
-    stage.append(t.ship(unit.id));
+    stage.append(t.ship(unit.id+' friendly'));
     stage.find('.actionbars').append(t.actionbar(unit.id));
     stage.find('.chars').append(t.charInfo(unit.id,unit.img));
     //set unit dom info
