@@ -58,156 +58,49 @@ var defaultUnits = [{
     img: 'images/green_healer.png'
 }];
 
-
+var _e = new entities;
+_e.setValidTargets(['tank','healer']);
 var planets = {
   planet1: {
     background: 'images/backgrounds/space4.jpg',
-    enemies: [{
-      id: 'bx',
-      controllable: false,
-      startX: 400,
-      startY: 300,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['tank','healer'],
-      type: 'npc'
-    }]
+    waves: [[_e.get({entityName: 'attack1',id: 'bx',startX: 800, startY: 220})],
+            [_e.get({entityName: 'attack1',id: 'bx2',startX: 800, startY: 220})],
+            [_e.get({entityName: 'attack1',id: 'bx3',startX: 800, startY: 220})]
+           ]
   },
   planet2: {
     background: 'images/backgrounds/space2.jpg',
-    enemies: [{
-      id: 'bx',
-      controllable: false,
-      startX: 400,
-      startY: 300,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['tank','healer'],
-      type: 'npc'
-    },{
-      id: 'bx2',
-      controllable: false,
-      startX: 430,
-      startY: 220,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['tank','healer'],
-      type: 'npc'
-    }]
+    waves:[[_e.get({entityName: 'attack1', id: 'bx',startX: 800, startY: 320}),
+            _e.get({entityName: 'attack1', id: 'bx2', startX: 800, startY: 120})
+           ],
+           [_e.get({entityName: 'attack1', id: 'bx3',startX: 800, startY: 320}),
+            _e.get({entityName: 'attack1', id: 'bx4', startX: 800, startY: 120})
+           ]
+          ]
   },
   planet3: {
     background: 'images/backgrounds/space3.jpg',
-    enemies: [{
-      id: 'bx',
-      controllable: false,
-      startX: 400,
-      startY: 300,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['tank','healer'],
-      type: 'npc'
-    },{
-      id: 'bx2',
-      controllable: false,
-      startX: 430,
-      startY: 220,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['tank','healer'],
-      type: 'npc'
-    },{
-      id: 'bx3',
-      controllable: false,
-      startX: 130,
-      startY: 20,
-      height: 35, //px
-      width: 34, //px
-      rate: 20, //px/s
-      health: 100,
-      controllable: false,
-      weapon: {
-        damage: 10,
-        range: 50, //px
-        cooldown: 1500, //ms
-        target: 'pc'
-      },
-      defense: 0,
-      validTargets: ['tank','healer'],
-      type: 'npc'
-    }]
+    waves: [[_e.get({entityName: 'attack1', id: 'bx',startX: 800, startY: 320}),
+              _e.get({entityName: 'attack1', id: 'bx2', startX: 800, startY: 220}),
+              _e.get({entityName: 'attack1', id: 'bx3', startX: -70, startY: 120})
+            ]]
   },
   planet4: {
     background: 'images/backgrounds/space5.jpg',
-    enemies: [{
-      id: 'bx',
-      controllable: false,
+    waves: [[_e.get({
+        entityName: 'attack1',
+        id: 'bx', 
         startX: 200,
         startY: 200,
-        height: 35, //px
-        width: 34, //px
         rate: 80, //px/s
         health: 200,
-        controllable: false,
         weapon: {
           damage: 15,
           range: 80, //px
           cooldown: 1200, //ms
           target: 'pc'
         },
-        defense: 0,
-        validTargets: ['tank','healer'],
-        type: 'npc'
-    }],
+    })]],
   }
 }
 

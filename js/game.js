@@ -3,10 +3,18 @@ var game = function(opt) {
   this.entities = [];
   this.active = false;
   this.stage = opt.stage;
+  this.numWaves = opt.numWaves;
+  this.wave = 0;
 }
 game.prototype.addEntity = function(entity) {
   entity.com = this.com;
+  //inititalize each of the entities
+  entity.stage = this.stage;
   this.entities.push(entity);
+  if (this.active) {
+    entity.init();
+    this.com.trigger('newEntity',entity)
+  }
 };
 
 game.prototype.removeEntity = function(opt){
@@ -32,10 +40,9 @@ game.prototype.loop = function() {
     self.entities.forEach(function(entity) {
       entity.update(t);
     });
-    setTimeout(function() {self.loop()}, 20);
+    setTimeout(function() {self.loop()}, 25);
   }
 };
-
 game.prototype.checkOver = function() {
   var self = this;
   var hasPlayers = false;
@@ -52,11 +59,14 @@ game.prototype.checkOver = function() {
     self.active = false;
     self.com.trigger('gameOver','npc');
   }
-  if (hasPlayers && !hasEnemies) {
+  if (hasPlayers && !hasEnemies && self.wave==self.numWaves) {
     self.active = false;
     self.com.trigger('xpGain',10);
     self.com.trigger('itemGain',1);
     self.com.trigger('gameOver','pc');
+  }
+  if (hasPlayers && !hasEnemies && self.wave != self.numWaves) {
+    self.com.trigger('nextWave',{})
   }
 }
 game.prototype.gameOver = function() {
@@ -64,16 +74,13 @@ game.prototype.gameOver = function() {
 }
 game.prototype.init = function() {
   var self = this;
-  //inititalize each of the entities
-  this.entities.forEach(function(entity) {
-    entity.stage = self.stage;
-    entity.init();
-  });
   //when we get a destruction notice from an entity, we need to
   //remove it from our array
   this.com.bind('removeEntity', function(opt) {self.removeEntity(opt)});
   this.active = true;
-  
+  this.entities.forEach(function(entity){
+    entity.init();
+  })
   /***Inititalize the Main Game Loop***/
   setTimeout(function() {self.loop()}, 20);
 };

@@ -114,6 +114,7 @@ renderer.prototype.bindEvents = function() {
   this.com.bind('gameOver',function(winner){self.gameOver(winner);});
   this.com.bind('unselected',function(opt){self.unselectEntity(opt.entity);});
   this.com.bind('dmgDealt',function(opt){self.renderLaser(opt);});
+  this.com.bind('newEntity',function(entity){self.initEntity(entity);});
 }
 
 renderer.prototype.gameOver = function(winner) {
@@ -239,22 +240,26 @@ renderer.prototype.renderParticles = function() {
   }
 }
 
+renderer.prototype.initEntity = function(entity){
+  var self = this;
+  entity.el.parent().width(entity.width).height(entity.height);
+  entity.el.attr('rel',entity.id);
+  if (entity.controllable) {
+    self.bindDom(entity);
+  }
+  if(entity.actionbarEl) {
+    entity.actionbarEl.find('.attack .bind').html(entity.attackKey);
+  }
+  if (entity.selectKey) {
+    entity.infoEl.find('.bind').html(entity.selectKey);
+  }
+}
 renderer.prototype.init = function() {
   var self = this;
   self.bindEvents();
   self.loadCanvas();
   self.game.entities.forEach(function(entity) {
-      entity.el.parent().width(entity.width).height(entity.height);
-      entity.el.attr('rel',entity.id);
-      if (entity.controllable) {
-        self.bindDom(entity);
-      }
-      if(entity.actionbarEl) {
-        entity.actionbarEl.find('.attack .bind').html(entity.attackKey);
-      }
-      if (entity.selectKey) {
-        entity.infoEl.find('.bind').html(entity.selectKey);
-      }
+      self.initEntity(entity)
   });
   self.game.stage.show();
   /***Inititalize the Main Render Loop***/

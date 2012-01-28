@@ -80,8 +80,8 @@ world.prototype.bindDom = function() {
 world.prototype.startGame = function(instance) {
   //copy the options so we dont muck with them
   var instance = $.extend(true,{}, instance);
-  var enemies = instance.enemies;
   var self = this;
+  self.instance = instance;
   var t = new template;
   $('body').append(t.stage());
   $('.stage .home').show();
@@ -92,7 +92,7 @@ world.prototype.startGame = function(instance) {
   self.worldEl.hide();
     
   var com = new communicator();
-  self.game = new game({stage: stage, com: com});
+  self.game = new game({stage: stage, com: com,numWaves: instance.waves.length});
   var bh = self.game;
   self.userData.activeUnits.forEach(function(unit,i){
     //copy so we dont muck up the one storing the user's data
@@ -109,22 +109,27 @@ world.prototype.startGame = function(instance) {
     bh.addEntity(new entity(unit))
   })
   
-  enemies.forEach(function(unit,i){
-    //make dom els
-    stage.append(t.ship(unit.id+' enemy'));
-    
-    //set unit dom info
-    unit.domEl = $('.entity.'+unit.id)
-    //add to game
-    bh.addEntity(new entity(unit))
-  })
-  
   self.bindEvents(com);
   self.rend = new renderer({game: bh});
   bh.init();
   self.rend.init();
   location = location.hash.replace(location.hash,'#game');
 };
+
+world.prototype.nextWave = function() {
+  var self = this;
+  var t = new template;
+  self.instance.waves[self.game.wave].forEach(function(unit,i){
+    //make dom els
+    self.stage.append(t.ship(unit.id+' enemy'));
+    
+    //set unit dom info
+    unit.domEl = $('.entity.'+unit.id)
+    //add to game
+    self.game.addEntity(new entity(unit))
+  })
+  this.game.wave++;
+}
 
 world.prototype.destroyGame = function() {
   var self = this;
@@ -147,6 +152,7 @@ world.prototype.bindEvents = function(com) {
   com.bind('gameRenderDone',function() {self.showHome();});
   com.bind('xpGain',function(opt){self.xpGain(opt);});
   com.bind('itemGain',function(opt){self.itemGain(opt)});
+  com.bind('nextWave',function(){self.nextWave();})
 }
 world.prototype.xpGain = function(amount){
   var self = this;
