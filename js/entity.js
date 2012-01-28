@@ -56,6 +56,8 @@ var entity = function(opt) {
   this.attackKey = opt.attackKey || false;
   //AI
   this.validTargets = opt.validTargets || false;
+  this.threatTable = {};
+  this.firstHitThreatMultiplier = 2;
 };
 
 entity.prototype.update = function(t) {
@@ -251,14 +253,47 @@ entity.prototype.respondPosition = function(opt) {
 entity.prototype.takeDamage = function(opt) {
   var self = this;
   var dmg = opt.dmg;
+  //calculate dmg
   if (dmg > 0) {
     dmg = (dmg-self.defense < 0) ? 0 : (dmg-self.defense);
   }
+  //calcualte threat for use if npc
+  var threat = dmg;
+  if (self.health == self.maxHealth) {
+    threat = threat*self.firstHitThreatMultiplier;
+  }
+  //apply dmg
   self.health = self.health - dmg;
+  
+  //make sure we didnt go over max health if healing
   if (self.health > self.maxHealth) {self.health = self.maxHealth;}
+  
+  //autoattack
   if (!self.abilityTarget && opt.self.type == self.weapon.target) {
     self.setAbilityTarget(opt.self.id);
     self.attacking = true;
+  }
+  //if enemy apply threat and check if need to retarget
+  if (self.type == 'npc') {
+    self.threatTable[opt.self.id] = self.threatTable[opt.self.id]
+      ? self.threatTable[opt.self.id]+threat
+      : threat;
+    self.checkThreatTarget();
+  }
+}
+entity.prototype.checkThreatTarget = function() {
+  var highestThreat = 0;
+  var highestThreatId = '';
+  for (unit in this.threatTable) {
+    if (this.threatTable.hasOwnProperty(unit)) {
+      if (this.threatTable[unit] > highestThreat) {
+        highestThreat = this.threatTable[unit];
+        highestThreatId = unit;
+      }
+    }
+  }
+  if (highestThreatId != this.abilityTarget.id) {
+    this.setAbilityTarget(highestThreatId);
   }
 }
 entity.prototype.removeEntity = function(opt) {

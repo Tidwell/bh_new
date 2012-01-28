@@ -56,6 +56,35 @@ var defaultUnits = [{
     attackKey: 'a',
     type: 'pc',
     img: 'images/green_healer.png'
+},{
+    id: 'dps',
+    unitClass: 'dps',
+    level: 1,
+    controllable: true,
+    startX: 20,
+    startY: 350,
+    height: 39, //px//
+    width: 33, //px
+    rate: 200, //px/s
+    health: 100,
+    weapon: {
+      damage: 20,
+      range: 130, //px
+      cooldown: 2200, //ms
+      target: 'npc'
+    },
+    items: {
+      attack: null,
+      defense: null,
+      misc1: null,
+      misc2: null
+    },
+    xp: 0,
+    defense: 0,
+    selectKey: '3',
+    attackKey: 'a',
+    type: 'pc',
+    img: 'images/green_dps.png'
 }];
 
 var _e = new entities;

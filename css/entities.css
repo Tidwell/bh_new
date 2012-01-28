@@ -19,6 +19,14 @@
   background: url('../images/red_ship.png');
 }
 
+.entity.dps, .entity.dps .img {
+  width: 33px;
+  height: 39px;
+}
+.entity.dps .img {
+  background: url('../images/green_dps.png');
+}
+
 .actionbars .attack {
   background: url('../images/attack.png');
 }

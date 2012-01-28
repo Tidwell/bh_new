@@ -33,7 +33,7 @@ entities.prototype.entities = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['tank','healer'],
+      validTargets: ['tank','healer','dps'],
       type: 'npc'
     }
 }
