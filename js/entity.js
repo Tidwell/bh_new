@@ -383,7 +383,7 @@ entity.prototype.bindEvents = function() {
       clearInterval(updateTargetTime);
       updateTargetTime = setInterval(function(){
         self.updateTargetPos();
-      },500)
+      },40)
     }
   });
 }
