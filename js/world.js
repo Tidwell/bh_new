@@ -119,12 +119,22 @@ world.prototype.startGame = function(instance) {
 world.prototype.nextWave = function() {
   var self = this;
   var t = new template;
+  var targetList = [];
+  self.game.entities.forEach(function(entity,i){
+    if (entity.type == 'pc') {
+      targetList.push(entity.id);
+    }
+  })
   self.instance.waves[self.game.wave].forEach(function(unit,i){
     //make dom els
     self.stage.append(t.ship(unit.id+' enemy'));
     
     //set unit dom info
-    unit.domEl = $('.entity.'+unit.id)
+    unit.domEl = $('.entity.'+unit.id);
+    
+    if (unit.targetingType = 'allRandom') {
+      unit.validTargets = targetList;
+    }
     //add to game
     self.game.addEntity(new entity(unit))
   })

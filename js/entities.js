@@ -24,7 +24,7 @@ entities.prototype.entities = {
       height: 35, //px
       width: 34, //px
       rate: 60, //px/s
-      health: 1000,
+      health: 150,
       controllable: false,
       weapon: {
         damage: 10,
@@ -33,7 +33,7 @@ entities.prototype.entities = {
         target: 'pc'
       },
       defense: 0,
-      validTargets: ['tank','healer','dps'],
+      targetingType: 'allRandom',
       type: 'npc'
     }
 }
