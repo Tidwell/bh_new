@@ -1,7 +1,7 @@
 var renderer = function(opt) {
   this.game = opt.game;
   this.com = opt.game.com;
-  this.kb = false;
+  this.kb = {};
   this.canvas;
   this.ctx;
   this.activeParticles = [];
@@ -77,12 +77,21 @@ renderer.prototype.selectEntity = function(entity) {
   entity.el.addClass('selected');
   entity.infoEl.addClass('selected');
   entity.actionbarEl.addClass('selected');
-  if (entity.attackKey) {
-    if (self.kb) {
-      self.kb.clear();
-      self.kb = undefined;
+  for (ability in entity.abilities) {
+    if (entity.abilities.hasOwnProperty(ability)) {
+      self.bindAbilityKey(entity,ability);  
     }
-    self.kb = KeyboardJS.bind.key(entity.attackKey, function(){}, function(){ entity.attack();});
+  }
+}
+renderer.prototype.bindAbilityKey = function(entity,abilityName) {
+  var self = this;
+  var key = entity.abilities[abilityName].key;
+  if (key) {
+    if (self.kb[key]) {
+      self.kb[key].clear();
+      self.kb[key] = undefined;
+    }
+    self.kb[key] = KeyboardJS.bind.key(key, function(){}, function(){ entity.ability(abilityName);});
   }
 }
 renderer.prototype.unselectEntity = function(entity) {
@@ -125,7 +134,11 @@ renderer.prototype.bindEvents = function() {
 renderer.prototype.gameOver = function(winner) {
   var self = this;
   if (self.kb) {
-      self.kb.clear();
+      for (prop in self.kb) {
+        if (self.kb[prop]) {
+          self.kb[prop].clear();  
+        }
+      }
   }
   self.game.entities.forEach(function(entity) {
     if (entity.selectKey) {
@@ -253,7 +266,11 @@ renderer.prototype.initEntity = function(entity){
     self.bindDom(entity);
   }
   if(entity.actionbarEl) {
-    entity.actionbarEl.find('.attack .bind').html(entity.attackKey);
+    for (ability in entity.abilities) {
+      if (entity.abilities.hasOwnProperty(ability)) {
+        entity.actionbarEl.find('.'+ability+' .bind').html(entity.abilities[ability].key);  
+      }
+    }
   }
   if (entity.selectKey) {
     entity.infoEl.find('.bind').html(entity.selectKey);

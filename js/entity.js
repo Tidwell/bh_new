@@ -1,4 +1,5 @@
 var entity = function(opt) {
+  var self = this;
   this._id = opt.id || Math.floor(Math.random()*100000);
   this.xp = opt.xp || 0;
   this.level = opt.level || 0;
@@ -53,13 +54,22 @@ var entity = function(opt) {
   this.controllable = opt.controllable || false;
   //game controls
   this.selectKey = opt.selectKey || false;
-  this.attackKey = opt.attackKey || false;
   //AI
   this.validTargets = opt.validTargets || false;
   this.threatTable = {};
   this.firstHitThreatMultiplier = 2;
+  var abilities = $.extend(true,{
+    attack: {
+      key: opt.attackKey || false,
+      effect:function() {
+        self.attack();
+      }
+  }},opt.abilities);
+  this.abilities = abilities;
 };
-
+entity.prototype.ability = function(id) {
+  return this.abilities[id].effect();
+}
 entity.prototype.update = function(t) {
   if (this.health <= 0 && !this.dead) {
     this.destroy();
