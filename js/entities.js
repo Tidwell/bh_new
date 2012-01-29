@@ -24,7 +24,7 @@ entities.prototype.entities = {
       height: 35, //px
       width: 34, //px
       rate: 60, //px/s
-      health: 100,
+      health: 1000,
       controllable: false,
       weapon: {
         damage: 10,

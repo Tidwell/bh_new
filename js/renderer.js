@@ -67,6 +67,10 @@ renderer.prototype.renderEntityHealthBars = function(entity) {
   }
 }
 
+renderer.prototype.cooldownPop = function() {
+  
+}
+
 renderer.prototype.selectEntity = function(entity) {
   var self = this;
   if (!entity.controllable){ return;}
@@ -115,6 +119,7 @@ renderer.prototype.bindEvents = function() {
   this.com.bind('unselected',function(opt){self.unselectEntity(opt.entity);});
   this.com.bind('dmgDealt',function(opt){self.renderLaser(opt);});
   this.com.bind('newEntity',function(entity){self.initEntity(entity);});
+  this.com.bind('onCooldown',function(opt){self.cooldown(opt);});
 }
 
 renderer.prototype.gameOver = function(winner) {
@@ -252,6 +257,18 @@ renderer.prototype.initEntity = function(entity){
   }
   if (entity.selectKey) {
     entity.infoEl.find('.bind').html(entity.selectKey);
+  }
+}
+renderer.prototype.cooldown = function(opt) {
+  if (opt.type == 'pc') {
+    var t = new template;
+    var id = Math.floor(Math.random()*9000)+opt.id;
+    var el = $('.actionbars .'+opt.id+' .'+opt.ability)
+    el.append(t.cooldown(id,40,40));
+    var cd = new cooldownTimer({
+      id: id,
+      cooldown: opt.cooldown
+    })
   }
 }
 renderer.prototype.init = function() {

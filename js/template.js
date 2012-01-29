@@ -25,3 +25,6 @@ template.prototype.armoryItem = function(item,i) {
 template.prototype.armoryDesc = function(name,desc,img,users,slot) {
   return '<h2>'+name+'</h2><img src="'+img+'" /><p>'+desc+'</p><p>Usable by: '+users+'</p><p>Slot: '+slot+'</p>';
 }
+template.prototype.cooldown = function(id,w,h) {
+  return '<canvas class="cooldown" id="'+id+'" width="'+w+'" height="'+h+'"></canvas>'
+}

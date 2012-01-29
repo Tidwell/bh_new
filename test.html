@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <link href="css/reset.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/lib/jquery-ui-1.8.17.custom.min.js"></script>
+    <script type="text/javascript" src="js/lib/array.js"></script>
+	<script type="text/javascript" src="js/template.js"></script>
+	<script type="text/javascript" src="js/cooldown.js"></script>
+	    <link href="css/stage.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		$(function() {
+			setTimeout(function() {
+			var t = new template;
+			$('body').append(t.cooldown('c'));
+			var c = new cooldownTimer({id:'c',cooldown:'9000'});
+			},1500);
+		})
+	</script>
+  </head>
+  <body class="actionbars" style="background: url('images/backgrounds/space2.jpg');">
+  </body>
+</html>

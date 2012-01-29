@@ -219,6 +219,7 @@ entity.prototype.fireWeapon = function() {
     
     self.weaponOnCooldown = true;
     self.com.trigger('dmgDealt',{id: self.abilityTarget.id, dmg: self.weapon.damage,self:self,target:self.abilityTarget});
+    self.com.trigger('onCooldown',{id: self.id, ability: 'attack', cooldown: self.weapon.cooldown,type:self.type});
     setTimeout(function(){
       self.weaponOnCooldown = false;
     },self.weapon.cooldown);
