@@ -315,6 +315,9 @@ entity.prototype.checkThreatTarget = function() {
 }
 entity.prototype.removeEntity = function(opt) {
   var self = this;
+  if (self.threatTable[opt.id]) {
+    delete self.threatTable[opt.id];
+  }
   //strip the ability target if its there
   if (self.abilityTarget && self.abilityTarget.id == opt.id ||
        self.abilityTarget) {
