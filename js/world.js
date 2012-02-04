@@ -16,6 +16,9 @@ world.prototype.nav = function(hash) {
     case 'armory':
       self.showArmory();
       break;
+    case 'merchant':
+      self.showMerchant();
+      break;
     case 'home':
     case '':
       self.showHome();
@@ -29,6 +32,7 @@ world.prototype.showMap = function() {
   this.destroyGame();
   $('#nav').hide();
   $('#armory').hide();
+  $('#merchant').hide();
   $('#map').show();
   $('.home').show();
 }
@@ -38,8 +42,19 @@ world.prototype.showArmory = function() {
   this.populateArmory();
   $('#nav').hide();
   $('#map').hide();
+  $('#merchant').hide();
   $('#armory').show();
   $('.home').show();
+}
+world.prototype.showMerchant = function() {
+  this.worldEl.show();
+  this.destroyGame();
+  $('#nav').hide();
+  $('#map').hide();
+  $('#armory').hide();
+  $('#merchant').show();
+  $('.home').show();
+  this.populateMerchant();
 }
 world.prototype.showHome = function() {
   this.worldEl.show();
@@ -47,6 +62,7 @@ world.prototype.showHome = function() {
   $('#nav').show();
   $('#map').hide();
   $('#armory').hide();
+  $('#merchant').hide();
   $('.home').hide();
 }
 
@@ -58,7 +74,7 @@ world.prototype.bindDom = function() {
     self.startGame(stage);
     return false;
   })
-  $('body').on('click','#armory .chars li',function() {
+  $('#armory').on('click','#armory .chars li',function() {
     $('#armory .chars li').removeClass('selected');
     $(this).addClass('selected');
     self.populateArmorySelected();
@@ -67,14 +83,33 @@ world.prototype.bindDom = function() {
     var el = $(this);
     $('#armory .item').removeClass('selected');
     el.addClass('selected');
-    var name = el.attr('title');
-    var desc = el.attr('data-desc');
-    var img = el.find('img').attr('src');
-    var users = el.attr('data-users');
-    var slot = el.attr('data-slot');
-    $('#armory .desc').html(t.armoryDesc(name,desc,img,users,slot));
+    self.populateDesc({
+      descEl: $('#armory .desc'),
+      el: $(this)
+    })
+  });
+  $('#merchant').on('click','#merchant .item',function(event) {
+    var el = $(this);
+    $('#merchant .item').removeClass('selected');
+    el.addClass('selected');
+    self.populateDesc({
+      descEl: $('#merchant .desc'),
+      el: $(this)
+    })
   });
 
+}
+
+world.prototype.populateDesc = function(opt) {
+  var t = new template;
+  var el = opt.el;
+
+  var name = el.attr('title');
+  var desc = el.attr('data-desc');
+  var img = el.find('img').attr('src');
+  var users = el.attr('data-users');
+  var slot = el.attr('data-slot');
+  opt.descEl.html(t.armoryDesc(name,desc,img,users,slot));
 }
 
 world.prototype.startGame = function(instance) {
@@ -163,6 +198,7 @@ world.prototype.bindEvents = function(com) {
   com.bind('xpGain',function(opt){self.xpGain(opt);});
   com.bind('itemGain',function(opt){self.itemGain(opt)});
   com.bind('nextWave',function(){self.nextWave();})
+  com.bind('moneyGain',function(opt){self.moneyGain(opt);})
 }
 world.prototype.xpGain = function(amount){
   var self = this;
@@ -170,6 +206,10 @@ world.prototype.xpGain = function(amount){
     self.userData = self.dm.setUnitXP(i,unit.xp+amount);
   });
   self.populateArmory();
+}
+world.prototype.moneyGain = function(amount){
+  var self = this;
+  self.userData = self.dm.addMoney(amount);
 }
 
 world.prototype.itemGain = function(number) {
@@ -182,22 +222,59 @@ world.prototype.itemGain = function(number) {
   self.populateArmory();
 }
 
+world.prototype.populateCharacters = function(opt) {
+  var t = new template;
+  if (opt.selectable) {
+    var currentSelected = opt.currentSelected.attr('rel') || 0;
+  }
+  opt.charEl.find('li').remove();
+  this.userData.activeUnits.forEach(function(unit,i){
+    opt.charEl.append(t.armoryChar(unit.id,unit.img,i));
+  })
+  if (opt.selectable) {
+    $(opt.charEl.find('li')[currentSelected]).addClass('selected');
+  }
+}
+
+world.prototype.populateMerchant = function() {
+  this.populateCharacters({
+    currentSelected: $('#merchant .chars .selected'),
+    charEl: $('#merchant .chars'),
+    selectable: false
+  }),
+  this.populateInventory({
+    invEl: $('#merchant .unequip'),
+    items: this.userData.inventory
+  })
+  this.populateInventory({
+    invEl: $('#merchant .store'),
+    items: this.userData.merchant
+  })
+}
+
+world.prototype.populateInventory = function(opt) {
+  var t = new template;
+  var inv = opt.invEl;
+  inv.find('li').remove();
+  opt.items.forEach(function(item,i){
+    inv.append('<li>'+t.armoryItem(item,i)+'</li>');
+  })
+}
+
 world.prototype.populateArmory = function() {
   var self = this;
   $('.drop').droppable( "destroy" );
   $( ".item" ).draggable( "destroy" );
   $('#armory .desc').html('');
   var t = new template;
-  var currentSelected = $('#armory .chars .selected').attr('rel') || 0;
-  $('#armory .chars li').remove();
-  this.userData.activeUnits.forEach(function(unit,i){
-    $('#armory .chars').append(t.armoryChar(unit.id,unit.img,i));
+  self.populateCharacters({
+    currentSelected: $('#armory .chars .selected'),
+    charEl: $('#armory .chars'),
+    selectable: true
   })
-  $($('#armory .chars li')[currentSelected]).addClass('selected');
-  var inv = $('.unequip');
-  $('.unequip li').remove();
-  this.userData.inventory.forEach(function(item,i){
-    inv.append('<li>'+t.armoryItem(item,i)+'</li>');
+  self.populateInventory({
+    invEl: $('#armory .unequip'),
+    items: this.userData.inventory
   })
   //fucking droppable throws error when destroyed with revert, ignore it
   $('.drop').droppable({
@@ -266,8 +343,6 @@ world.prototype.populateArmorySelected = function() {
     revert:true,
     revertDuration: 500,
   });
-
-
 }
 
 world.prototype.changeItem = function(el,e,obj){

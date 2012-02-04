@@ -13,6 +13,14 @@ dataModel.prototype.setUnitXP = function(i,xp){
   this.userData.activeUnits[i].xp = xp;
   return this.saveData();
 }
+dataModel.prototype.addMoney = function(amnt) {
+  this.userData.money += Number(amnt);
+  return this.saveData();
+}
+dataModel.prototype.removeMoney = function(amnt) {
+  this.userData.money -= amnt;
+  return this.saveData();
+}
 dataModel.prototype.setItemSlot = function(unitIndex,slot,itemIndex) {
   var item = this.userData.inventory[itemIndex];
   item = $.extend(true,{},item);
@@ -50,6 +58,9 @@ dataModel.prototype.populateItems = function() {
   this.userData.inventory.forEach(function(item,i){
     self.userData.inventory[i].effect = sortedFunc[item.name];
   })
+  this.userData.merchant.forEach(function(item,i){
+    self.userData.merchant[i].effect = sortedFunc[item.name];
+  })
 
   this.userData.activeUnits.forEach(function(unit,i){
     for (slot in unit.items) {
@@ -59,14 +70,30 @@ dataModel.prototype.populateItems = function() {
     }
   })
 }
+
+dataModel.prototype.refreshMerchant = function() {
+  this.userData.merchant = [];
+  for (var i = 0;i<8; i++) {
+    this.userData.merchant.push(items[Math.floor(Math.random()*items.length)])
+  }
+  console.log(this.userData)
+}
 dataModel.prototype.getData = function() {
   this.userData = $.jStorage.get('bh',{
     activeUnits: defaultUnits,
     reserveUnits: [],
     map: [],
-    inventory: []
+    inventory: [],
+    merchant: null,
+    money: 0
   });
   this.populateItems();
+  if (!this.userData.merchant) {
+    this.refreshMerchant()
+  }
+  if (!this.userData.money) {
+    this.userData.money = 0;
+  }
   return this.saveData();
 };
 

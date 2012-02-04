@@ -33,10 +33,17 @@
   </head>
   <body>
     <div id="container">
+      <!--home nav button for screens other than HOME-->
+      <a href="#home" class="home button">Home</a></a>
+
+      <!-- HOME NAV -->
       <ul id="nav">
         <li><a href="#map" class="button">Map</a></li>
         <li><a href="#armory" class="button">Armory</a></li>
+        <li><a href="#merchant" class="button">Merchant</a></li>
       </ul>
+
+      <!-- MAP -->
       <div id="map">
         <div class="planet planet1" rel="planet1">
         </div>
@@ -47,8 +54,8 @@
         <div class="planet planet4" rel="planet4">
         </div>
       </div>
-      <a href="#home" class="home button">Home</a></a>
     
+      <!-- ARMORY -->
       <div id="armory">
         <ul class="chars">
         </ul>
@@ -71,6 +78,20 @@
             <li class="xp"><label>XP:</label><span></span></li>
           </ul>
         </div>
+        
+        <p class="desc"></p>
+        <ul class="unequip">
+        </ul>
+      </div>      
+      
+      <!-- MERCHANT -->
+      <div id="merchant">
+        <ul class="chars">
+        </ul>
+        
+        <ul class="store">
+          
+        </ul>
         <p class="desc"></p>
         <ul class="unequip">
         </ul>

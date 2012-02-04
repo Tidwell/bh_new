@@ -64,6 +64,7 @@ game.prototype.checkOver = function() {
     self.com.trigger('xpGain',10);
     self.com.trigger('itemGain',1);
     self.com.trigger('gameOver','pc');
+    self.com.trigger('moneyGain','100');
   }
   if (hasPlayers && !hasEnemies && self.wave != self.numWaves) {
     self.com.trigger('nextWave',{})
