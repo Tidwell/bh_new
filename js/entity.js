@@ -319,8 +319,7 @@ entity.prototype.removeEntity = function(opt) {
     delete self.threatTable[opt.id];
   }
   //strip the ability target if its there
-  if (self.abilityTarget && self.abilityTarget.id == opt.id ||
-       self.abilityTarget) {
+  if (self.abilityTarget && self.abilityTarget.id == opt.id) {
      self.abilityTarget = undefined;
    }
    if (!self.validTargets){return;}
