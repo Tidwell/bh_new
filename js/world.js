@@ -104,7 +104,7 @@ world.prototype.bindDom = function() {
       self.userData = data
       self.populateMerchant();
     } else {
-      alert('You don\'t have enough Money')
+      self.alert('Insuficient Funds', null, 'You don\'t have enough Money')
     }
     $('#merchant .money').html(self.userData.money);
   });
@@ -224,6 +224,7 @@ world.prototype.xpGain = function(amount){
   self.userData.activeUnits.forEach(function(unit,i){
     self.userData = self.dm.setUnitXP(i,unit.xp+amount);
   });
+  self.alert('XP Gain',null,'You\'r characters have gianed '+amount+' XP');
   self.populateArmory();
 }
 world.prototype.moneyGain = function(amount){
