@@ -21,6 +21,18 @@ dataModel.prototype.removeMoney = function(amnt) {
   this.userData.money -= amnt;
   return this.saveData();
 }
+dataModel.prototype.buy = function(i) {
+  var item = this.userData.merchant[i];
+  if (item && this.userData.money >= item.cost) {
+    this.userData.inventory.push(item);
+    this.userData.merchant.splice(i,1);
+    if (this.userData.merchant.length == 0) {
+      this.refreshMerchant();
+    }
+    return this.removeMoney(item.cost);
+  }
+  return false;
+}
 dataModel.prototype.setItemSlot = function(unitIndex,slot,itemIndex) {
   var item = this.userData.inventory[itemIndex];
   item = $.extend(true,{},item);
@@ -74,9 +86,10 @@ dataModel.prototype.populateItems = function() {
 dataModel.prototype.refreshMerchant = function() {
   this.userData.merchant = [];
   for (var i = 0;i<8; i++) {
-    this.userData.merchant.push(items[Math.floor(Math.random()*items.length)])
+    var item = $.extend(true, {}, items[Math.floor(Math.random()*items.length)]);
+    item.cost = 100;
+    this.userData.merchant.push(item)
   }
-  console.log(this.userData)
 }
 dataModel.prototype.getData = function() {
   this.userData = $.jStorage.get('bh',{
@@ -87,13 +100,13 @@ dataModel.prototype.getData = function() {
     merchant: null,
     money: 0
   });
-  this.populateItems();
-  if (!this.userData.merchant) {
+  if (!this.userData.merchant || (this.userData.merchant && this.userData.merchant.length == 0)) {
     this.refreshMerchant()
   }
   if (!this.userData.money) {
     this.userData.money = 0;
   }
+  this.populateItems();
   return this.saveData();
 };
 

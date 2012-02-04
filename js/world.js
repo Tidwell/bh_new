@@ -94,8 +94,19 @@ world.prototype.bindDom = function() {
     el.addClass('selected');
     self.populateDesc({
       descEl: $('#merchant .desc'),
-      el: $(this)
+      el: $(this),
+      buy: $(this).parent().parent().hasClass('store')
     })
+  });
+  $('#merchant').on('click','#merchant .desc .buy',function(event) {
+    var data = self.dm.buy($(this).parent().find('h2').attr('rel'));
+    if (data) {
+      self.userData = data
+      self.populateMerchant();
+    } else {
+      alert('You don\'t have enough Money')
+    }
+    $('#merchant .money').html(self.userData.money);
   });
 
 }
@@ -103,13 +114,18 @@ world.prototype.bindDom = function() {
 world.prototype.populateDesc = function(opt) {
   var t = new template;
   var el = opt.el;
-
   var name = el.attr('title');
   var desc = el.attr('data-desc');
   var img = el.find('img').attr('src');
   var users = el.attr('data-users');
   var slot = el.attr('data-slot');
-  opt.descEl.html(t.armoryDesc(name,desc,img,users,slot));
+  var rel = el.attr('rel');
+  if (opt.buy) {
+    opt.descEl.find('.buy').show()
+  } else {
+    opt.descEl.find('.buy').hide()
+  }
+  opt.descEl.find('.tpl').html(t.armoryDesc(name,desc,img,users,slot,rel));
 }
 
 world.prototype.startGame = function(instance) {
@@ -250,6 +266,7 @@ world.prototype.populateMerchant = function() {
     invEl: $('#merchant .store'),
     items: this.userData.merchant
   })
+  $('#merchant .money').html(this.userData.money);
 }
 
 world.prototype.populateInventory = function(opt) {
@@ -265,7 +282,6 @@ world.prototype.populateArmory = function() {
   var self = this;
   $('.drop').droppable( "destroy" );
   $( ".item" ).draggable( "destroy" );
-  $('#armory .desc').html('');
   var t = new template;
   self.populateCharacters({
     currentSelected: $('#armory .chars .selected'),

@@ -22,8 +22,8 @@ template.prototype.armoryItem = function(item,i) {
   }
   return '<div class="item" rel="'+i+'" title="'+item.name+'" data-desc="'+item.desc+'" data-users="'+item.validClass.join()+'" data-slot="'+item.slots.join()+'"><img src="'+item.img+'" /></div>';
 }
-template.prototype.armoryDesc = function(name,desc,img,users,slot) {
-  return '<h2>'+name+'</h2><img src="'+img+'" /><p>'+desc+'</p><p>Usable by: '+users+'</p><p>Slot: '+slot+'</p>';
+template.prototype.armoryDesc = function(name,desc,img,users,slot,rel) {
+  return '<h2 rel="'+rel+'">'+name+'</h2><img src="'+img+'" /><p>'+desc+'</p><p>Usable by: '+users+'</p><p>Slot: '+slot+'</p>';
 }
 template.prototype.cooldown = function(id,w,h) {
   return '<canvas class="cooldown" id="'+id+'" width="'+w+'" height="'+h+'"></canvas>'
