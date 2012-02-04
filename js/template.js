@@ -28,3 +28,6 @@ template.prototype.armoryDesc = function(name,desc,img,users,slot,rel) {
 template.prototype.cooldown = function(id,w,h) {
   return '<canvas class="cooldown" id="'+id+'" width="'+w+'" height="'+h+'"></canvas>'
 }
+template.prototype.alert = function(title,img,info) {
+  return '<div class="alert"><h2>'+title+'</h2>'+(img ? '<img src="'+img+'"' : '')+'><p>'+info+'</p><button class="button okay">Okay</button></div>';
+}

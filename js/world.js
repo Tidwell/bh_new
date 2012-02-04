@@ -108,6 +108,9 @@ world.prototype.bindDom = function() {
     }
     $('#merchant .money').html(self.userData.money);
   });
+  self.worldEl.on('click','.alert .okay',function(){
+    $(this).parent().remove();
+  })
 
 }
 
@@ -226,6 +229,7 @@ world.prototype.xpGain = function(amount){
 world.prototype.moneyGain = function(amount){
   var self = this;
   self.userData = self.dm.addMoney(amount);
+  self.alert('Money Gain', 'images/money.png', 'You\'ve gained '+amount+' money.');
 }
 
 world.prototype.itemGain = function(number) {
@@ -235,7 +239,14 @@ world.prototype.itemGain = function(number) {
     var item = items[rand];
     self.userData = self.dm.addInventory(item)
   }
+  self.alert(item.name, item.img, 'You\'ve gained '+item.name);
   self.populateArmory();
+}
+
+world.prototype.alert = function(title,info,img) {
+  var t = new template;
+  this.worldEl.append(t.alert(title,info,img));
+  $('.alert').show();
 }
 
 world.prototype.populateCharacters = function(opt) {
