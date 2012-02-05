@@ -113,6 +113,7 @@ world.prototype.bindDom = function() {
     if (data) {
       self.userData = data
       self.populateMerchant();
+      $('#merchant .desc span').html('');
     } else {
       self.alert('Error Selling', null, 'error, please try again')
     }
@@ -232,11 +233,23 @@ world.prototype.bindEvents = function(com) {
   com.bind('nextWave',function(){self.nextWave();})
   com.bind('moneyGain',function(opt){self.moneyGain(opt);})
 }
+world.prototype.checkLevelUp = function() {
+  var self = this;
+  self.userData.activeUnits.forEach(function(unit,unitIndex) {
+    levelUp.forEach(function(lvl,levelNum) {
+      if (lvl.xp <= unit.xp && levelNum > unit.level) {
+        self.dm.setUnitLevel(unitIndex,levelNum)
+        self.alert('Level '+levelNum,unit.img,unit.id+' has gianed a level');
+      }
+    })
+  })
+}
 world.prototype.xpGain = function(amount){
   var self = this;
   self.userData.activeUnits.forEach(function(unit,i){
     self.userData = self.dm.setUnitXP(i,unit.xp+amount);
   });
+  self.checkLevelUp();
   self.alert('XP Gain',null,'You\'r characters have gianed '+amount+' XP');
   self.populateArmory();
 }

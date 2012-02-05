@@ -168,3 +168,11 @@ var items = [{
   cost: 200
 }]
 
+var levelUp = [
+{xp: 0},{xp: 0},
+{
+ xp: 30 //lvl 2
+},
+{
+ xp: 80
+}]

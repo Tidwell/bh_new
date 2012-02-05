@@ -13,6 +13,10 @@ dataModel.prototype.setUnitXP = function(i,xp){
   this.userData.activeUnits[i].xp = xp;
   return this.saveData();
 }
+dataModel.prototype.setUnitLevel = function(i,level) {
+  this.userData.activeUnits[i].level = level;
+  return this.saveData();
+}
 dataModel.prototype.addMoney = function(amnt) {
   this.userData.money += Number(amnt);
   return this.saveData();
