@@ -58,6 +58,7 @@ var entity = function(opt) {
   this.validTargets = opt.validTargets || false;
   this.threatTable = {};
   this.firstHitThreatMultiplier = 2;
+  this.abilityTree = opt.abilityTree || [];
   var abilities = $.extend(true,{
     attack: {
       key: opt.attackKey || false,

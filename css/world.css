@@ -78,7 +78,8 @@
 }
 
 #armory .chars,
-#merchant .chars {
+#merchant .chars,
+#academy .chars {
   margin: 20px;
   padding: 5px;
   border: 1px solid;
@@ -86,9 +87,13 @@
   width: 388px;
 }
 #armory .chars li,
-#merchant .chars li {
-  cursor: pointer;
+#merchant .chars li,
+#academy .chars li {
   background: black;
+}
+#armory .chars li,
+#academy .chars li {
+  cursor: pointer;
 }
 #armory .info {
   position: absolute;
@@ -165,7 +170,8 @@
   margin: 0 5px;
 }
 #armory .desc,
-#merchant .desc {
+#merchant .desc,
+#academy .desc {
   position: absolute;
   top: 320px;
   left: 20px;
@@ -258,7 +264,8 @@
 .desc p.slot {
   clear: right;
 }
-#merchant {
+#merchant,
+#academy {
   display: none;
 }
 #merchant .store {
@@ -294,6 +301,37 @@
   height: 30px;
   background: url('../images/money.png') no-repeat;
   color: #01a840;
+}
+#academy .info {
+  position: absolute;
+  top: 105px;
+  left: 20px;
+  background: rgba(204,204,204,.8);
+  width: 720px;
+  height: 160px;
+  padding: 20px;
+}
+#academy .info h2 {
+  font-size: 24px;
+}
+#academy .info img {
+  display: block;
+  margin: 20px 0 ;
+  float: left;
+}
+#academy .skillTree {
+  float: left;
+  margin: 20px;
+}
+#academy .skillTree .tier {
+  width: 60px;
+  float: left;
+}
+#academy .skillTree .tier p {
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+  border: 1px solid black;
 }
 .home {
   display: block;

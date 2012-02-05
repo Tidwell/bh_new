@@ -19,6 +19,9 @@ world.prototype.nav = function(hash) {
     case 'merchant':
       self.showMerchant();
       break;
+    case 'academy':
+      self.showAcademy();
+      break;
     case 'home':
     case '':
       self.showHome();
@@ -43,6 +46,7 @@ world.prototype.showArmory = function() {
   $('#nav').hide();
   $('#map').hide();
   $('#merchant').hide();
+  $('#academy').hide();
   $('#armory').show();
   $('.home').show();
 }
@@ -52,9 +56,21 @@ world.prototype.showMerchant = function() {
   $('#nav').hide();
   $('#map').hide();
   $('#armory').hide();
+  $('#academy').hide();
   $('#merchant').show();
   $('.home').show();
   this.populateMerchant();
+}
+world.prototype.showAcademy = function() {
+  this.worldEl.show();
+  this.destroyGame();
+  $('#nav').hide();
+  $('#map').hide();
+  $('#armory').hide();
+  $('#merchant').hide();
+  $('#academy').show();
+  $('.home').show();
+  this.populateAcademy();
 }
 world.prototype.showHome = function() {
   this.worldEl.show();
@@ -63,6 +79,7 @@ world.prototype.showHome = function() {
   $('#map').hide();
   $('#armory').hide();
   $('#merchant').hide();
+  $('#academy').hide();
   $('.home').hide();
 }
 
@@ -79,6 +96,13 @@ world.prototype.bindDom = function() {
     $(this).addClass('selected');
     self.populateArmorySelected();
   })
+
+  $('#academy').on('click','#academy .chars li',function() {
+    $('#academy .chars li').removeClass('selected');
+    $(this).addClass('selected');
+    self.populateAcademySelected();
+  })
+
   $('#armory').on('click','#armory .item',function(event) {
     var el = $(this);
     $('#armory .item').removeClass('selected');
@@ -307,6 +331,15 @@ world.prototype.populateMerchant = function() {
   $('#merchant .money').html(this.userData.money);
 }
 
+world.prototype.populateAcademy = function() {
+  this.populateCharacters({
+    currentSelected: $('#academy .chars .selected'),
+    charEl: $('#academy .chars'),
+    selectable: true
+  })
+  this.populateAcademySelected();
+}
+
 world.prototype.populateInventory = function(opt) {
   var t = new template;
   var inv = opt.invEl;
@@ -397,6 +430,23 @@ world.prototype.populateArmorySelected = function() {
     revert:true,
     revertDuration: 500,
   });
+}
+
+world.prototype.populateAcademySelected = function() {
+  var t = new template;
+  var i = $('#academy .chars .selected').attr('rel');
+  var unit = this.userData.activeUnits[i];
+  var unit = new entity(unit);
+  unit.applyItems();
+  $('#academy .info h2').html(unit.id + ' - Level '+unit.level);
+  $('#academy .info img').attr('src',unit.img)
+  $('#academy .skillTree li').remove();
+  unit.abilityTree.forEach(function(set, i) {
+    var tier = $('<li class="tier"></li>').appendTo('#academy .skillTree');
+    set.forEach(function(ability, q){
+      tier.append(t.academyAbility(ability))
+    })
+  })
 }
 
 world.prototype.changeItem = function(el,e,obj){

@@ -26,7 +26,19 @@ var defaultUnits = [{
     selectKey: '1',
     attackKey: 'a',
     type: 'pc',
-    img: 'images/green_ship.png'
+    img: 'images/green_ship.png',
+    abilityTree: [
+      [{
+        level: 0,
+        name: 'Increase Defense',
+        cooldown: 20000,
+        description: 'Increases Unit\'s Defense by +6 for 10 seconds',
+        effect: function(entity) {
+          console.log('ability used', entity)
+        },
+        active: true
+      }]
+    ]
 },{
     id: 'healer',
     unitClass: 'healer',
@@ -55,7 +67,38 @@ var defaultUnits = [{
     selectKey: '2',
     attackKey: 'a',
     type: 'pc',
-    img: 'images/green_healer.png'
+    img: 'images/green_healer.png',
+    abilityTree: [
+      [{
+        level: 0,
+        name: 'Heal All',
+        cooldown: 20000,
+        description: 'Heals all Units for 20 health',
+        effect: function(entity) {
+          console.log('ability used', entity)
+        },
+        active: true
+      }],
+      [{
+        level: 0,
+        name: 'Heal All',
+        cooldown: 20000,
+        description: 'Heals all Units for 20 health',
+        effect: function(entity) {
+          console.log('ability used', entity)
+        },
+        active: true
+      },{
+        level: 0,
+        name: 'Heal All',
+        cooldown: 20000,
+        description: 'Heals all Units for 20 health',
+        effect: function(entity) {
+          console.log('ability used', entity)
+        },
+        active: true
+      }]
+    ]
 },{
     id: 'dps',
     unitClass: 'dps',

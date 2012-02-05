@@ -31,3 +31,6 @@ template.prototype.cooldown = function(id,w,h) {
 template.prototype.alert = function(title,img,info) {
   return '<div class="alert"><h2>'+title+'</h2>'+(img ? '<img src="'+img+'">' : '')+'<p>'+info+'</p><button class="button okay">Okay</button></div>';
 }
+template.prototype.academyAbility = function(ability) {
+  return '<p>'+ability.name+'</p>';
+}
