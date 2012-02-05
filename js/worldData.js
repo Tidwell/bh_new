@@ -142,7 +142,8 @@ var items = [{
   desc: 'Increses a ships shields by +3',
   validClass: ['healer'],
   img: 'images/items/shield.png',
-  slots: ['defense']
+  slots: ['defense'],
+  cost: 100
 },
 {
   name: 'Super Advanced Shields',
@@ -152,7 +153,8 @@ var items = [{
   desc: 'Increses a ships shields by +6',
   validClass: ['healer'],
   img: 'images/items/shield.png',
-  slots: ['defense']
+  slots: ['defense'],
+  cost: 150
 },
 {
   name: 'Better Engine',
@@ -162,6 +164,7 @@ var items = [{
   desc: 'Increses a ships speed',
   validClass: ['healer','tank'],
   img: 'images/items/engine.png',
-  slots: ['misc1','misc2']
+  slots: ['misc1','misc2'],
+  cost: 200
 }]
 

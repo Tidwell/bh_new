@@ -33,6 +33,14 @@ dataModel.prototype.buy = function(i) {
   }
   return false;
 }
+dataModel.prototype.sell = function(i) {
+  var item = this.userData.inventory[i];
+  if (item) {
+    this.userData.inventory.splice(i,1);
+    return this.addMoney(Number(item.cost)/2);
+  }
+  return false;
+}
 dataModel.prototype.setItemSlot = function(unitIndex,slot,itemIndex) {
   var item = this.userData.inventory[itemIndex];
   item = $.extend(true,{},item);
@@ -87,7 +95,6 @@ dataModel.prototype.refreshMerchant = function() {
   this.userData.merchant = [];
   for (var i = 0;i<8; i++) {
     var item = $.extend(true, {}, items[Math.floor(Math.random()*items.length)]);
-    item.cost = 100;
     this.userData.merchant.push(item)
   }
 }

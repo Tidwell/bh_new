@@ -108,6 +108,16 @@ world.prototype.bindDom = function() {
     }
     $('#merchant .money').html(self.userData.money);
   });
+  $('#merchant').on('click','#merchant .desc .sell',function(event) {
+    var data = self.dm.sell($(this).parent().find('h2').attr('rel'));
+    if (data) {
+      self.userData = data
+      self.populateMerchant();
+    } else {
+      self.alert('Error Selling', null, 'error, please try again')
+    }
+    $('#merchant .money').html(self.userData.money);
+  });
   self.worldEl.on('click','.alert .okay',function(){
     $(this).parent().remove();
   })
@@ -122,13 +132,16 @@ world.prototype.populateDesc = function(opt) {
   var img = el.find('img').attr('src');
   var users = el.attr('data-users');
   var slot = el.attr('data-slot');
+  var cost = el.attr('data-cost');
   var rel = el.attr('rel');
   if (opt.buy) {
     opt.descEl.find('.buy').show()
+    opt.descEl.find('.sell').hide();
   } else {
     opt.descEl.find('.buy').hide()
+    opt.descEl.find('.sell').show();
   }
-  opt.descEl.find('.tpl').html(t.armoryDesc(name,desc,img,users,slot,rel));
+  opt.descEl.find('.tpl').html(t.armoryDesc(name,desc,img,users,slot,rel,cost));
 }
 
 world.prototype.startGame = function(instance) {

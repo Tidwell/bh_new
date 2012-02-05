@@ -255,7 +255,9 @@
   font-family: Helvetica;
   display: block;
 }
-
+.desc p.slot {
+  clear: right;
+}
 #merchant {
   display: none;
 }
@@ -271,7 +273,8 @@
   display: block;
   overflow: hidden;
 }
-#merchant .buy {
+#merchant .buy,
+#merchant .sell {
   width: 100px;
   height: 40px;
   float: right;
