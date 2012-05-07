@@ -113,7 +113,7 @@ dataModel.prototype.populateAbilities = function() {
       })
     })
   })
-  self.allAbilities = sortedAbilities;
+  self.allAbilities = sortedAbilities || {};
 }
 
 dataModel.prototype.setActiveAbility = function(obj) {

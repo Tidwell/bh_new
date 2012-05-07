@@ -94,6 +94,9 @@ var defaultUnits = [{
     attackKey: 'a',
     type: 'pc',
     img: 'images/green_dps.png',
+    abilityTree: [
+      [{name: 'Increase Defense',active: false}]
+    ],
     activeAbilities: []
 }];
 

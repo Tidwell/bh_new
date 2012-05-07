@@ -209,7 +209,9 @@ world.prototype.startGame = function(instance) {
     //populate the abilitites
     unit.abilities = {};
     unit.activeAbilities.forEach(function(ability,tier) {
-      unit.abilities[self.dm.allAbilities[ability].name] = $.extend(true,{},self.dm.allAbilities[ability]);
+      if (ability) {
+        unit.abilities[self.dm.allAbilities[ability].name] = $.extend(true,{},self.dm.allAbilities[ability]);
+      }
     })
     //make dom els
     stage.append(t.ship(unit.id+' friendly'));
