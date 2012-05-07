@@ -6,6 +6,7 @@ var world = function() {
   self.bindDom();
   self.showHome();
   self.bindHash();
+  Sound.play('music/Intro',.5);
 }
 world.prototype.nav = function(hash) {
   var self = this;
@@ -39,6 +40,7 @@ world.prototype.showMap = function() {
   $('#academy').hide();
   $('#map').show();
   $('.home').show();
+  Sound.stop('music/Intro');
 }
 world.prototype.showArmory = function() {
   this.worldEl.show();
@@ -50,6 +52,7 @@ world.prototype.showArmory = function() {
   $('#academy').hide();
   $('#armory').show();
   $('.home').show();
+  Sound.stop('music/Intro');
 }
 world.prototype.showMerchant = function() {
   this.worldEl.show();
@@ -61,6 +64,7 @@ world.prototype.showMerchant = function() {
   $('#merchant').show();
   $('.home').show();
   this.populateMerchant();
+  Sound.stop('music/Intro');
 }
 world.prototype.showAcademy = function() {
   this.worldEl.show();
@@ -72,6 +76,7 @@ world.prototype.showAcademy = function() {
   $('#academy').show();
   $('.home').show();
   this.populateAcademy();
+  Sound.stop('music/Intro');
 }
 world.prototype.showHome = function() {
   this.worldEl.show();
@@ -82,6 +87,7 @@ world.prototype.showHome = function() {
   $('#merchant').hide();
   $('#academy').hide();
   $('.home').hide();
+  Sound.stop('music/Intro');
 }
 
 world.prototype.bindDom = function() {
