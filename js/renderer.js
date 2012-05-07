@@ -77,6 +77,7 @@ renderer.prototype.selectEntity = function(entity) {
   entity.el.addClass('selected');
   entity.infoEl.addClass('selected');
   entity.actionbarEl.addClass('selected');
+  self.unbindAbilityKeys();
   for (ability in entity.abilities) {
     if (entity.abilities.hasOwnProperty(ability)) {
       self.bindAbilityKey(entity,ability);  
@@ -87,16 +88,20 @@ renderer.prototype.selectEntity = function(entity) {
 renderer.prototype.bindAbilityKey = function(entity,abilityName) {
   var self = this;
   var key = entity.abilities[abilityName].key;
-  if (self.kb['w']) {self.kb['w'].clear()};
-  if (self.kb['d']) {self.kb['d'].clear()};
-  if (self.kb['e']) {self.kb['e'].clear()};
   if (key) {
+    self.kb[key] = KeyboardJS.bind.key(key, function(){}, function(){ entity.ability(abilityName);});
+  }
+}
+renderer.prototype.unbindAbilityKeys = function() {
+  var self = this;
+  var keys = ['a','q','w','e'];
+
+  keys.forEach(function(key){
     if (self.kb[key]) {
       self.kb[key].clear();
       self.kb[key] = undefined;
-    }
-    self.kb[key] = KeyboardJS.bind.key(key, function(){}, function(){ entity.ability(abilityName);});
-  }
+    };
+  })
 }
 renderer.prototype.unselectEntity = function(entity) {
   var self = this;
@@ -286,7 +291,7 @@ renderer.prototype.cooldown = function(opt) {
   if (opt.type == 'pc') {
     var t = new template;
     var id = Math.floor(Math.random()*9000)+opt.id;
-    var el = $('.actionbars .'+opt.id+' .'+opt.ability)
+    var el = $('.actionbars .'+opt.id+' .'+opt.ability.toLowerCase().replace(' ','-'))
     el.append(t.cooldown(id,40,40));
     var cd = new cooldownTimer({
       id: id,

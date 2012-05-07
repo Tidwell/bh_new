@@ -61,6 +61,7 @@ var entity = function(opt) {
   this.abilityTree = opt.abilityTree || [];
   var abilities = $.extend(true,{
     attack: {
+      name: 'attack',
       key: opt.attackKey || false,
       effect:function() {
         self.attack();
@@ -68,9 +69,22 @@ var entity = function(opt) {
   }},opt.abilities);
   this.abilities = abilities;
   this.activeAbilities = opt.activeAbilities;
+  this.abilityCooldowns = {};
 };
 entity.prototype.ability = function(id) {
-  return this.abilities[id].effect(this);
+  var self = this;
+  var ability = this.abilities[id];
+
+  //handle cooldowns on non-attack actions
+  if (ability.name != 'attack' && !self.abilityCooldowns[ability.name]) {
+    self.abilityCooldowns[ability.name] = true;
+    self.com.trigger('onCooldown',{id: self.id, ability: ability.name, cooldown: ability.cooldown,type:self.type});
+    setTimeout(function(){
+      self.abilityCooldowns[ability.name] = false;
+    },ability.cooldown)
+  }
+  //trigger the effect
+  return ability.effect(this);
 }
 entity.prototype.update = function(t) {
   if (this.health <= 0 && !this.dead) {
