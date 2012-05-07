@@ -6,6 +6,7 @@ var renderer = function(opt) {
   this.ctx;
   this.activeParticles = [];
   this.particleCount = 0;
+  this.musicTimeout;
 }
 
 renderer.prototype.loop = function() {
@@ -112,6 +113,7 @@ renderer.prototype.unselectEntity = function(entity) {
 }
 
 renderer.prototype.removeEntity = function(opt) {
+  Sound.play('effects/explosion',.8)
   //unbind the select key
   if (opt.entity.selectKey) {
     KeyboardJS.unbind.key(opt.entity.selectKey);
@@ -159,8 +161,12 @@ renderer.prototype.gameOver = function(winner) {
   $('.buttons').fadeOut('fast');
   $('.home').fadeOut('fast');
   $('.bb .health').fadeOut('fast');
-  
+
+  self.stopMusic();
+  clearTimeout(self.musicTimeout);
+
   if (winner == 'pc'){
+    Sound.play('music/victory');
     $('.entity').removeClass('selected');
     $('.stage').append('<h1 class="victory">You Win</h1>');
     $('.victory').fadeIn('fast');
@@ -229,6 +235,7 @@ renderer.prototype.loadCanvas = function() {
 
 
 renderer.prototype.renderLaser = function(opt) {
+  Sound.play('effects/shoot',.3)
   var x1 = opt.self.x+opt.self.width/2;
   var y1 =opt.self.y+opt.self.height/2;
   var x2=opt.target.x+opt.target.width/2;
@@ -309,4 +316,16 @@ renderer.prototype.init = function() {
   self.game.stage.show();
   /***Inititalize the Main Render Loop***/
   setTimeout(function() {self.loop()}, 20);
+  self.playMusic();
+}
+
+renderer.prototype.playMusic = function() {
+  var self = this;
+  Sound.stop('music/Battle2');
+  Sound.play('music/Battle2');
+  self.musicTimeout = setTimeout(function() {self.playMusic()},63000);
+}
+
+renderer.prototype.stopMusic = function() {
+  Sound.stop('music/Battle2');
 }
