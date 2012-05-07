@@ -28,17 +28,9 @@ var defaultUnits = [{
     type: 'pc',
     img: 'images/green_ship.png',
     abilityTree: [
-      [{
-        level: 0,
-        name: 'Increase Defense',
-        cooldown: 20000,
-        description: 'Increases Unit\'s Defense by +6 for 10 seconds',
-        effect: function(entity) {
-          console.log('ability used', entity)
-        },
-        active: true
-      }]
-    ]
+      [{name: 'Increase Defense',active: false}]
+    ],
+    activeAbilities: [null]
 },{
     id: 'healer',
     unitClass: 'healer',
@@ -69,36 +61,10 @@ var defaultUnits = [{
     type: 'pc',
     img: 'images/green_healer.png',
     abilityTree: [
-      [{
-        level: 0,
-        name: 'Heal All',
-        cooldown: 20000,
-        description: 'Heals all Units for 20 health',
-        effect: function(entity) {
-          console.log('ability used', entity)
-        },
-        active: true
-      }],
-      [{
-        level: 0,
-        name: 'Heal All',
-        cooldown: 20000,
-        description: 'Heals all Units for 20 health',
-        effect: function(entity) {
-          console.log('ability used', entity)
-        },
-        active: true
-      },{
-        level: 0,
-        name: 'Heal All',
-        cooldown: 20000,
-        description: 'Heals all Units for 20 health',
-        effect: function(entity) {
-          console.log('ability used', entity)
-        },
-        active: true
-      }]
-    ]
+      [{name: 'Heal All',active: false}],
+      [{name: 'Increase Defense',active: false},{name: 'Something Else',active: false}]
+    ],
+    activeAbilities: [null,null]
 },{
     id: 'dps',
     unitClass: 'dps',
@@ -127,7 +93,8 @@ var defaultUnits = [{
     selectKey: '3',
     attackKey: 'a',
     type: 'pc',
-    img: 'images/green_dps.png'
+    img: 'images/green_dps.png',
+    activeAbilities: []
 }];
 
 var _e = new entities;
@@ -219,3 +186,38 @@ var levelUp = [
 {
  xp: 80
 }]
+
+
+
+var abilities = [
+      {
+        level: 0,
+        name: 'Increase Defense',
+        cooldown: 20000,
+        description: 'Increases Unit\'s Defense by +6 for 10 seconds',
+        effect: function(entity) {
+          console.log('ability used', entity)
+        },
+        active: false
+      },
+      {
+        level: 0,
+        name: 'Heal All',
+        cooldown: 20000,
+        description: 'Heals all Units for 20 health',
+        effect: function(entity) {
+          console.log('ability used', entity)
+        },
+        active: false
+      },
+      {
+        level: 0,
+        name: 'Something Else',
+        cooldown: 20000,
+        description: 'Something Else',
+        effect: function(entity) {
+          console.log('ability used', entity)
+        },
+        active: false
+      }
+]

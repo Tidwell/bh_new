@@ -67,6 +67,7 @@ var entity = function(opt) {
       }
   }},opt.abilities);
   this.abilities = abilities;
+  this.activeAbilities = opt.activeAbilities;
 };
 entity.prototype.ability = function(id) {
   return this.abilities[id].effect();

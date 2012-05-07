@@ -102,6 +102,22 @@ world.prototype.bindDom = function() {
     $(this).addClass('selected');
     self.populateAcademySelected();
   })
+  $('#academy').on('click','#academy .skillTree li p',function() {
+    var activeChar = Number($('#academy .chars .selected').attr('rel'));
+    var tier = $(this).parents().attr('tier');
+    var ability = $(this).attr('ability');
+
+    //populate the info box
+    $('#academy .desc').html(self.dm.allAbilities[ability].description)
+    //update the active ability for the given unit/tier
+    self.dm.setActiveAbility({
+      id: activeChar,
+      tier: tier,
+      ability: ability
+    })
+    $(this).parent().children('p').removeClass('active');
+    $(this).addClass('active');
+  })
 
   $('#armory').on('click','#armory .item',function(event) {
     var el = $(this);
@@ -438,13 +454,19 @@ world.prototype.populateAcademySelected = function() {
   var unit = this.userData.activeUnits[i];
   var unit = new entity(unit);
   unit.applyItems();
+  $('#academy .desc').html('');
   $('#academy .info h2').html(unit.id + ' - Level '+unit.level);
   $('#academy .info img').attr('src',unit.img)
   $('#academy .skillTree li').remove();
   unit.abilityTree.forEach(function(set, i) {
-    var tier = $('<li class="tier"></li>').appendTo('#academy .skillTree');
+    var tier = $('<li class="tier" tier="'+i+'"></li>').appendTo('#academy .skillTree');
     set.forEach(function(ability, q){
-      tier.append(t.academyAbility(ability))
+      var isActive = (ability.name===unit.activeAbilities[i]);
+      tier.append(t.academyAbility(ability,isActive))
+      //if its the active tier 0 we append the description
+      if (i == 0 && isActive) {
+        $('#academy .desc').html(ability.description);
+      }
     })
   })
 }

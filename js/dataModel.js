@@ -95,6 +95,34 @@ dataModel.prototype.populateItems = function() {
   })
 }
 
+
+//giant clusterfuck to put effects back onto characters
+//after they have been unserialized from local storage
+dataModel.prototype.populateAbilities = function() {
+  var self = this;
+  //put the item's effects back since they dont serialize
+  var sortedAbilities = {};
+  abilities.forEach(function(ability,i){
+    sortedAbilities[ability.name] = ability;
+  })
+  self.userData.activeUnits.forEach(function(unit,i){
+    if (!unit.abilityTree) {return;}
+    unit.abilityTree.forEach(function(opts,q){
+      opts.forEach(function(opts,z){
+        unit.abilityTree[q][z] = $.extend(true,{},sortedAbilities[unit.abilityTree[q][z].name]);
+      })
+    })
+  })
+  self.allAbilities = sortedAbilities;
+}
+
+dataModel.prototype.setActiveAbility = function(obj) {
+  var self = this;
+  self.userData.activeUnits[obj.id].activeAbilities[obj.tier] = obj.ability;
+  self.saveData();
+}
+
+
 dataModel.prototype.refreshMerchant = function() {
   this.userData.merchant = [];
   for (var i = 0;i<8; i++) {
@@ -118,6 +146,7 @@ dataModel.prototype.getData = function() {
     this.userData.money = 0;
   }
   this.populateItems();
+  this.populateAbilities();
   return this.saveData();
 };
 

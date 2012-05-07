@@ -333,6 +333,9 @@
   margin: 5px;
   border: 1px solid black;
 }
+#academy .skillTree .tier p.active {
+  background: green;
+}
 .home {
   display: block;
   width: 100px;
