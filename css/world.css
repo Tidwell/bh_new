@@ -332,9 +332,14 @@
   height: 50px;
   margin: 5px;
   border: 1px solid black;
+  cursor: pointer;
+  overflow: hidden;
 }
 #academy .skillTree .tier p.active {
   background: green;
+}
+#academy .desc p {
+  padding: 5px
 }
 .home {
   display: block;

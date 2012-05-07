@@ -83,9 +83,13 @@ renderer.prototype.selectEntity = function(entity) {
     }
   }
 }
+//totally unecessary when touch
 renderer.prototype.bindAbilityKey = function(entity,abilityName) {
   var self = this;
   var key = entity.abilities[abilityName].key;
+  if (self.kb['w']) {self.kb['w'].clear()};
+  if (self.kb['d']) {self.kb['d'].clear()};
+  if (self.kb['e']) {self.kb['e'].clear()};
   if (key) {
     if (self.kb[key]) {
       self.kb[key].clear();
@@ -260,6 +264,7 @@ renderer.prototype.renderParticles = function() {
 
 renderer.prototype.initEntity = function(entity){
   var self = this;
+  var sel;
   entity.el.parent().width(entity.width).height(entity.height);
   entity.el.attr('rel',entity.id);
   if (entity.controllable) {
@@ -268,7 +273,8 @@ renderer.prototype.initEntity = function(entity){
   if(entity.actionbarEl) {
     for (ability in entity.abilities) {
       if (entity.abilities.hasOwnProperty(ability)) {
-        entity.actionbarEl.find('.'+ability+' .bind').html(entity.abilities[ability].key);  
+        sel = '.'+ability.toLowerCase().replace(' ','-')+' .bind';
+        entity.actionbarEl.find(sel).html(entity.abilities[ability].key);  
       }
     }
   }

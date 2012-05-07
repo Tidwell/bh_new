@@ -7,8 +7,16 @@ template.prototype.stage = function() {
 template.prototype.ship = function(classes) {
   return '<div class="bb"><div class="entity '+classes+'"><div class="img"></div></div><div class="health"><span class="bar"></span></div></div>';
 }
-template.prototype.actionbar = function(classes) {
-  return '<li class="'+classes+'"><ul><li class="attack"><p class="bind"></p></li></ul></li>';
+template.prototype.actionbar = function(unit) {
+  var unit = $.extend(true,{abilities: {attack: {name:'attack'}}},unit);
+  var html = '<li class="'+unit.id+'"><ul>'
+  for (ability in unit.abilities) {
+    html += '<li class="'+unit.abilities[ability].name.toLowerCase().replace(' ','-')+'"><p class="bind"></p></li>';
+  }
+
+  html += '</ul></li>';
+
+  return html;
 }
 template.prototype.charInfo = function(classes,image) {
   return '<li class="'+classes+'"><p class="bind"></p><img src="'+image+'" /><p class="health"></p></li>';
@@ -33,4 +41,7 @@ template.prototype.alert = function(title,img,info) {
 }
 template.prototype.academyAbility = function(ability, active) {
   return '<p '+(active ? 'class="active"' : '')+' ability="'+ability.name+'">'+ability.name+'</p>';
+}
+template.prototype.abilityDesc = function(ability) {
+  return '<p>'+ability.name+'</p><p>Required Level: '+ability.level+'</p><p>'+ability.description+'</p><p>Cooldown: '+ability.cooldown+'</p>';
 }

@@ -36,6 +36,7 @@ world.prototype.showMap = function() {
   $('#nav').hide();
   $('#armory').hide();
   $('#merchant').hide();
+  $('#academy').hide();
   $('#map').show();
   $('.home').show();
 }
@@ -108,7 +109,7 @@ world.prototype.bindDom = function() {
     var ability = $(this).attr('ability');
 
     //populate the info box
-    $('#academy .desc').html(self.dm.allAbilities[ability].description)
+    $('#academy .desc').html(t.abilityDesc(self.dm.allAbilities[ability]))
     //update the active ability for the given unit/tier
     self.dm.setActiveAbility({
       id: activeChar,
@@ -205,9 +206,14 @@ world.prototype.startGame = function(instance) {
   self.userData.activeUnits.forEach(function(unit,i){
     //copy so we dont muck up the one storing the user's data
     var unit = $.extend(true,{},unit);
+    //populate the abilitites
+    unit.abilities = {};
+    unit.activeAbilities.forEach(function(ability,tier) {
+      unit.abilities[self.dm.allAbilities[ability].name] = $.extend(true,{},self.dm.allAbilities[ability]);
+    })
     //make dom els
     stage.append(t.ship(unit.id+' friendly'));
-    stage.find('.actionbars').append(t.actionbar(unit.id));
+    stage.find('.actionbars').append(t.actionbar(unit));
     stage.find('.chars').append(t.charInfo(unit.id,unit.img));
     //set unit dom info
     unit.domEl = $('.entity.'+unit.id)
@@ -465,7 +471,7 @@ world.prototype.populateAcademySelected = function() {
       tier.append(t.academyAbility(ability,isActive))
       //if its the active tier 0 we append the description
       if (i == 0 && isActive) {
-        $('#academy .desc').html(ability.description);
+        $('#academy .desc').html(t.abilityDesc(ability));
       }
     })
   })

@@ -196,9 +196,10 @@ var abilities = [
         cooldown: 20000,
         description: 'Increases Unit\'s Defense by +6 for 10 seconds',
         effect: function(entity) {
-          console.log('ability used', entity)
+          console.log('id used', entity)
         },
-        active: false
+        active: false,
+        key: 'w'
       },
       {
         level: 0,
@@ -206,9 +207,10 @@ var abilities = [
         cooldown: 20000,
         description: 'Heals all Units for 20 health',
         effect: function(entity) {
-          console.log('ability used', entity)
+          console.log('ha used', entity)
         },
-        active: false
+        active: false,
+        key: 'd'
       },
       {
         level: 0,
@@ -216,8 +218,9 @@ var abilities = [
         cooldown: 20000,
         description: 'Something Else',
         effect: function(entity) {
-          console.log('ability used', entity)
+          console.log('se used', entity)
         },
-        active: false
+        active: false,
+        key: 'e'
       }
 ]

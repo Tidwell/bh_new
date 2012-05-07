@@ -70,7 +70,7 @@ var entity = function(opt) {
   this.activeAbilities = opt.activeAbilities;
 };
 entity.prototype.ability = function(id) {
-  return this.abilities[id].effect();
+  return this.abilities[id].effect(this);
 }
 entity.prototype.update = function(t) {
   if (this.health <= 0 && !this.dead) {
