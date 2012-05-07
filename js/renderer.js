@@ -163,7 +163,6 @@ renderer.prototype.gameOver = function(winner) {
   $('.bb .health').fadeOut('fast');
 
   self.stopMusic();
-  clearTimeout(self.musicTimeout);
 
   if (winner == 'pc'){
     Sound.play('music/victory');
@@ -328,4 +327,5 @@ renderer.prototype.playMusic = function() {
 
 renderer.prototype.stopMusic = function() {
   Sound.stop('music/Battle2');
+  clearTimeout(self.musicTimeout);
 }
