@@ -75,6 +75,12 @@ entity.prototype.ability = function(id) {
   var self = this;
   var ability = this.abilities[id];
 
+  //we just let attack pass through since its cooldown is internally
+  //governed by the attack logic
+  if (ability.name === 'attack') {
+    return ability.effect(this);
+  }
+
   //handle cooldowns on non-attack actions
   if (ability.name != 'attack' && !self.abilityCooldowns[ability.name]) {
     self.abilityCooldowns[ability.name] = true;
@@ -82,9 +88,9 @@ entity.prototype.ability = function(id) {
     setTimeout(function(){
       self.abilityCooldowns[ability.name] = false;
     },ability.cooldown)
+    return ability.effect(this);
   }
-  //trigger the effect
-  return ability.effect(this);
+  
 }
 entity.prototype.update = function(t) {
   if (this.health <= 0 && !this.dead) {
