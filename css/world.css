@@ -338,6 +338,10 @@
 #academy .skillTree .tier p.active {
   background: green;
 }
+#academy .skillTree .tier p.disabled {
+  opacity: .5;
+  background: gray;
+}
 #academy .desc p {
   padding: 5px
 }

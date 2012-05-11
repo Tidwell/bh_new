@@ -108,8 +108,8 @@ dataModel.prototype.populateAbilities = function() {
   self.userData.activeUnits.forEach(function(unit,i){
     if (!unit.abilityTree) {return;}
     unit.abilityTree.forEach(function(opts,q){
-      opts.forEach(function(opts,z){
-        unit.abilityTree[q][z] = $.extend(true,{},sortedAbilities[unit.abilityTree[q][z].name]);
+      opts.skills.forEach(function(opts,z){
+        unit.abilityTree[q].skills[z] = $.extend(true,{},sortedAbilities[unit.abilityTree[q].skills[z].name]);
       })
     })
   })

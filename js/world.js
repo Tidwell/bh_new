@@ -111,21 +111,26 @@ world.prototype.bindDom = function() {
     $(this).addClass('selected');
     self.populateAcademySelected();
   })
-  $('#academy').on('click','#academy .skillTree li p',function() {
+  $('#academy').on('click','#academy .skillTree li p:not(.disabled)',function() {
     var activeChar = Number($('#academy .chars .selected').attr('rel'));
     var tier = $(this).parents().attr('tier');
+    var level = $(this).parents().attr('level');
     var ability = $(this).attr('ability');
+    var isActive = !$(this).hasClass('disabled');
 
     //populate the info box
-    $('#academy .desc').html(t.abilityDesc(self.dm.allAbilities[ability]))
-    //update the active ability for the given unit/tier
-    self.dm.setActiveAbility({
-      id: activeChar,
-      tier: tier,
-      ability: ability
-    })
-    $(this).parent().children('p').removeClass('active');
-    $(this).addClass('active');
+    $('#academy .desc').html(t.abilityDesc(self.dm.allAbilities[ability],level))
+
+    if (isActive) {
+      //update the active ability for the given unit/tier
+      self.dm.setActiveAbility({
+        id: activeChar,
+        tier: tier,
+        ability: ability
+      })
+      $(this).parent().children('p').removeClass('active');
+      $(this).addClass('active');
+    }
   })
 
   $('#armory').on('click','#armory .item',function(event) {
@@ -475,13 +480,14 @@ world.prototype.populateAcademySelected = function() {
   $('#academy .info img').attr('src',unit.img)
   $('#academy .skillTree li').remove();
   unit.abilityTree.forEach(function(set, i) {
-    var tier = $('<li class="tier" tier="'+i+'"></li>').appendTo('#academy .skillTree');
-    set.forEach(function(ability, q){
+    var tier = $('<li class="tier" tier="'+i+'" level="'+set.level+'"></li>').appendTo('#academy .skillTree');
+    set.skills.forEach(function(ability, q){
       var isActive = (ability.name===unit.activeAbilities[i]);
-      tier.append(t.academyAbility(ability,isActive))
+      var isEnabled = (unit.level >= unit.abilityTree[i].level);
+      tier.append(t.academyAbility(ability,isActive,isEnabled))
       //if its the active tier 0 we append the description
       if (i == 0 && isActive) {
-        $('#academy .desc').html(t.abilityDesc(ability));
+        $('#academy .desc').html(t.abilityDesc(ability,set.level));
       }
     })
   })

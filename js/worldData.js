@@ -27,9 +27,10 @@ var defaultUnits = [{
     attackKey: 'a',
     type: 'pc',
     img: 'images/green_ship.png',
-    abilityTree: [
-      [{name: 'Increase Defense',active: false}]
-    ],
+    abilityTree: [{
+      skills: [{name: 'Increase Defense',active: false}],
+      level: 0
+    }],
     activeAbilities: [null]
 },{
     id: 'healer',
@@ -61,8 +62,12 @@ var defaultUnits = [{
     type: 'pc',
     img: 'images/green_healer.png',
     abilityTree: [
-      [{name: 'Heal All',active: false}],
-      [{name: 'Increase Defense',active: false},{name: 'Something Else',active: false}]
+      { skills: [{name: 'Heal All',active: false}],
+        level: 0
+      },
+      { skills: [{name: 'Increase Defense',active: false},{name: 'Something Else',active: false}],
+        level: 5
+      }
     ],
     activeAbilities: [null,null]
 },{
@@ -95,7 +100,9 @@ var defaultUnits = [{
     type: 'pc',
     img: 'images/green_dps.png',
     abilityTree: [
-      [{name: 'Increase Defense',active: false}]
+      { skills: [{name: 'Increase Defense',active: false}],
+        level: 0
+      }
     ],
     activeAbilities: []
 }];
@@ -194,7 +201,6 @@ var levelUp = [
 
 var abilities = [
       {
-        level: 0,
         name: 'Increase Defense',
         cooldown: 2000,
         description: 'Increases Unit\'s Defense by +6 for 10 seconds',
@@ -205,7 +211,6 @@ var abilities = [
         key: 'w'
       },
       {
-        level: 0,
         name: 'Heal All',
         cooldown: 2000,
         description: 'Heals all Units for 20 health',
@@ -216,7 +221,6 @@ var abilities = [
         key: 'e'
       },
       {
-        level: 0,
         name: 'Something Else',
         cooldown: 2000,
         description: 'Something Else',
