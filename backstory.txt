@@ -1,6 +1,16 @@
+stereotypes
+
 Earth - conservative
 Mars - explorers (risk takers)
 moon - mediators (balance, but dull)
+
+
+each character fights against the next
+
+"the inventor"
+a man caught up in business, dreaming of the betterment of society, facing the preasures of success.
+meets the star, who realizes her power, and uses it wisely....
+
 
 The station+ was created for data research - having purely sterile conditions generates amazing
 market data, and further technological development.  Major companies of the world pledged giant
@@ -10,9 +20,18 @@ the brightest minds.
 "5 year old Stephanie just finished calculus 1, is your child behind?"
 "All of the world's elite were either up there, out there, or somewhere"
 
+"the star"
+...and gains much success, but loses it with age due to financial concerns, always more important
+than beauty, looking to...
+
 the first spacers (spacers->future ruling mooninites)
 
 (the station (2089), moon (2120), and mars(2140))
+
+"the tramp"
+..exploit the middle class, stary-eyed due to 'the star', but facing cruel reality when they
+walk off the ship
+
 
 mars was originally "the middle class planet"
 
@@ -20,12 +39,18 @@ The major investors had gained primary interest in the major world governments, 
 colony (along with the future ruling mooninites), however exploiting mars colony and other planets
 was where all the money was was to be made.
 
+"the businessman"
+the man who was oblivious, dealing with personal problems (earthly problems), who protected the attrocities
+to further the positives, justifying the end regardless of the means.
 
 The investing companies accrued huge profits through discoveries, grants, and government and private
 contracts.  Though the majority of their profit was through undisclosed means.  Each and every occupant
 of the three initial colonies was having their every move and action tracked and sold to the highest bidder for aiding in any number of different research. Further medical and scientific tests (genetic alterations, brain analysis, high risk conditions, untreated disease and illness for the purpose of study, the super rich could subscribe - know/watch every move, 
 action - e-stalk, for a hefty price)
 
+"the savior"
+a smooth talking lawyer, as much after their own success, and a terrorist leader, after revenge.  some kind
+of collaboration
 
 The invasion of human rights was exposed in 2185, and resulted in a major uprising from the people
 of mars, the station, and the moon colony.  "Earth" resisted (controlled from the men on the moon, who
@@ -34,6 +59,10 @@ the rebels were successful in several victories, exposing the atrocities of many
 
 As a result,many major earth governments fell (who were puppets to mooninites), and mars was put under their own governance (though the affair further sewed the seeds of distrust between the martians and the "corrupt" earthers)
 
+"the scientist"
+silver-spooned, oblivious of the previous attrocities out to better humanity.  a reasurgence of faith in humanity's
+contribution
+
 In 2280, a wormhole was discovered on the edge of the SOL system, linking us to the rest of the galaxy.  
 
 It fosterd trade, culture, and prosperity - for a time.  The old rivalries
@@ -41,11 +70,18 @@ began to surface between mars and the earthers as the newfound wealth of interga
 
 Mars, fearing the continued corruption of earth, and their 2nd fiddle role, promoted separation and actively refused any attempts to result in a trade agreement.
 
+"the politician"
+sacraficing when needed, making hard choices, duped with the best intentions.
+
+
 When major players for mars and earth, residing on the moon colony attempted to bring several alien cultures together for trade talks (2340), terrorist action caused the deaths of several leaders, each blaming the other.
 
 The resulting earth-martian war (2342-2360), played out on the doorsteps of the SOL system and left much of humanity
 defenseless, as the factions' attempts to control the wormhole through Alien aid resulted in
 the death of billions, leaving them easy pickings for the less resputable alien cultures.
+
+"the peacekeeper"
+a puppet, socialist, ends justify means, dispite regret (repeat of the businessman)
 
 
 The government of earth was replaced with puppets, ruled by a shadow government of the Aliens.
@@ -59,6 +95,9 @@ shipped through the wormhole (aliens justified due to constant terrorist action 
 After the extradition of the Earth government, and the irradication of the Mars populus, the alien races
 began to divvy up the SOL system.  
 
+"the dreamer"
+retrospective, the man who saw the future - realized humanity's failing and eventual re-united state.
+
 The remaining leadership was quartered to the moon.  A hotbed of culture clash, political intrigue, and 
 the last refuge of the ruling class of huminity.  Seeing the writing on the walls, the leaders
 sent three colony ships through the wormhole, to ensure that the survival of the species, regardless of what
@@ -68,15 +107,103 @@ Earth - looking for Earth2, cautious of alien species, resentfull of too much po
 Mars - strong military power, resentful of alien species
 Moon - low military power, diplomatic, open to alien species
 
-Faced challenges....
 
-2700 - Retake Earth?
+(the chrome is based on the faction, all in a futuristic historical reenactment style)
+
+through the wormhole
+
+"the masahiah"
+the right man at the right time, pulls off the impossible and saves the fledgling convoy via
+luck, dealing w/ his own problems
+
+
+
+
+
+
+
+
+
+
+
+<!-- GAME -->
+"the warrior"
+
+2700 - Retake Earth
 message is found that the alien species want to destory the sun to harvest as an energy source.  save the world?
 
+/*think more about these goals*/
 mars - kill em all
 earth - retake what is ours
 moon - establish a peace
 
-How could these decisions effect gameplay?
+
+******************************************************
+
+move the academy, armory, merchant, and shipyard to the map screen, make sure one is accessable in every region.
+
+the tutorial becomes the pattern, gain connections in a system - travel through that system - move forward.
+
+skills usable in non-combat: those are perm skills. bartering, location agreements - these are the ones that are faction specific
+each skill choice presents a cut scene
+
+HUGE reward to player for skill choice  **
+
+20 "missions" per faction (40 worlds, repeats between factions, you run into each other frequently).
+too many, too few?  different parts of each world... do we map then make data structure or data then map.
+
+pretty sure its a tree.  a branching tree - accomidate skill between playthroughs?  can diplomacy with the other factions
+expose better skills - varying faction loyalty?
+
+******************************************************
+
+
+the journey back to earth... thats where the game is.  to prevent the obliteration of our homeworld.
+travel is via wormholes (FTL avoidance)
+
 
 all converge on earth at the same time - different routes
+work together in the end (taking control of the other ships)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+music needs to be darker.  yea, thats not an asshole move...and depend on faction.
+
+
+"the council" (when it actually takes place, temporal control plays in later, maybe)
+historical reenactment, playing from each side.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+future potential, since equip are ppl, send them to planet (engine supports it)
+
+
+
+YEA RIGHT, FUTURE DREAMING....
+(historical) -> (period) -> arc (continues, covering entire story) -> key/interesting period
+game->comic->story->game
