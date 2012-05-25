@@ -81,15 +81,24 @@ The resulting earth-martian war (2342-2360), played out on the doorsteps of the 
 defenseless, as the factions' attempts to control the wormhole through Alien aid resulted in
 the death of billions, leaving them easy pickings for the less resputable alien cultures.
 
-"the peacekeeper"
+
+Two species were connected to gateway, the earth supporters controlled the gateway.  The martian supporters,
+who had an ancient history of being at war with the earthen supporters hoped the martians would gain control
+of the SOL system, and in turn drive the earthen supportors out of gateway (giving them the more lucrative trade routes).
+
+In the end, they both watched humanity tear itself apart, and instead united, posing as peace-keepers, to replace the human leadership wiht puppets and reign over the SOL system, turing humanity into second-class citizens
+
+
+
+"the peacekeeper" 
+
 a puppet, socialist, ends justify means, dispite regret (repeat of the businessman)
 
 
 The government of earth was replaced with puppets, ruled by a shadow government of the Aliens.
 
-
 Many of the mars colony (and saturn, or whatever other planets/colonies the explorers had populated since
-2140) rebelled, and were enslaved, forced to mine in our asteroid belt for valuable minerals to be
+2520) rebelled, and were enslaved, forced to mine in our asteroid belt for valuable minerals to be
 shipped through the wormhole (aliens justified due to constant terrorist action by the martians).
 
 
@@ -99,137 +108,166 @@ began to divvy up the SOL system.
 "the dreamer"
 retrospective, the man who saw the future - realized humanity's failing and eventual re-united state.
 
-The remaining leadership was quartered to the moon.  A hotbed of culture clash, political intrigue, and 
-the last refuge of the ruling class of huminity.  Seeing the writing on the walls, the leaders
-sent three colony ships through the wormhole, to ensure that the survival of the species, regardless of what
-happended in the SOL system.  Each ship was filled with composition from different colonies.
-
-Earth - looking for Earth2, cautious of alien species, resentfull of too much power
-Mars - strong military power, resentful of alien species
-Moon - low military power, diplomatic, open to alien species
-
-through the wormhole
-
-"the masahiah"
-the right man at the right time, pulls off the impossible and saves the fledgling convoy via
-luck, dealing w/ his own problems - the earthers found an eventual colony.
 
 
-"the peacekeeper pt 2" (son of peacekeeper).
-in a system no-one wanted, without lucrative reserves.  it turned humanity into second class citizens
-in the cosmos - technologically just behind the times.  It wasnt satisfactory, but the expulsion from the 
-SOL system was infuriating.
 
 
-A single continent provided no separation, the martians returned to a segregated and less
-afluent life on a terraformed planet in the sector.
-
-
-The mooninites returned to a place abord the earth2 asteroid belt, attempting to establish peace, but
-pleasing no-one.
 
 
 <!-- GAME -->
-"the warrior"
+2600
 
-2700 - Retake Earth
-message is recieved that the alien species want to destory the sun to harvest as an energy source.  save the world?
+
+ACT I
+The Delegation
+
+The remaining leadership was quartered to the moon.  A hotbed of culture clash, political intrigue, and 
+the last refuge of the ruling class of huminity.  Seeing the writing on the walls, the leaders
+sent one colony ship through the wormhole, to ensure that the survival of the species, regardless of what
+happended in the SOL system.  The ship was filled with composition from both earth and the mars colony (more hotbed)
+
+
+"the masahiah"
+
+You play the captian of the last bastion of humanity, attempting to find a new home for earth.
+The leaders of the opposing factions are on board, and constantly give you disparate advice
 
 /*think more about these goals*/
-mars - kill em all
-earth - retake what is ours
-moon - establish a peace
+mars - show our force in the universe and take from others what has been taken from us
+earth - establish relations in an attempt to seek aid to find a new home
 
-(the chrome is based on the faction, all in a futuristic historical reenactment style)
 
+~the tutorial takes you through the solar system (movement @ mars, combat @ asteroids)
+~pick up a third ship, then 1 or 2 combat skirmishes on the way to the wormhole
+
+must choose to go the route to the martian supporters or earthen supporters.  Realize you need to get a ship to get through the gateway (an old political friend from the war promises one from each side, choose)
+~defense grid battle, homeworld battle (pick up fourth ship), wormhole battle
+
+(whoops, didn't work), escape through the gateway to the central hub
+~two gateway skirmishes
+
+missions (9 played, 12 possible)
+
+
+
+ACT IIa
+The Journey
+
+In search of a new home, the ship travels to several of the gateways connected to the central hub, each requesting some task.  All say they aren't aware of any inhabited planets, and are foreboding about the dark space and the all powerful aliens who inhabit it, who created the wormhole network.  They point out that many ships have entered never to return.
+
+
+~1 hub of 2 planets [4 missions], 2 hubs of 3 planets [9 missions]
+~convoy escort
+~weapons demonstration & sales
+~stop terrorist organization plot to take over a station
+~salvage operation
+
+
+After some time, you realize you need more information about dark space since its the only unexplored place connected to the Nexus.  An information broker at the nexus reveals the location of a subspace teliscope - if anyone knows about dark space, its them (her?).
+
+~travel to subspace telliscope
+
+
+
+
+missions (min 8 played, 17 possible)
+1 connector [4 missions]
+
+
+ACT III
+The Dark Space
+
+The captain decides to take the ship into the dark space, a region connected to the central hub via the dark gateway, which very few species travel to or from.
+
+It is rumored that the inhabitance of the dark space are the race who originally created the wormhole network (the light and dark aliens).
+
+traveling into the dark space, we learn that an alien bug race controls the center of the darkspace.  A hostile race that feel they own the dark space, they are at war with the red aliens, and the blue aliens have formed a perimiter defense grid, leaving a relative peace.  However the safety from the aliens inside the defense grid has lead to widespread looting, piracy and terrorism from other races within the nebula.
+
+we are told that there is a wormhole at red/blue that connects to the founder gateway, if we journey back to the red/blue homeworld, we can gain access to the wormhole and an introduction with light/dark (depending on red/blue).
+
+rumor of the civil war between light and dark permiates the story.
+
+
+missions (20 possible)
+tierd in an arc from the starting point
+
+~space aliens attacks - junior (both) (connects to asteroid story or defense grid story)
+
+BLUE
+~help defend military outpost from bug aliens
+~destroyed station battle vs scavengers
+~hostage situation
+~quell terrorist uprising and prevent a quantum warhead from being detonated on the home planet
+~provide the bomb to the light aliens and deliver it to the dark alien homeworld
+
+RED
+~destroy asteroid hurtling towards planet launched from an alien bug-planet (escorted by evil flying aliens)
+~help defeat the bug people, pushing them back to their home planet 
+~the purging of the bug homeworld
+~provide the asteroid weapon to the dark aliens and deliver it to the light alien homeworld
+
+
+ACT IV
+The Battle
+
+eventually reach either the light or dark aliens, where the captain brokers an agreement to aid the aliens and to deliver the weapon in exchange for the planet orbiting the founder gateway. pick up 5th ship (from the indigenous friends)
+
+traveling to the founder gateway, we battle in the middle of an interstellar civil war between the race whose ancestors created the wormhole network, then deliver the weapon to the opposing faction home planet, ending the war.
+
+missions (5 played, 10 possible)
+
+As compensation, the fiends are given control of the founder gateway, and the earthers the planet at the founder gateway, whose wormhole goes to a connector to each side of the dark space and the central hub (keep their new friends close).
+
+
+
+<!-- end game -->
+
+
+
+
+
+
+
+2650
+"the peacekeeper pt 2" (son of peacekeeper).
+a planet ravaged by war, without lucrative reserves, constantly caught in the middle of the fight between the light and dark aliens.  It was satisfactory, but as time went by a deep unrest was felt over the expulsion from the 
+SOL system and the constant bickering between the light and dark aliens, each supported by either the earthers or the martians.
+
+2800
+A single continent provided no separation, and through the help of the light/dark aliens, the martians returned to a segregated and less afluent life on the terraformed planet in the sector, attempting to establish peace, but pleasing no-one.  as they grew apart, the martians began to grow closer to the dark aliens,
+the earthers closest to the light aliens.  For several years, there was little talk as the factions grew divided.
+
+
+
+"the warrior"
+3200 - Retake Earth
+message is recieved that the alien species want to destory the sun to harvest as an energy source.  save the world?
+to prevent the obliteration of our homeworld.
+
+
+returning to SOL... all converge on earth at the same time - different routes work together in the end 
+
+
+
+
+
+
+
+
+MECHANICS
 ******************************************************
+(the chrome is based on the faction, all in a futuristic historical reenactment style)
 
 move the academy, armory, merchant, and shipyard to the map screen, make sure one is accessable in every region.
 
 the tutorial becomes the pattern, gain connections in a system - travel through that system - move forward.
 
-skills usable in non-combat: those are perm skills. bartering, location agreements - these are the ones that are faction specific
-each skill choice presents a cut scene
+skills usable in non-combat: those are perm skills. bartering, location agreements - these are the ones that are faction specific ?each skill choice presents a cut scene?
 
 HUGE reward to player for skill choice  **
 
-20 "missions" per faction (40 worlds, repeats between factions, you run into each other frequently).
-too many, too few?  different parts of each world... do we map then make data structure or data then map.
-
-pretty sure its a tree.  a branching tree - accomidate skill between playthroughs?  can diplomacy with the other factions
-expose better skills - varying faction loyalty?
+can diplomacy with the other factions expose better skills - varying faction loyalty?
 
 ******************************************************
 
 
-the journey back to earth... thats where the game is.  to prevent the obliteration of our homeworld.
-travel is via wormholes (FTL avoidance)
-
-
-
-ACT I
-the delegation, each providing backstory 1 min before (1 min each) - 4 min intro (is that too long, 
-is a diplomatic conversation too boring)
-
-the route, each faction choosing a different but similar (thats why the all mean up along the rute)
-
-we have worked together, but our prodigies must be allowed to make their own choices... choose... now..
-LOL.
-
-
-
-ACT II
-the journey... meet up, the majority of the "strike team bulding".
-
-
-
-
-ACT III
-returning to SOL... (the fight over jupiter will make a pretty visual)
-
-all converge on earth at the same time - different routes
-
-work together in the end (taking control of the other ships)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-music needs to be darker.  yea, thats not an asshole move...and depend on faction.
-
-
-"the council" (when it actually takes place, temporal control plays in later, maybe)
-historical reenactment, playing from each side.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-future potential, since equip are ppl, send them to planet (engine supports it)
-
-
-
-YEA RIGHT, FUTURE DREAMING....
-(historical) -> (period) -> arc (continues, covering entire story) -> key/interesting period
-game->comic->story->game
