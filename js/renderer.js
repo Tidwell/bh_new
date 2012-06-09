@@ -85,25 +85,6 @@ renderer.prototype.selectEntity = function(entity) {
     }
   }
 }
-//totally unecessary when touch
-renderer.prototype.bindAbilityKey = function(entity,abilityName) {
-  var self = this;
-  var key = entity.abilities[abilityName].key;
-  if (key) {
-    self.kb[key] = KeyboardJS.bind.key(key, function(){}, function(){ entity.ability(abilityName);});
-  }
-}
-renderer.prototype.unbindAbilityKeys = function() {
-  var self = this;
-  var keys = ['a','q','w','e'];
-
-  keys.forEach(function(key){
-    if (self.kb[key]) {
-      self.kb[key].clear();
-      self.kb[key] = undefined;
-    };
-  })
-}
 renderer.prototype.unselectEntity = function(entity) {
   var self = this;
   if (!entity.controllable){ return;}
@@ -197,7 +178,16 @@ renderer.prototype.gameOver = function(winner) {
   }
 }
 
-renderer.prototype.bindDom = function(entity) {
+renderer.prototype.rtsControlls = function() {
+  var self = this;
+  self.game.entities.forEach(function(entity) {
+    if (entity.controllable) {
+      self.rtsEntityControl(entity);
+    }  
+  })
+}
+
+renderer.prototype.rtsEntityControl = function(entity) {
   var self = entity;
   //bind the keyboard event to select this entity
   KeyboardJS.bind.key(self.selectKey, function(){}, function(){self.makeSelected()});
@@ -206,7 +196,6 @@ renderer.prototype.bindDom = function(entity) {
   $(self.stage).click(function(e) {
     if (!self.selected) { return; }
     //we dont want to move, we want to target if they are a valid target
-    console.log('event')
     if ($(e.srcElement).hasClass('enemy') && self.attacking && self.weapon.target == 'npc'){ return; }
     if ($(e.srcElement).parent().hasClass('friendly') && self.attacking && self.weapon.target == 'pc'){ return; }
     //otherwise we are moving
@@ -222,6 +211,62 @@ renderer.prototype.bindDom = function(entity) {
     var el = $(this);
     self.setAbilityTarget(el.attr('rel'));
   });
+}
+renderer.prototype.bindAbilityKey = function(entity,abilityName) {
+  var self = this;
+  var key = entity.abilities[abilityName].key;
+  if (key) {
+    self.kb[key] = KeyboardJS.bind.key(key, function(){}, function(){ entity.ability(abilityName);});
+  }
+}
+renderer.prototype.unbindAbilityKeys = function() {
+  var self = this;
+  var keys = ['a','q','w','e'];
+
+  keys.forEach(function(key){
+    if (self.kb[key]) {
+      self.kb[key].clear();
+      self.kb[key] = undefined;
+    };
+  })
+}
+
+
+renderer.prototype.touchControlls = function() {
+  var self = this;
+  var activeEntity;
+  touchControl({
+    container: self.game.stage,
+    entities: self.game.entities,
+    down: function() {
+
+    },
+    move: function() {
+
+    },
+    up: function(location) {
+        if (!activeEntity) {return;}
+        activeEntity.initMove(location.x,location.y);
+    },
+    downCollide: function(collisions) {
+        var gameEntity = collisions[0];
+        activeEntity = gameEntity;
+        gameEntity.makeSelected();
+        gameEntity.ability('attack')
+    },
+    moveCollide: function() {
+
+    },
+    upCollide: function(collisions) {
+      var entity = collisions[0];
+      if ((entity.type==='npc' && activeEntity.attacking && activeEntity.weapon.target == 'npc') ||
+           (entity.type==='pc' && activeEntity.attacking && activeEntity.weapon.target == 'pc'))
+       {
+          activeEntity.setAbilityTarget(entity.id); 
+          isAttacking = true;
+       }
+      }
+  })
 }
 
 renderer.prototype.loadCanvas = function() {
@@ -279,9 +324,6 @@ renderer.prototype.initEntity = function(entity){
   var sel;
   entity.el.parent().width(entity.width).height(entity.height);
   entity.el.attr('rel',entity.id);
-  if (entity.controllable) {
-    //self.bindDom(entity);
-  }
   if(entity.actionbarEl) {
     for (ability in entity.abilities) {
       if (entity.abilities.hasOwnProperty(ability)) {
@@ -313,11 +355,11 @@ renderer.prototype.init = function() {
   self.game.entities.forEach(function(entity) {
       self.initEntity(entity)
   });
-  touchControl({
-    container: self.game.stage,
-    game: self.game
-  })
   self.game.stage.show();
+  self.game.stage.css('left',($(window).width()-self.game.stage.outerWidth())/2)
+  self.game.stage.css('top')
+  //self.rtsControlls();
+  self.touchControlls();
   /***Inititalize the Main Render Loop***/
   setTimeout(function() {self.loop()}, 20);
   self.playMusic();

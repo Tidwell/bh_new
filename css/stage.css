@@ -4,9 +4,9 @@ body {
 .stage {
   width: 800px;
   height: 500px;
-  margin: 20px auto;
   border: 6px solid black;
-  position: relative;
+  position: absolute;
+  top: 20px;
   overflow: hidden;
 }
 .stage .buttons {
