@@ -206,6 +206,7 @@ renderer.prototype.bindDom = function(entity) {
   $(self.stage).click(function(e) {
     if (!self.selected) { return; }
     //we dont want to move, we want to target if they are a valid target
+    console.log('event')
     if ($(e.srcElement).hasClass('enemy') && self.attacking && self.weapon.target == 'npc'){ return; }
     if ($(e.srcElement).parent().hasClass('friendly') && self.attacking && self.weapon.target == 'pc'){ return; }
     //otherwise we are moving
@@ -279,7 +280,7 @@ renderer.prototype.initEntity = function(entity){
   entity.el.parent().width(entity.width).height(entity.height);
   entity.el.attr('rel',entity.id);
   if (entity.controllable) {
-    self.bindDom(entity);
+    //self.bindDom(entity);
   }
   if(entity.actionbarEl) {
     for (ability in entity.abilities) {
@@ -312,6 +313,10 @@ renderer.prototype.init = function() {
   self.game.entities.forEach(function(entity) {
       self.initEntity(entity)
   });
+  touchControl({
+    container: self.game.stage,
+    game: self.game
+  })
   self.game.stage.show();
   /***Inititalize the Main Render Loop***/
   setTimeout(function() {self.loop()}, 20);
