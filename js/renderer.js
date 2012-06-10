@@ -178,147 +178,6 @@ renderer.prototype.gameOver = function(winner) {
   }
 }
 
-renderer.prototype.rtsControlls = function() {
-  var self = this;
-  self.game.entities.forEach(function(entity) {
-    if (entity.controllable) {
-      self.rtsEntityControl(entity);
-    }  
-  })
-}
-
-renderer.prototype.rtsEntityControl = function(entity) {
-  var self = entity;
-  //bind the keyboard event to select this entity
-  KeyboardJS.bind.key(self.selectKey, function(){}, function(){self.makeSelected()});
-
-  //bind the click event to move
-  $(self.stage).click(function(e) {
-    if (!self.selected) { return; }
-    //we dont want to move, we want to target if they are a valid target
-    if ($(e.srcElement).hasClass('enemy') && self.attacking && self.weapon.target == 'npc'){ return; }
-    if ($(e.srcElement).parent().hasClass('friendly') && self.attacking && self.weapon.target == 'pc'){ return; }
-    //otherwise we are moving
-    var s = self.stage;
-    var newX = e.pageX-s.offset().left;
-    var newY = e.pageY-s.offset().top;
-    self.initMove(newX,newY);
-  });
-  
-  //bind the click event to target
-  $(self.stage).on('click', '.entity', function(e) {
-    if (!self.selected) {return;}
-    var el = $(this);
-    self.setAbilityTarget(el.attr('rel'));
-  });
-}
-renderer.prototype.bindAbilityKey = function(entity,abilityName) {
-  var self = this;
-  var key = entity.abilities[abilityName].key;
-  if (key) {
-    self.kb[key] = KeyboardJS.bind.key(key, function(){}, function(){ entity.ability(abilityName);});
-  }
-}
-renderer.prototype.unbindAbilityKeys = function() {
-  var self = this;
-  var keys = ['a','q','w','e'];
-
-  keys.forEach(function(key){
-    if (self.kb[key]) {
-      self.kb[key].clear();
-      self.kb[key] = undefined;
-    };
-  })
-}
-
-
-renderer.prototype.touchControlls = function() {
-  var self = this;
-  var activeEntity;
-  touchControl({
-    container: self.game.stage,
-    entities: self.game.entities,
-    down: function() {
-
-    },
-    move: function() {
-
-    },
-    up: function(location) {
-        if (!activeEntity) {return;}
-        activeEntity.initMove(location.x,location.y);
-    },
-    downCollide: function(collisions) {
-        var gameEntity = collisions[0];
-        activeEntity = gameEntity;
-        gameEntity.makeSelected();
-        gameEntity.ability('attack')
-    },
-    moveCollide: function() {
-
-    },
-    upCollide: function(collisions) {
-      var entity = collisions[0];
-      if ((entity.type==='npc' && activeEntity.attacking && activeEntity.weapon.target == 'npc') ||
-           (entity.type==='pc' && activeEntity.attacking && activeEntity.weapon.target == 'pc'))
-       {
-          activeEntity.setAbilityTarget(entity.id); 
-          isAttacking = true;
-       }
-      }
-  })
-}
-
-renderer.prototype.loadCanvas = function() {
-  var self = this;
-  self.canvas = document.getElementById('effects');
-  if (self.canvas && self.canvas.getContext) {
-    self.ctx = self.canvas.getContext('2d');
-  }
-}
-
-
-
-renderer.prototype.renderLaser = function(opt) {
-  Sound.play('effects/shoot',.3)
-  var x1 = opt.self.x+opt.self.width/2;
-  var y1 =opt.self.y+opt.self.height/2;
-  var x2=opt.target.x+opt.target.width/2;
-  var y2=opt.target.y+opt.target.height/2;
-  var self = this;
-  self.particleCount++;
-  this.activeParticles['p'+self.particleCount] = {
-    x1: x1,
-    y1: y1,
-    x2: x2,
-    y2: y2,
-    strokeStyle: (opt.self.weapon.damage > 0) ? 'rgb(255,0,0)' : 'rgb(0,255,0)',
-    lineWidth: 2
-  };
-  var self = this;
-  var pc = self.particleCount;
-  setTimeout(function(){
-    delete self.activeParticles['p'+pc];
-  },500);
-}
-
-renderer.prototype.renderParticles = function() {
-  var self = this;
-  self.ctx.clearRect(0,0,800,500);
-  var parts = this.activeParticles;
-  for (var pid in self.activeParticles) {
-    if (self.activeParticles.hasOwnProperty(pid)) {
-      var particle = self.activeParticles[pid];
-      self.ctx.beginPath(); 
-      self.ctx.strokeStyle = particle.strokeStyle;
-      self.ctx.lineWidth = particle.lineWidth;
-      self.ctx.moveTo(particle.x1,particle.y1);
-      self.ctx.lineTo(particle.x2,particle.y2);
-      self.ctx.stroke();
-    }
-  }
-}
-
 renderer.prototype.initEntity = function(entity){
   var self = this;
   var sel;
@@ -365,6 +224,66 @@ renderer.prototype.init = function() {
   self.playMusic();
 }
 
+
+
+
+/*CANVAS & PARTICLE EFFECTS*/
+renderer.prototype.loadCanvas = function() {
+  var self = this;
+  self.canvas = document.getElementById('effects');
+  if (self.canvas && self.canvas.getContext) {
+    self.ctx = self.canvas.getContext('2d');
+  }
+}
+
+
+renderer.prototype.renderLaser = function(opt) {
+  Sound.play('effects/shoot',.3)
+  var x1 = opt.self.x+opt.self.width/2;
+  var y1 =opt.self.y+opt.self.height/2;
+  var x2=opt.target.x+opt.target.width/2;
+  var y2=opt.target.y+opt.target.height/2;
+  var self = this;
+  self.particleCount++;
+  this.activeParticles['p'+self.particleCount] = {
+    x1: x1,
+    y1: y1,
+    x2: x2,
+    y2: y2,
+    strokeStyle: (opt.self.weapon.damage > 0) ? 'rgb(255,0,0)' : 'rgb(0,255,0)',
+    lineWidth: 2
+  };
+  var self = this;
+  var pc = self.particleCount;
+  setTimeout(function(){
+    delete self.activeParticles['p'+pc];
+  },500);
+}
+
+
+renderer.prototype.renderParticles = function() {
+  var self = this;
+  self.ctx.clearRect(0,0,800,500);
+  var parts = this.activeParticles;
+  for (var pid in self.activeParticles) {
+    if (self.activeParticles.hasOwnProperty(pid)) {
+      var particle = self.activeParticles[pid];
+      self.ctx.beginPath(); 
+      self.ctx.strokeStyle = particle.strokeStyle;
+      self.ctx.lineWidth = particle.lineWidth;
+      self.ctx.moveTo(particle.x1,particle.y1);
+      self.ctx.lineTo(particle.x2,particle.y2);
+      self.ctx.stroke();
+    }
+  }
+}
+
+
+
+
+
+/*MUSIC */
+
 renderer.prototype.playMusic = function() {
   var self = this;
   Sound.stop('music/Battle2');
@@ -375,4 +294,145 @@ renderer.prototype.playMusic = function() {
 renderer.prototype.stopMusic = function() {
   Sound.stop('music/Battle2');
   clearTimeout(self.musicTimeout);
+}
+
+
+
+
+/*CONTROL SCHEMES*/
+
+renderer.prototype.rtsControlls = function() {
+  var self = this;
+  self.game.entities.forEach(function(entity) {
+    if (entity.controllable) {
+      self.rtsEntityControl(entity);
+    }  
+  })
+}
+
+
+renderer.prototype.rtsEntityControl = function(entity) {
+  var self = entity;
+  //bind the keyboard event to select this entity
+  KeyboardJS.bind.key(self.selectKey, function(){}, function(){self.makeSelected()});
+
+  //bind the click event to move
+  $(self.stage).click(function(e) {
+    if (!self.selected) { return; }
+    //we dont want to move, we want to target if they are a valid target
+    if ($(e.srcElement).hasClass('enemy') && self.attacking && self.weapon.target == 'npc'){ return; }
+    if ($(e.srcElement).parent().hasClass('friendly') && self.attacking && self.weapon.target == 'pc'){ return; }
+    //otherwise we are moving
+    var s = self.stage;
+    var newX = e.pageX-s.offset().left;
+    var newY = e.pageY-s.offset().top;
+    self.initMove(newX,newY);
+  });
+  
+  //bind the click event to target
+  $(self.stage).on('click', '.entity', function(e) {
+    if (!self.selected) {return;}
+    var el = $(this);
+    self.setAbilityTarget(el.attr('rel'));
+  });
+}
+
+
+renderer.prototype.bindAbilityKey = function(entity,abilityName) {
+  var self = this;
+  var key = entity.abilities[abilityName].key;
+  if (key) {
+    self.kb[key] = KeyboardJS.bind.key(key, function(){}, function(){ entity.ability(abilityName);});
+  }
+}
+
+
+renderer.prototype.unbindAbilityKeys = function() {
+  var self = this;
+  var keys = ['a','q','w','e'];
+
+  keys.forEach(function(key){
+    if (self.kb[key]) {
+      self.kb[key].clear();
+      self.kb[key] = undefined;
+    };
+  })
+}
+
+
+
+renderer.prototype.touchControlls = function() {
+  var self = this;
+  var activeEntity;
+  var lines = document.getElementById('movement-lines');
+  var ctx = lines.getContext('2d');
+  var drawTo = 'none';
+
+  touchControl({
+    container: self.game.stage,
+    entities: self.game.entities,
+    down: function() {
+
+    },
+    move: function(location) {
+      $('.entity').removeClass('targeted');
+      ctx.clearRect(0,0,800,500);
+      if (drawTo === 'none') {return;}
+
+      if (activeEntity) {
+        ctx.beginPath(); 
+        ctx.strokeStyle = 'rgb(200,200,75)';
+        ctx.lineWidth = 2;
+        ctx.moveTo(activeEntity.x+activeEntity.width/2, activeEntity.y+activeEntity.height/2);
+        if (drawTo == 'cursor') {
+          ctx.lineTo(location.x,location.y);
+        }
+        if (drawTo == 'target') {
+          ctx.lineTo(activeEntity.abilityTarget.x,activeEntity.abilityTarget.y);
+        }
+        ctx.stroke();
+      }
+    },
+    up: function(location) {
+        ctx.clearRect(0,0,800,500);
+        $('.entity').removeClass('targeted');
+
+        if (!activeEntity) {return;}
+        activeEntity.initMove(location.x,location.y);
+        drawTo = 'none';
+    },
+    downCollide: function(collisions) {
+        drawTo = 'cursor';
+        var gameEntity = collisions[0];
+        if (!gameEntity.controllable) {return;}
+        activeEntity = gameEntity;
+        gameEntity.makeSelected();
+        gameEntity.ability('attack')
+    },
+    moveCollide: function(collisions) {
+      //drawTo = 'target';
+      
+      if (isValidTarget(activeEntity,collisions[0])) {
+        collisions[0].el.addClass('targeted')
+      }
+
+    },
+    upCollide: function(collisions) {
+      var entity = collisions[0];
+      if (isValidTarget(activeEntity,entity))
+       {
+          activeEntity.setAbilityTarget(entity.id); 
+          isAttacking = true;
+       }
+      }
+  })
+
+  var isValidTarget = function(activeEntity,entity) {
+    if (!activeEntity || !entity) {return false;}
+    if((entity.type==='npc' && activeEntity.attacking && activeEntity.weapon.target == 'npc') ||
+           (entity.type==='pc' && activeEntity.attacking && activeEntity.weapon.target == 'pc')) {
+        return true;
+    }
+    return false;
+  }
 }

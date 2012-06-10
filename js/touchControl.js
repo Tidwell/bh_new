@@ -62,6 +62,7 @@ function touchControl(opt) {
      //detects a collision between a point and a box
      //expects {x:,y:,width:,height} and {x:,y:}
      function detectPointCollide(box,pt) {
+      if (!box || !pt) {return false;}
       if ((pt.x > box.x && pt.x < box.x+box.width) && (pt.y > box.y && pt.y < box.y + box.height)){
         return true;
       }
@@ -69,6 +70,7 @@ function touchControl(opt) {
      }
 
      function detectCollisions(entities,pt) {
+      if (!entities || !pt) { return false;}
       var collide = [];
       entities.forEach(function(entity,i){
           if(detectPointCollide({ 
