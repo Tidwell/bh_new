@@ -26,6 +26,7 @@ var Sound = (function($) {
 
   return $.extend(Sound, {
     play: function(name, volume, maxChannels) {
+      return;
       // Note: Too many channels crash browsers
       maxChannels = maxChannels || 4;
 
@@ -53,6 +54,7 @@ var Sound = (function($) {
     },
 
     stop: function(name) {
+      return;
       if(sounds[name]) {
         $(sounds[name]).get(0).pause();
       }

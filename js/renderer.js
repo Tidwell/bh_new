@@ -7,6 +7,12 @@ var renderer = function(opt) {
   this.activeParticles = [];
   this.particleCount = 0;
   this.musicTimeout;
+
+  this.stageWidth = this.game.stage.width();
+  this.stageHeight = this.game.stage.height();
+
+  this.isIpad = opt.isIpad;
+
 }
 
 renderer.prototype.loop = function() {
@@ -215,8 +221,12 @@ renderer.prototype.init = function() {
       self.initEntity(entity)
   });
   self.game.stage.show();
-  self.game.stage.css('left',($(window).width()-self.game.stage.outerWidth())/2)
-  self.game.stage.css('top')
+
+  if (!self.isIpad) {
+    self.game.stage.css('left',($(window).width()-self.game.stage.outerWidth())/2)
+    self.game.stage.css('top','20')
+  }
+
   //self.rtsControlls();
   self.touchControlls();
   /***Inititalize the Main Render Loop***/
@@ -251,7 +261,7 @@ renderer.prototype.renderLaser = function(opt) {
     x2: x2,
     y2: y2,
     strokeStyle: (opt.self.weapon.damage > 0) ? 'rgb(255,0,0)' : 'rgb(0,255,0)',
-    lineWidth: 2
+    lineWidth: 6
   };
   var self = this;
   var pc = self.particleCount;
@@ -263,7 +273,7 @@ renderer.prototype.renderLaser = function(opt) {
 
 renderer.prototype.renderParticles = function() {
   var self = this;
-  self.ctx.clearRect(0,0,800,500);
+  self.ctx.clearRect(0,0,this.stageWidth,this.stageHeight);
   var parts = this.activeParticles;
   for (var pid in self.activeParticles) {
     if (self.activeParticles.hasOwnProperty(pid)) {
@@ -376,13 +386,13 @@ renderer.prototype.touchControlls = function() {
     },
     move: function(location) {
       $('.entity').removeClass('targeted');
-      ctx.clearRect(0,0,800,500);
+      ctx.clearRect(0,0,self.stageWidth,self.stageHeight);
       if (drawTo === 'none') {return;}
 
       if (activeEntity) {
         ctx.beginPath(); 
         ctx.strokeStyle = 'rgb(200,200,75)';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 3;
         ctx.moveTo(activeEntity.x+activeEntity.width/2, activeEntity.y+activeEntity.height/2);
         if (drawTo == 'cursor') {
           ctx.lineTo(location.x,location.y);
@@ -394,7 +404,7 @@ renderer.prototype.touchControlls = function() {
       }
     },
     up: function(location) {
-        ctx.clearRect(0,0,800,500);
+        ctx.clearRect(0,0,self.stageWidth,self.stageHeight);
         $('.entity').removeClass('targeted');
 
         if (!activeEntity) {return;}

@@ -19,16 +19,16 @@ entities.prototype.entities = {
 	attack1: {
       id: 'bx',
       controllable: false,
-      startX: 400,
+      startX: 600,
       startY: 300,
-      height: 35, //px
-      width: 34, //px
+      height: 70, //px
+      width: 68, //px
       rate: 60, //px/s
       health: 150,
       controllable: false,
       weapon: {
         damage: 10,
-        range: 50, //px
+        range: 250, //px
         cooldown: 1500, //ms
         target: 'pc'
       },

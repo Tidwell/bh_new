@@ -5,13 +5,13 @@ var defaultUnits = [{
     controllable: true,
     startX: 20,
     startY: 250,
-    height: 33, //px//
-    width: 43, //px
+    height: 66, //px//
+    width: 86, //px
     rate: 200, //px/s
     health: 100,
     weapon: {
       damage: 15,
-      range: 120, //px
+      range: 220, //px
       cooldown: 2000, //ms
       target: 'npc'
     },
@@ -37,15 +37,15 @@ var defaultUnits = [{
     unitClass: 'healer',
     level: 1,
     controllable: true,
-    startX: 50,
-    startY: 300,
-    height: 36, //px
-    width: 43, //px
+    startX: 150,
+    startY: 350,
+    height: 72, //px
+    width: 86, //px
     rate: 200, //px/s
     health: 100,
     weapon: {
       damage: -5,
-      range: 120, //px
+      range: 320, //px
       cooldown: 2500, //ms
       target: 'pc'
     },
@@ -76,14 +76,14 @@ var defaultUnits = [{
     level: 1,
     controllable: true,
     startX: 20,
-    startY: 350,
-    height: 39, //px//
-    width: 33, //px
+    startY: 550,
+    height: 78, //px//
+    width: 66, //px
     rate: 200, //px/s
     health: 100,
     weapon: {
       damage: 20,
-      range: 130, //px
+      range: 230, //px
       cooldown: 2200, //ms
       target: 'npc'
     },
@@ -112,25 +112,25 @@ _e.setValidTargets(['tank','healer']);
 var planets = {
   planet1: {
     background: 'images/backgrounds/space4.jpg',
-    waves: [[_e.get({entityName: 'attack1',id: 'bx',startX: 800, startY: 220})],
-            [_e.get({entityName: 'attack1',id: 'bx2',startX: 800, startY: 220})],
-            [_e.get({entityName: 'attack1',id: 'bx3',startX: 800, startY: 220})]
+    waves: [[_e.get({entityName: 'attack1',id: 'bx',startX: 1300, startY: 220})],
+            [_e.get({entityName: 'attack1',id: 'bx2',startX: 1300, startY: 220})],
+            [_e.get({entityName: 'attack1',id: 'bx3',startX: 1300, startY: 220})]
            ]
   },
   planet2: {
     background: 'images/backgrounds/space2.jpg',
-    waves:[[_e.get({entityName: 'attack1', id: 'bx',startX: 800, startY: 320}),
-            _e.get({entityName: 'attack1', id: 'bx2', startX: 800, startY: 120})
+    waves:[[_e.get({entityName: 'attack1', id: 'bx',startX: 1300, startY: 320}),
+            _e.get({entityName: 'attack1', id: 'bx2', startX: 1300, startY: 120})
            ],
-           [_e.get({entityName: 'attack1', id: 'bx3',startX: 800, startY: 320}),
-            _e.get({entityName: 'attack1', id: 'bx4', startX: 800, startY: 120})
+           [_e.get({entityName: 'attack1', id: 'bx3',startX: 1300, startY: 320}),
+            _e.get({entityName: 'attack1', id: 'bx4', startX: 1300, startY: 120})
            ]
           ]
   },
   planet3: {
     background: 'images/backgrounds/space3.jpg',
-    waves: [[_e.get({entityName: 'attack1', id: 'bx',startX: 800, startY: 320}),
-              _e.get({entityName: 'attack1', id: 'bx2', startX: 800, startY: 220}),
+    waves: [[_e.get({entityName: 'attack1', id: 'bx',startX: 1300, startY: 320}),
+              _e.get({entityName: 'attack1', id: 'bx2', startX: 1300, startY: 220}),
               _e.get({entityName: 'attack1', id: 'bx3', startX: -70, startY: 120})
             ]]
   },
@@ -139,13 +139,13 @@ var planets = {
     waves: [[_e.get({
         entityName: 'attack1',
         id: 'bx', 
-        startX: 200,
+        startX: 1300,
         startY: 200,
         rate: 80, //px/s
         health: 200,
         weapon: {
           damage: 15,
-          range: 80, //px
+          range: 280, //px
           cooldown: 1200, //ms
           target: 'pc'
         },

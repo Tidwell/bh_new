@@ -1,7 +1,6 @@
 #container {
-  width: 800px;
-  height: 500px;
-  margin: 20px auto;
+  width: 1024px;
+  height: 768px;
   border: 6px solid black;
   background: #CCC;
   position: relative;
@@ -30,8 +29,8 @@
 }
 
 #map, #armory {
-  width: 800px;
-  height: 500px;
+  width: 1024px;
+  height: 768px;
   display: none;
 }
 

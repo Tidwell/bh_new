@@ -6,6 +6,22 @@ var world = function() {
   self.bindDom();
   self.showHome();
   self.bindHash();
+
+  self.isIpad = false;
+  if (navigator.userAgent.indexOf('iPad') > -1) {
+    self.isIpad = true;
+  }
+
+  if (!self.isIpad) {
+    self.worldEl.css('left',($(window).width()-self.worldEl.outerWidth())/2)
+    self.worldEl.css('top','20')
+  }
+
+  self.worldEl.on('touchmove',function(e) {
+    e.preventDefault();
+  })
+
+
 }
 world.prototype.nav = function(hash) {
   var self = this;
@@ -214,6 +230,7 @@ world.prototype.startGame = function(instance) {
   self.worldEl.hide();
     
   var com = new communicator();
+  console.log(self.isIpad)
   self.game = new game({stage: stage, com: com,numWaves: instance.waves.length});
   var bh = self.game;
   self.userData.activeUnits.forEach(function(unit,i){
@@ -239,7 +256,7 @@ world.prototype.startGame = function(instance) {
   })
   
   self.bindEvents(com);
-  self.rend = new renderer({game: bh});
+  self.rend = new renderer({game: bh,isIpad: self.isIpad});
   bh.init();
   self.rend.init();
   location = location.hash.replace(location.hash,'#game');
